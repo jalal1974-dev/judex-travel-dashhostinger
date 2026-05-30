@@ -1,0 +1,1889 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة التحكم — الجود للسياحة والسفر</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--dark:#0a1628;--dark2:#0f1f3d;--dark3:#162340;--card:#1a2a4a;--border:rgba(201,168,76,0.2);--text:#f0ede8;--muted:#8a9ab5;--green:#27ae60;--red:#e74c3c;--blue:#2980b9}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--text);min-height:100vh}
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--dark)}
+.login-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:40px;width:360px;text-align:center}
+.login-logo{font-size:22px;font-weight:800;color:var(--gold);margin-bottom:8px}
+.login-sub{font-size:13px;color:var(--muted);margin-bottom:28px}
+.login-field{margin-bottom:14px;text-align:right}
+.login-field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
+.login-field input{width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text);font-family:'Cairo',sans-serif;font-size:14px;outline:none}
+.login-field input:focus{border-color:var(--gold)}
+.btn{padding:10px 22px;border-radius:9px;font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:opacity .2s;display:inline-flex;align-items:center;gap:6px}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-gold:hover{opacity:.85}
+.btn-green{background:var(--green);color:#fff}
+.btn-red{background:var(--red);color:#fff}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-sm{padding:6px 14px;font-size:12px;border-radius:7px}
+.login-err{color:var(--red);font-size:12px;margin-top:10px;display:none}
+#app{display:none}
+.sidebar{position:fixed;top:0;right:0;bottom:0;width:220px;background:var(--dark2);border-left:1px solid var(--border);z-index:10;overflow-y:auto}
+.sidebar-logo{padding:20px 18px 16px;border-bottom:1px solid var(--border)}
+.sidebar-logo div{font-size:16px;font-weight:800;color:var(--gold)}
+.sidebar-logo span{font-size:11px;color:var(--muted)}
+.nav-item{display:flex;align-items:center;gap:10px;padding:12px 18px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;border-right:3px solid transparent}
+.nav-item:hover{color:var(--text);background:rgba(201,168,76,.05)}
+.nav-item.active{color:var(--gold);background:rgba(201,168,76,.08);border-right-color:var(--gold)}
+.nav-item .ico{font-size:16px;width:20px;text-align:center}
+.main-content{margin-right:220px;padding:28px;min-height:100vh}
+.page-title{font-size:20px;font-weight:800;color:var(--gold);margin-bottom:6px}
+.page-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:20px}
+.panel-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:11px;color:var(--muted);font-weight:600}
+.field input,.field select,.field textarea{background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'Cairo',sans-serif;font-size:14px;font-weight:600;outline:none;width:100%;transition:border-color .2s}
+.field textarea{min-height:80px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold)}
+.tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.tab{padding:8px 18px;background:var(--card);border:1px solid var(--border);border-radius:9px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap}
+.tab:hover{border-color:var(--gold);color:var(--text)}
+.tab.active{background:rgba(201,168,76,.15);border-color:var(--gold);color:var(--gold)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.hotel-table{width:100%;border-collapse:collapse;font-size:12px}
+.hotel-table th{text-align:right;padding:8px 10px;font-size:11px;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border);white-space:nowrap}
+.hotel-table td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text)}
+.hotel-table tr:hover td{background:rgba(255,255,255,.02)}
+.final-price{color:var(--gold);font-weight:800;font-size:14px}
+.btn-pub{padding:12px 28px;font-size:15px;border-radius:10px;background:var(--gold);color:#fff;font-weight:800;cursor:pointer;border:none;font-family:'Cairo',sans-serif;transition:opacity .2s;display:flex;align-items:center;gap:8px}
+.btn-pub:hover{opacity:.85}
+.btn-pub.loading{opacity:.6;pointer-events:none}
+.status-bar{position:fixed;bottom:24px;left:24px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 20px;font-size:13px;font-weight:600;display:none;z-index:100;gap:8px;align-items:center}
+.status-bar.show{display:flex}
+.status-bar.ok{border-color:var(--green);color:var(--green)}
+.status-bar.err{border-color:var(--red);color:var(--red)}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:24px}
+.ov-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 16px}
+.ov-num{font-size:28px;font-weight:800;color:var(--gold)}
+.ov-lbl{font-size:12px;color:var(--muted);margin-top:3px}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:200;display:none;align-items:center;justify-content:center}
+.modal-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;width:90%;max-width:600px;max-height:85vh;overflow-y:auto}
+.modal-title{font-size:16px;font-weight:800;color:var(--gold);margin-bottom:18px}
+.modal-actions{display:flex;gap:10px;margin-top:18px;justify-content:flex-start}
+.hotel-row{cursor:pointer;transition:all .2s}
+.hotel-row:hover td{background:rgba(201,168,76,.08)!important}
+.hotel-row.selected td{background:rgba(201,168,76,.15)!important;border-bottom-color:var(--gold)}
+.period-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:8px}
+.period-table th{text-align:right;padding:5px 8px;font-size:10px;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)}
+.period-table td{padding:5px 8px;border-bottom:1px solid rgba(255,255,255,.04)}
+.pricing-input{background:var(--dark3);border:1px solid var(--border);border-radius:6px;padding:5px 8px;color:var(--text);font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;width:90px;outline:none}
+.pricing-input:focus{border-color:var(--gold)}
+.night-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.ntab{padding:6px 16px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;font-family:'Cairo',sans-serif;transition:all .2s}
+.ntab:hover{border-color:var(--gold)}
+.ntab.active{background:rgba(201,168,76,.2);border-color:var(--gold);color:var(--gold)}
+.import-status{margin-top:14px;padding:10px 14px;border-radius:8px;font-size:13px;display:none}
+.import-status.ok{display:block;background:rgba(39,174,96,.1);border:1px solid var(--green);color:var(--green)}
+.import-status.err{display:block;background:rgba(231,76,60,.1);border:1px solid var(--red);color:var(--red)}
+@media(max-width:768px){.sidebar{display:none}.main-content{margin-right:0}.grid-4{grid-template-columns:1fr 1fr}.grid-3{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">🏢 الجود للسياحة</div>
+    <div class="login-sub">لوحة التحكم الإدارية</div>
+    <div class="login-field"><label>البريد الإلكتروني</label><input type="email" id="li-email" placeholder="admin@aljudetravel.com" dir="ltr" style="text-align:left"></div>
+    <div class="login-field"><label>كلمة المرور</label><input type="password" id="li-pass" placeholder="••••••••" dir="ltr" style="text-align:left" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn btn-gold" onclick="doLogin()" style="width:100%;padding:12px;justify-content:center">دخول إلى لوحة التحكم</button>
+    <div class="login-err" id="li-err">البريد أو كلمة المرور غير صحيحة</div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-logo"><div>🏢 الجود</div><span>لوحة التحكم</span></div>
+    <div class="nav-item active" onclick="showPage('overview',this)"><span class="ico">📊</span> نظرة عامة</div>
+    <div class="nav-item" onclick="showPage('hotels',this)"><span class="ico">🏨</span> إدارة الفنادق</div>
+    <div class="nav-item" onclick="showPage('pricing',this)"><span class="ico">💰</span> حاسبة الأسعار</div>
+    <div class="nav-item" onclick="showPage('packages-pub',this)"><span class="ico">📦</span> الباقات المنشورة</div>
+    <div class="nav-item" onclick="showPage('offers',this)"><span class="ico">🎁</span> العروض</div>
+    <div class="nav-item" onclick="showPage('flights',this)"><span class="ico">✈️</span> الرحلات</div>
+    <div class="nav-item" onclick="showPage('umrah',this)"><span class="ico">🕌</span> العمرة</div>
+    <div class="nav-item" onclick="showPage('import',this)"><span class="ico">📥</span> استيراد بيانات</div>
+    <div class="nav-item" onclick="showPage('settings',this)"><span class="ico">⚙️</span> الإعدادات</div>
+    <div class="nav-item" style="margin-top:auto;border-top:1px solid var(--border)" onclick="doLogout()"><span class="ico">🚪</span> خروج</div>
+  </div>
+
+  <div class="main-content">
+
+    <!-- ===== OVERVIEW ===== -->
+    <div id="page-overview" class="page">
+      <div class="page-title">📊 نظرة عامة</div>
+      <div class="page-sub">مرحباً بك في لوحة تحكم الجود للسياحة والسفر</div>
+      <div class="ov-grid">
+        <div class="ov-card"><div class="ov-num" id="ov-hotels">—</div><div class="ov-lbl">فندق مسجل</div></div>
+        <div class="ov-card"><div class="ov-num" id="ov-packages">—</div><div class="ov-lbl">باقة منشورة</div></div>
+        <div class="ov-card"><div class="ov-num" id="ov-offers">—</div><div class="ov-lbl">عرض نشط</div></div>
+        <div class="ov-card"><div class="ov-num" id="ov-flights">—</div><div class="ov-lbl">رحلة شارتر</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">⚡ إجراءات سريعة</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-gold btn-sm" onclick="showPage('hotels',document.querySelector('.nav-item:nth-child(2)'))">🏨 إدارة الفنادق</button>
+          <button class="btn btn-green btn-sm" onclick="showPage('pricing',document.querySelector('.nav-item:nth-child(3)'))">💰 حاسبة الأسعار</button>
+          <button class="btn btn-blue btn-sm" onclick="showPage('offers',document.querySelector('.nav-item:nth-child(5)'))">🎁 إضافة عرض</button>
+          <button class="btn btn-gold btn-sm" onclick="window.open('packages.html','_blank')">👁️ عرض الموقع</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== HOTELS MANAGER ===== -->
+    <div id="page-hotels" class="page" style="display:none">
+      <div class="page-title">🏨 إدارة الفنادق</div>
+      <div class="page-sub">إضافة وتعديل الفنادق والفترات السعرية لكل وجهة</div>
+      <div class="tabs" id="hotel-dest-tabs"></div>
+      <div id="hotel-dest-content"></div>
+    </div>
+
+    <!-- ===== PRICING CALCULATOR ===== -->
+    <div id="page-pricing" class="page" style="display:none">
+      <div class="page-title">💰 حاسبة الأسعار</div>
+      <div class="page-sub">حساب الأسعار ونشرها على الموقع لكل وجهة</div>
+      <div class="tabs" id="pricing-dest-tabs"></div>
+      <div id="pricing-dest-content"></div>
+    </div>
+
+    <!-- ===== PUBLISHED PACKAGES ===== -->
+    <div id="page-packages-pub" class="page" style="display:none">
+      <div class="page-title">📦 الباقات المنشورة</div>
+      <div class="page-sub">جميع الباقات المنشورة على الموقع</div>
+      <div class="panel">
+        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
+          <div class="field" style="width:200px"><label>تصفية حسب الوجهة</label><select id="pub-filter-dest" onchange="loadPublishedPackages()"><option value="">الكل</option></select></div>
+          <button class="btn btn-red btn-sm" onclick="clearAllPackages()">🗑️ حذف الكل</button>
+        </div>
+        <div id="pub-packages-list" style="color:var(--muted);font-size:13px">جاري التحميل...</div>
+      </div>
+    </div>
+
+    <!-- ===== OFFERS ===== -->
+    <div id="page-offers" class="page" style="display:none">
+      <div class="page-title">🎁 إدارة العروض</div>
+      <div class="page-sub">أضف وعدّل العروض التي تظهر على الموقع</div>
+      <div class="panel">
+        <div class="panel-title">➕ إضافة / تعديل عرض</div>
+        <div class="grid-3">
+          <div class="field"><label>عنوان العرض (عربي)</label><input type="text" id="of-title-ar" placeholder="عرض عيد الأضحى"></div>
+          <div class="field"><label>عنوان العرض (إنجليزي)</label><input type="text" id="of-title-en" placeholder="Eid Offer"></div>
+          <div class="field"><label>نوع العرض</label><select id="of-type"><option value="package">باقة</option><option value="ticket">تذكرة</option><option value="special">خاص</option><option value="eid">عيد</option></select></div>
+          <div class="field"><label>الوجهة</label><select id="of-dest"><option value="">— اختر —</option><option value="شرم الشيخ">🇪🇬 شرم الشيخ</option><option value="أنطاليا">🇹🇷 أنطاليا</option><option value="العقبة">🇯🇴 العقبة</option><option value="إسطنبول">🇹🇷 إسطنبول</option><option value="طرابزون">🇹🇷 طرابزون</option><option value="جورجيا">🇬🇪 جورجيا</option><option value="ماليزيا">🇲🇾 ماليزيا</option><option value="بالي">🇮🇩 بالي</option><option value="سنغافورة">🇸🇬 سنغافورة</option><option value="فيتنام">🇻🇳 فيتنام</option><option value="تايلاند">🇹🇭 تايلاند</option><option value="المالديف">🇲🇻 المالديف</option><option value="سريلانكا">🇱🇰 سريلانكا</option></select></div>
+          <div class="field"><label>السعر من (JOD)</label><input type="number" id="of-price" placeholder="199"></div>
+          <div class="field"><label>صالح حتى</label><input type="date" id="of-expiry"></div>
+          <div class="field" style="grid-column:1/-1"><label>الوصف</label><input type="text" id="of-desc" placeholder="تفاصيل العرض"></div>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer"><input type="checkbox" id="of-hot"> عرض مميز</label>
+          <button class="btn btn-gold" onclick="saveOffer()">💾 حفظ العرض</button>
+          <input type="hidden" id="of-edit-id" value="">
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">📋 العروض الحالية</div>
+        <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <select id="of-filter-dest" onchange="loadOffers()" style="background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:7px 12px;color:var(--text);font-family:'Cairo',sans-serif;font-size:13px;outline:none;width:180px">
+            <option value="">كل الوجهات</option>
+            <option value="شرم الشيخ">🇪🇬 شرم الشيخ</option>
+            <option value="أنطاليا">🇹🇷 أنطاليا</option>
+            <option value="العقبة">🇯🇴 العقبة</option>
+            <option value="إسطنبول">🇹🇷 إسطنبول</option>
+            <option value="طرابزون">🇹🇷 طرابزون</option>
+            <option value="جورجيا">🇬🇪 جورجيا</option>
+            <option value="أذربيجان">🇦🇿 أذربيجان</option>
+            <option value="ماليزيا">🇲🇾 ماليزيا</option>
+            <option value="بالي">🇮🇩 بالي</option>
+            <option value="سنغافورة">🇸🇬 سنغافورة</option>
+            <option value="فيتنام">🇻🇳 فيتنام</option>
+            <option value="تايلاند">🇹🇭 تايلاند</option>
+            <option value="المالديف">🇲🇻 المالديف</option>
+            <option value="سريلانكا">🇱🇰 سريلانكا</option>
+          </select>
+        </div>
+        <div id="offers-list">جاري التحميل...</div>
+      </div>
+    </div>
+
+    <!-- ===== FLIGHTS ===== -->
+    <div id="page-flights" class="page" style="display:none">
+      <div class="page-title">✈️ إدارة رحلات الشارتر</div>
+      <div class="page-sub">تعديل أسعار ومواعيد رحلات الشارتر — التغييرات تنعكس فوراً على موقع الزبائن</div>
+      <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center">
+        <button class="btn btn-green" onclick="saveAllFlights()">💾 حفظ الكل في قاعدة البيانات</button>
+        <span id="fl-status-msg" style="font-size:12px;color:var(--muted)"></span>
+      </div>
+      <div class="tabs" id="flight-dest-tabs"></div>
+      <div id="flight-dest-content"></div>
+    </div>
+
+    <!-- ===== UMRAH ===== -->
+    <div id="page-umrah" class="page" style="display:none">
+      <div class="page-title">🕌 باقات العمرة</div>
+      <div class="page-sub">أضف وعدّل باقات العمرة</div>
+      <div class="panel">
+        <div class="panel-title">➕ إضافة / تعديل باقة عمرة</div>
+        <div class="grid-3">
+          <div class="field"><label>اسم الباقة</label><input type="text" id="um-title" placeholder="عمرة رمضان"></div>
+          <div class="field"><label>فندق مكة</label><input type="text" id="um-mecca" placeholder="Hilton"></div>
+          <div class="field"><label>فندق المدينة</label><input type="text" id="um-medina" placeholder="Dar Al Iman"></div>
+          <div class="field"><label>ليالي مكة</label><input type="number" id="um-mn" value="4"></div>
+          <div class="field"><label>ليالي المدينة</label><input type="number" id="um-dn" value="3"></div>
+          <div class="field"><label>وسيلة السفر</label><select id="um-transport"><option>طائرة</option><option>باص</option></select></div>
+          <div class="field"><label>السعر/شخص (JOD)</label><input type="number" id="um-price" placeholder="850"></div>
+          <div class="field"><label>نوع الغرفة</label><select id="um-room"><option>مزدوجة</option><option>ثلاثية</option><option>رباعية</option><option>مفردة</option></select></div>
+          <div class="field" style="grid-column:1/-1"><label>ما يشمله العرض</label><input type="text" id="um-includes" placeholder="تذكرة، فندق، مواصلات، مرشد"></div>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:10px">
+          <button class="btn btn-gold" onclick="saveUmrah()">💾 نشر الباقة</button>
+          <input type="hidden" id="um-edit-id" value="">
+        </div>
+      </div>
+      <div class="panel"><div class="panel-title">📋 باقات العمرة الحالية</div><div id="umrah-list">جاري التحميل...</div></div>
+    </div>
+
+    <!-- ===== IMPORT DATA ===== -->
+    <div id="page-import" class="page" style="display:none">
+      <div class="page-title">📥 استيراد بيانات الفنادق</div>
+      <div class="page-sub">استيراد بيانات الفنادق والفترات السعرية من ملف JSON</div>
+      <div class="panel">
+        <div class="panel-title">📄 استيراد JSON</div>
+        <div class="grid-2">
+          <div class="field"><label>الوجهة</label><select id="imp-dest"></select></div>
+          <div class="field"><label>نوع الإقامة</label><select id="imp-meal"><option value="BB">فطور فقط BB</option><option value="HB">نصف إقامة HB</option><option value="FB">إقامة كاملة FB</option><option value="ALL">شامل ALL</option><option value="UALL">شامل بالكامل UALL</option></select></div>
+        </div>
+        <div class="field" style="display:flex;align-items:center;gap:10px"><label style="white-space:nowrap">رفع ملف JSON</label><button class="btn btn-gold" onclick="document.getElementById('imp-file').click()" style="cursor:pointer">📁 اختر ملف</button><span id="imp-file-name" style="color:#888;font-size:13px"></span><input type="file" id="imp-file" accept=".json" onchange="loadImportFile(event)" style="display:none"></div>
+        <div class="field"><label>بيانات JSON</label><textarea id="imp-json" rows="10" placeholder='[{"name":"Hotel Name","stars":5,"location":"Area","room_type":"Standard","child_policy":"Free under 6","periods":[{"date_from":"2026-05-01","date_to":"2026-05-31","single":78,"double":52,"triple":50,"extra_bed":30}]}]'></textarea></div>
+        <div style="margin-top:14px"><button class="btn btn-gold" onclick="doImport()">📥 استيراد</button></div>
+        <div class="import-status" id="import-status"></div>
+      </div>
+    </div>
+
+    <!-- ===== SETTINGS ===== -->
+    <div id="page-settings" class="page" style="display:none">
+      <div class="page-title">⚙️ الإعدادات العامة</div>
+      <div class="page-sub">إعدادات الموقع العامة وأسعار الصرف</div>
+      <div class="panel">
+        <div class="panel-title">💱 أسعار الصرف</div>
+        <div class="grid-4">
+          <div class="field"><label>USD → JOD</label><input type="number" id="cfg-usd" step="0.001" value="0.71"></div>
+          <div class="field"><label>EUR → JOD</label><input type="number" id="cfg-eur" step="0.001" value="0.78"></div>
+          <div class="field"><label>SAR → JOD</label><input type="number" id="cfg-sar" step="0.001" value="0.189"></div>
+          <div class="field"><label>AED → JOD</label><input type="number" id="cfg-aed" step="0.001" value="0.193"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">📞 معلومات الاتصال</div>
+        <div class="grid-2">
+          <div class="field"><label>رقم WhatsApp (بدون +)</label><input type="text" id="cfg-wa" placeholder="962xxxxxxxxx"></div>
+          <div class="field"><label>رقم الهاتف</label><input type="text" id="cfg-phone" placeholder="+962 6 xxxxxxx"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">🏠 إعدادات الصفحة الرئيسية</div>
+        <div class="grid-3" style="margin-bottom:14px">
+          <div class="field"><label>بانر 1 — أيقونة</label><input type="text" id="b1-ico" value="🌙"></div>
+          <div class="field"><label>بانر 1 — عنوان</label><input type="text" id="b1-title" value="عيد الأضحى ٢٠٢٦"></div>
+          <div class="field"><label>بانر 1 — وصف</label><input type="text" id="b1-desc" value="تذاكر من ١٩٩ دينار"></div>
+        </div>
+        <div class="grid-3" style="margin-bottom:14px">
+          <div class="field"><label>بانر 2 — أيقونة</label><input type="text" id="b2-ico" value="🌏"></div>
+          <div class="field"><label>بانر 2 — عنوان</label><input type="text" id="b2-title" value="١٤ وجهة سياحية"></div>
+          <div class="field"><label>بانر 2 — وصف</label><input type="text" id="b2-desc" value="فنادق ومواصلات من ٢٨٠ دينار"></div>
+        </div>
+        <div class="grid-3">
+          <div class="field"><label>بانر 3 — أيقونة</label><input type="text" id="b3-ico" value="✈️"></div>
+          <div class="field"><label>بانر 3 — عنوان</label><input type="text" id="b3-title" value="تأجير طائرات جود"></div>
+          <div class="field"><label>بانر 3 — وصف</label><input type="text" id="b3-desc" value="ACMI • شارتر • إيجار جاف"></div>
+        </div>
+        <div style="margin-top:14px"><button class="btn btn-gold" onclick="saveSettings()">💾 حفظ الإعدادات</button></div>
+      </div>
+    </div>
+
+    <!-- ===== MODALS ===== -->
+    <div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+      <div class="modal-box" id="modal-box"></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="status-bar" id="status-bar"></div>
+
+<script>
+const SB_URL='https://rmpuvrmxakukgvtxethj.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtcHV2cm14YWt1a2d2dHhldGhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyODAyMjcsImV4cCI6MjA5Mzg1NjIyN30.lO8rNtwfLXYFnyGk5dOthPEUj3XIWkfFvSOziTeDFeE';
+
+const DESTINATIONS=[
+  {id:'istanbul',name:'إسطنبول',flag:'🇹🇷',tariff_type:3},
+  {id:'trabzon',name:'طرابزون',flag:'🇹🇷',tariff_type:3},
+  {id:'antalya',name:'أنطاليا',flag:'🇹🇷',tariff_type:1},
+  {id:'sharm',name:'شرم الشيخ',flag:'🇪🇬',tariff_type:1},
+  {id:'hurghada',name:'الغردقة',flag:'🇪🇬',tariff_type:1},
+  {id:'aqaba',name:'العقبة',flag:'🇯🇴',tariff_type:2},
+  {id:'georgia',name:'جورجيا',flag:'🇬🇪',tariff_type:5},
+  {id:'azerbaijan',name:'أذربيجان',flag:'🇦🇿',tariff_type:5},
+  {id:'malaysia',name:'ماليزيا',flag:'🇲🇾',tariff_type:4},
+  {id:'bali',name:'بالي',flag:'🇮🇩',tariff_type:4},
+  {id:'singapore',name:'سنغافورة',flag:'🇸🇬',tariff_type:4},
+  {id:'vietnam',name:'فيتنام',flag:'🇻🇳',tariff_type:4},
+  {id:'thailand',name:'تايلاند',flag:'🇹🇭',tariff_type:4},
+  {id:'maldives',name:'المالديف',flag:'🇲🇻',tariff_type:4},
+  {id:'srilanka',name:'سريلانكا',flag:'🇱🇰',tariff_type:4}
+];
+
+let SESSION=null;
+let SELECTED_HOTEL_ID=null;
+let HOTELS_CACHE={};
+let CURRENT_TARIFF_TYPE={};
+
+// ===== HELPERS =====
+async function sbFetch(path,method='GET',body=null){
+  const token=(SESSION&&SESSION.access_token)?SESSION.access_token:SB_KEY;
+  const prefer=method==='POST'?'return=representation,resolution=merge-duplicates':'return=representation';
+  const opts={method,headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+token,'Prefer':prefer}};
+  if(body) opts.body=JSON.stringify(body);
+  const r=await fetch(SB_URL+'/rest/v1/'+path,opts);
+  if(!r.ok){const e=await r.text();throw new Error(e);}
+  return r.status===204?null:r.json();
+}
+
+function showStatus(msg,ok=true){
+  const s=document.getElementById('status-bar');
+  s.textContent=msg; s.className='status-bar show '+(ok?'ok':'err');
+  setTimeout(()=>s.className='status-bar',4000);
+}
+
+function gv(id){return document.getElementById(id)?.value||'';}
+function gf(id){return parseFloat(document.getElementById(id)?.value)||0;}
+function gi(id){return parseInt(document.getElementById(id)?.value)||0;}
+function fmt(n){return isNaN(n)||n<0?'—':Math.round(n).toLocaleString('ar-JO');}
+function starsHtml(n){return '★'.repeat(Math.min(n,5))+'☆'.repeat(Math.max(0,5-n));}
+
+function openModal(html){
+  document.getElementById('modal-box').innerHTML=html;
+  document.getElementById('modal-overlay').style.display='flex';
+}
+function closeModal(){
+  document.getElementById('modal-overlay').style.display='none';
+}
+
+// ===== AUTH =====
+async function doLogin(){
+  const email=document.getElementById('li-email').value;
+  const pass=document.getElementById('li-pass').value;
+  try{
+    const r=await fetch(SB_URL+'/auth/v1/token?grant_type=password',{
+      method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY},
+      body:JSON.stringify({email,password:pass})
+    });
+    const d=await r.json();
+    if(d.access_token){
+      SESSION=d; document.getElementById('login-screen').style.display='none';
+      document.getElementById('app').style.display='block';
+      initApp();
+    }else{document.getElementById('li-err').style.display='block';}
+  }catch(e){document.getElementById('li-err').style.display='block';}
+}
+function doLogout(){SESSION=null;document.getElementById('app').style.display='none';document.getElementById('login-screen').style.display='flex';}
+
+// ===== NAVIGATION =====
+function showPage(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+  if(el) document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(el) el.classList.add('active');
+  const page=document.getElementById('page-'+id);
+  if(page) page.style.display='block';
+  if(id==='hotels'){buildHotelTabs();}
+  if(id==='pricing'){buildPricingTabs();}
+  if(id==='packages-pub'){loadPublishedPackages();}
+  if(id==='offers'){loadOffers();}
+  if(id==='flights'){loadFlights();}
+  if(id==='umrah'){loadUmrah();}
+  if(id==='import'){populateImportDest();}
+  if(id==='settings'){loadSettings();}
+  if(id==='overview'){loadOverview();}
+}
+
+// ===== OVERVIEW =====
+async function loadOverview(){
+  try{
+    const [htls,pkgs,offs,fls]=await Promise.all([
+      sbFetch('hotels?select=count'),
+      sbFetch('packages?select=count&is_active=eq.true'),
+      sbFetch('offers?select=count&is_active=eq.true'),
+      sbFetch('charter_flights?select=count&is_active=eq.true')
+    ]);
+    document.getElementById('ov-hotels').textContent=htls[0]?.count||'0';
+    document.getElementById('ov-packages').textContent=pkgs[0]?.count||'0';
+    document.getElementById('ov-offers').textContent=offs[0]?.count||'0';
+    document.getElementById('ov-flights').textContent=fls[0]?.count||'0';
+  }catch(e){}
+}
+
+// ==================================================================
+// HOTELS MANAGER
+// ==================================================================
+function buildHotelTabs(){
+  const tabContainer=document.getElementById('hotel-dest-tabs');
+  tabContainer.innerHTML=DESTINATIONS.map(d=>
+    `<div class="tab" onclick="switchHotelDest('${d.id}',this)">${d.flag} ${d.name}</div>`
+  ).join('');
+  const firstTab=tabContainer.querySelector('.tab');
+  if(firstTab){firstTab.classList.add('active');switchHotelDest(DESTINATIONS[0].id,firstTab);}
+}
+
+async function switchHotelDest(dest,el){
+  document.querySelectorAll('#hotel-dest-tabs .tab').forEach(t=>t.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.getElementById('hotel-dest-content').innerHTML='<div style="color:var(--muted);font-size:13px">جاري التحميل...</div>';
+  await loadHotels(dest);
+}
+
+async function loadHotels(dest){
+  try{
+    const hotels=await sbFetch('hotels?destination=eq.'+dest+'&order=name');
+    HOTELS_CACHE[dest]=hotels;
+    const info=DESTINATIONS.find(d=>d.id===dest);
+    let html=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div style="font-size:15px;font-weight:700;color:var(--gold)">${info?info.flag+' '+info.name:dest}</div>
+      <button class="btn btn-gold btn-sm" onclick="showAddHotel('${dest}')">➕ إضافة فندق</button>
+    </div>`;
+    if(!hotels||!hotels.length){
+      html+='<div class="panel"><div style="color:var(--muted);font-size:13px">لا توجد فنادق لهذه الوجهة. أضف أول فندق الآن!</div></div>';
+      document.getElementById('hotel-dest-content').innerHTML=html;
+      return;
+    }
+    html+=`<div class="panel" style="padding:0;overflow:hidden">
+      <table class="hotel-table"><thead><tr>
+        <th>الفندق</th><th>التقييم</th><th>المنطقة</th><th>نوع الغرفة</th><th>نوع الإقامة</th><th>عدد الفترات</th><th>الحالة</th><th></th>
+      </tr></thead><tbody>`;
+    hotels.forEach(h=>{
+      html+=`<tr class="hotel-row ${SELECTED_HOTEL_ID===h.id?'selected':''}" onclick="selectHotel('${h.id}')">
+        <td style="font-weight:600">${h.name}</td>
+        <td style="color:var(--gold)">${starsHtml(h.stars)}</td>
+        <td>${h.location||'—'}</td>
+        <td>${h.room_type||'—'}</td>
+        <td>${h.meal_plan||'—'}</td>
+        <td style="color:var(--muted)" id="pc-${h.id}">...</td>
+        <td>${h.is_active?'<span style="color:var(--green)">نشط</span>':'<span style="color:var(--red)">غير نشط</span>'}</td>
+        <td>
+          <button class="btn btn-blue btn-sm" onclick="event.stopPropagation();showEditHotel('${h.id}')">✏️</button>
+          <button class="btn btn-red btn-sm" onclick="event.stopPropagation();deleteHotel('${h.id}')">🗑️</button>
+          <button class="btn ${h.is_active?'btn-red':'btn-green'} btn-sm" onclick="event.stopPropagation();toggleHotel('${h.id}',${!h.is_active})">${h.is_active?'تعطيل':'تفعيل'}</button>
+        </td>
+      </tr>`;
+    });
+    html+='</tbody></table></div>';
+    document.getElementById('hotel-dest-content').innerHTML=html;
+    // Load period counts
+    hotels.forEach(h=>{countPeriods(h.id);});
+    if(hotels.length>0&&!SELECTED_HOTEL_ID){
+      selectHotel(hotels[0].id);
+    }else if(SELECTED_HOTEL_ID){
+      // Check if selected hotel belongs to this destination
+      const found=hotels.find(h=>h.id===SELECTED_HOTEL_ID);
+      if(!found) SELECTED_HOTEL_ID=null;
+      else showHotelDetail(SELECTED_HOTEL_ID);
+    }
+  }catch(e){
+    document.getElementById('hotel-dest-content').innerHTML='<div style="color:var(--red);font-size:13px">خطأ: '+e.message+'</div>';
+  }
+}
+
+async function countPeriods(hotelId){
+  try{
+    const res=await sbFetch('hotel_periods?select=count&hotel_id=eq.'+hotelId);
+    const el=document.getElementById('pc-'+hotelId);
+    if(el) el.textContent=res[0]?.count||'0';
+  }catch(e){}
+}
+
+async function selectHotel(id){
+  SELECTED_HOTEL_ID=id;
+  // Remove selected class from all rows
+  document.querySelectorAll('.hotel-row').forEach(r=>r.classList.remove('selected'));
+  const row=document.querySelector(`.hotel-row[onclick*="selectHotel('${id}')"]`);
+  if(row) row.classList.add('selected');
+  await showHotelDetail(id);
+}
+
+async function showHotelDetail(hotelId){
+  const existing=document.getElementById('hotel-detail-panel');
+  if(existing) existing.remove();
+  try{
+    const hotel=(await sbFetch('hotels?id=eq.'+hotelId))[0];
+    if(!hotel) return;
+    const periods=await sbFetch('hotel_periods?hotel_id=eq.'+hotelId+'&order=date_from');
+    let html=`<div id="hotel-detail-panel" class="panel">
+      <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center">
+        <span>🏨 ${hotel.name} — الفترات السعرية</span>
+        <button class="btn btn-green btn-sm" onclick="showAddPeriod('${hotelId}')">➕ إضافة فترة</button>
+      </div>`;
+    if(!periods||!periods.length){
+      html+='<div style="color:var(--muted);font-size:13px">لا توجد فترات سعرية. أضف أول فترة الآن!</div>';
+    }else{
+      html+=`<table class="period-table"><thead><tr>
+        <th>من تاريخ</th><th>إلى تاريخ</th><th>نوع الغرفة</th><th>نوع الإقامة</th>
+        <th>فردي (SGL)</th><th>مزدوج (DBL)</th><th>ثلاثي (TPL)</th><th>سرير إضافي</th><th></th>
+      </tr></thead><tbody>`;
+      periods.forEach(p=>{
+        html+=`<tr>
+          <td>${p.date_from||'—'}</td>
+          <td>${p.date_to||'—'}</td>
+          <td>${p.room_type||'—'}</td>
+          <td>${p.meal_plan||'—'}</td>
+          <td>${p.single_usd?'$'+p.single_usd:'—'}</td>
+          <td>${p.double_usd?'$'+p.double_usd:'—'}</td>
+          <td>${p.triple_usd?'$'+p.triple_usd:'—'}</td>
+          <td>${p.extra_bed_usd?'$'+p.extra_bed_usd:'—'}</td>
+          <td>
+            <button class="btn btn-blue btn-sm" onclick="showEditPeriod('${p.id}')">✏️</button>
+            <button class="btn btn-red btn-sm" onclick="deletePeriod('${p.id}','${hotelId}')">🗑️</button>
+          </td>
+        </tr>`;
+      });
+      html+='</tbody></table>';
+    }
+    html+='</div>';
+    // Insert after the hotels table panel
+    const content=document.getElementById('hotel-dest-content');
+    const lastPanel=content.querySelector('.panel:last-child');
+    if(lastPanel) lastPanel.insertAdjacentHTML('afterend',html);
+    else content.insertAdjacentHTML('beforeend',html);
+  }catch(e){
+    showStatus('خطأ في تحميل تفاصيل الفندق: '+e.message,false);
+  }
+}
+
+function showAddHotel(dest){
+  openModal(`
+    <div class="modal-title">➕ إضافة فندق جديد — ${dest}</div>
+    <div class="grid-2">
+      <div class="field"><label>اسم الفندق</label><input type="text" id="mh-name" placeholder="اسم الفندق"></div>
+      <div class="field"><label>عدد النجوم</label><select id="mh-stars">${[5,4,3,2,1].map(n=>'<option value="'+n+'">'+n+' نجوم</option>').join('')}</select></div>
+      <div class="field"><label>المنطقة / الموقع</label><input type="text" id="mh-location" placeholder="وسط البلد"></div>
+      <div class="field"><label>نوع الغرفة الافتراضي</label><select id="mh-room"><option value="Standard">Standard</option><option value="Superior">Superior</option><option value="Deluxe">Deluxe</option><option value="Suite">Suite</option></select></div>
+      <div class="field"><label>نوع الإقامة</label><select id="mh-meal"><option value="BB">فطور BB</option><option value="HB">نصف إقامة HB</option><option value="FB">إقامة كاملة FB</option><option value="ALL">شامل ALL</option><option value="UALL">شامل بالكامل UALL</option></select></div>
+      <div class="field"><label>سياسة الأطفال</label><input type="text" id="mh-child" placeholder="Free under 6"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-gold" onclick="saveHotel('${dest}',null)">💾 حفظ</button>
+      <button class="btn btn-red" onclick="closeModal()">إلغاء</button>
+    </div>
+  `);
+}
+
+async function showEditHotel(id){
+  const h=(await sbFetch('hotels?id=eq.'+id))[0];
+  if(!h) return;
+  openModal(`
+    <div class="modal-title">✏️ تعديل فندق — ${h.name}</div>
+    <div class="grid-2">
+      <div class="field"><label>اسم الفندق</label><input type="text" id="mh-name" value="${h.name}"></div>
+      <div class="field"><label>عدد النجوم</label><select id="mh-stars">${[5,4,3,2,1].map(n=>'<option value="'+n+'"'+(h.stars==n?' selected':'')+'>'+n+' نجوم</option>').join('')}</select></div>
+      <div class="field"><label>المنطقة</label><input type="text" id="mh-location" value="${h.location||''}"></div>
+      <div class="field"><label>نوع الغرفة</label><select id="mh-room"><option value="Standard"${h.room_type=='Standard'?' selected':''}>Standard</option><option value="Superior"${h.room_type=='Superior'?' selected':''}>Superior</option><option value="Deluxe"${h.room_type=='Deluxe'?' selected':''}>Deluxe</option><option value="Suite"${h.room_type=='Suite'?' selected':''}>Suite</option></select></div>
+      <div class="field"><label>نوع الإقامة</label><select id="mh-meal"><option value="BB"${h.meal_plan=='BB'?' selected':''}>فطور BB</option><option value="HB"${h.meal_plan=='HB'?' selected':''}>نصف إقامة HB</option><option value="FB"${h.meal_plan=='FB'?' selected':''}>إقامة كاملة FB</option><option value="ALL"${h.meal_plan=='ALL'?' selected':''}>شامل ALL</option><option value="UALL"${h.meal_plan=='UALL'?' selected':''}>شامل بالكامل UALL</option></select></div>
+      <div class="field"><label>سياسة الأطفال</label><input type="text" id="mh-child" value="${h.child_policy||''}"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-gold" onclick="saveHotel('${h.destination}','${id}')">💾 حفظ</button>
+      <button class="btn btn-red" onclick="closeModal()">إلغاء</button>
+    </div>
+  `);
+}
+
+async function saveHotel(dest,id){
+  const name=gv('mh-name');
+  if(!name){showStatus('يرجى إدخال اسم الفندق',false);return;}
+  const data={destination:dest,name:name,stars:gi('mh-stars'),location:gv('mh-location'),
+    room_type:gv('mh-room'),meal_plan:gv('mh-meal'),child_policy:gv('mh-child'),is_active:true,updated_at:new Date().toISOString()};
+  try{
+    if(id){
+      await sbFetch('hotels?id=eq.'+id,'PATCH',data);
+      showStatus('✅ تم تحديث الفندق');
+    }else{
+      await sbFetch('hotels','POST',[data]);
+      showStatus('✅ تم إضافة الفندق');
+    }
+    closeModal();
+    await loadHotels(dest);
+  }catch(e){showStatus('❌ '+e.message,false);}
+}
+
+async function deleteHotel(id){
+  if(!confirm('حذف هذا الفندق وجميع فتراته السعرية؟')) return;
+  try{
+    const h=(await sbFetch('hotels?id=eq.'+id))[0];
+    await sbFetch('hotel_periods?hotel_id=eq.'+id,'DELETE');
+    await sbFetch('hotels?id=eq.'+id,'DELETE');
+    showStatus('✅ تم حذف الفندق');
+    if(h) await loadHotels(h.destination);
+  }catch(e){showStatus('❌ '+e.message,false);}
+}
+
+async function toggleHotel(id,active){
+  try{
+    const h=(await sbFetch('hotels?id=eq.'+id))[0];
+    await sbFetch('hotels?id=eq.'+id,'PATCH',{is_active:active,updated_at:new Date().toISOString()});
+    showStatus(active?'✅ تم تفعيل الفندق':'✅ تم تعطيل الفندق');
+    if(h) await loadHotels(h.destination);
+  }catch(e){showStatus('❌ '+e.message,false);}
+}
+
+// ===== PERIODS =====
+function showAddPeriod(hotelId){
+  openModal(`
+    <div class="modal-title">➕ إضافة فترة سعرية</div>
+    <div class="grid-2">
+      <div class="field"><label>من تاريخ</label><input type="date" id="mp-from"></div>
+      <div class="field"><label>إلى تاريخ</label><input type="date" id="mp-to"></div>
+      <div class="field"><label>نوع الغرفة</label><select id="mp-room"><option value="Standard">Standard</option><option value="Superior">Superior</option><option value="Deluxe">Deluxe</option><option value="Suite">Suite</option></select></div>
+      <div class="field"><label>نوع الإقامة</label><select id="mp-meal"><option value="BB">BB</option><option value="HB">HB</option><option value="FB">FB</option><option value="ALL">ALL</option><option value="UALL">UALL</option></select></div>
+      <div class="field"><label>سعر فردي (SGL) USD</label><input type="number" id="mp-sgl" step="0.01" value="0"></div>
+      <div class="field"><label>سعر مزدوج (DBL) USD</label><input type="number" id="mp-dbl" step="0.01" value="0"></div>
+      <div class="field"><label>سعر ثلاثي (TPL) USD</label><input type="number" id="mp-tpl" step="0.01" value="0"></div>
+      <div class="field"><label>سرير إضافي USD</label><input type="number" id="mp-xb" step="0.01" value="0"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-gold" onclick="savePeriod('${hotelId}',null)">💾 حفظ</button>
+      <button class="btn btn-red" onclick="closeModal()">إلغاء</button>
+    </div>
+  `);
+}
+
+async function showEditPeriod(id){
+  const p=(await sbFetch('hotel_periods?id=eq.'+id))[0];
+  if(!p) return;
+  openModal(`
+    <div class="modal-title">✏️ تعديل فترة سعرية</div>
+    <div class="grid-2">
+      <div class="field"><label>من تاريخ</label><input type="date" id="mp-from" value="${p.date_from||''}"></div>
+      <div class="field"><label>إلى تاريخ</label><input type="date" id="mp-to" value="${p.date_to||''}"></div>
+      <div class="field"><label>نوع الغرفة</label><select id="mp-room"><option value="Standard"${p.room_type=='Standard'?' selected':''}>Standard</option><option value="Superior"${p.room_type=='Superior'?' selected':''}>Superior</option><option value="Deluxe"${p.room_type=='Deluxe'?' selected':''}>Deluxe</option><option value="Suite"${p.room_type=='Suite'?' selected':''}>Suite</option></select></div>
+      <div class="field"><label>نوع الإقامة</label><select id="mp-meal"><option value="BB"${p.meal_plan=='BB'?' selected':''}>BB</option><option value="HB"${p.meal_plan=='HB'?' selected':''}>HB</option><option value="FB"${p.meal_plan=='FB'?' selected':''}>FB</option><option value="ALL"${p.meal_plan=='ALL'?' selected':''}>ALL</option><option value="UALL"${p.meal_plan=='UALL'?' selected':''}>UALL</option></select></div>
+      <div class="field"><label>سعر فردي (SGL) USD</label><input type="number" id="mp-sgl" step="0.01" value="${p.single_usd||0}"></div>
+      <div class="field"><label>سعر مزدوج (DBL) USD</label><input type="number" id="mp-dbl" step="0.01" value="${p.double_usd||0}"></div>
+      <div class="field"><label>سعر ثلاثي (TPL) USD</label><input type="number" id="mp-tpl" step="0.01" value="${p.triple_usd||0}"></div>
+      <div class="field"><label>سرير إضافي USD</label><input type="number" id="mp-xb" step="0.01" value="${p.extra_bed_usd||0}"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-gold" onclick="savePeriod('${p.hotel_id}','${id}')">💾 حفظ</button>
+      <button class="btn btn-red" onclick="closeModal()">إلغاء</button>
+    </div>
+  `);
+}
+
+async function savePeriod(hotelId,id){
+  const data={
+    hotel_id:hotelId,date_from:gv('mp-from')||null,date_to:gv('mp-to')||null,
+    room_type:gv('mp-room'),meal_plan:gv('mp-meal'),
+    single_usd:gf('mp-sgl')||null,double_usd:gf('mp-dbl')||null,
+    triple_usd:gf('mp-tpl')||null,extra_bed_usd:gf('mp-xb')||null,is_active:true
+  };
+  try{
+    if(id){
+      await sbFetch('hotel_periods?id=eq.'+id,'PATCH',data);
+      showStatus('✅ تم تحديث الفترة');
+    }else{
+      await sbFetch('hotel_periods','POST',[data]);
+      showStatus('✅ تم إضافة الفترة');
+    }
+    closeModal();
+    await showHotelDetail(hotelId);
+  }catch(e){showStatus('❌ '+e.message,false);}
+}
+
+async function deletePeriod(id,hotelId){
+  if(!confirm('حذف هذه الفترة السعرية؟')) return;
+  try{
+    await sbFetch('hotel_periods?id=eq.'+id,'DELETE');
+    showStatus('✅ تم حذف الفترة');
+    await showHotelDetail(hotelId);
+  }catch(e){showStatus('❌ '+e.message,false);}
+}
+
+// ==================================================================
+// PRICING CALCULATOR
+// ==================================================================
+function buildPricingTabs(){
+  const tabContainer=document.getElementById('pricing-dest-tabs');
+  tabContainer.innerHTML=DESTINATIONS.map(d=>
+    `<div class="tab" onclick="switchPricingDest('${d.id}',this)">${d.flag} ${d.name}</div>`
+  ).join('');
+  const firstTab=tabContainer.querySelector('.tab');
+  if(firstTab){firstTab.classList.add('active');switchPricingDest(DESTINATIONS[0].id,firstTab);}
+}
+
+async function switchPricingDest(dest,el){
+  document.querySelectorAll('#pricing-dest-tabs .tab').forEach(t=>t.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.getElementById('pricing-dest-content').innerHTML='<div style="color:var(--muted);font-size:13px">جاري التحميل...</div>';
+  await loadPricingConfig(dest);
+  await loadPricingHotels(dest);
+}
+
+// Currency helpers
+const CURR_SYMS={JOD:'JD',USD:'$',SAR:'﷼',EUR:'€'};
+function toJOD(val,curr,usdRate,eurRate){
+  if(!val||!curr||curr==='JOD')return val||0;
+  if(curr==='USD')return val*usdRate;
+  if(curr==='EUR')return val*eurRate;
+  if(curr==='SAR')return val*0.189;
+  return val||0;
+}
+function fromJOD(val,curr,usdRate,eurRate){
+  if(!val||!curr||curr==='JOD')return val||0;
+  if(curr==='USD')return val/usdRate;
+  if(curr==='EUR')return val/eurRate;
+  if(curr==='SAR')return val/0.189;
+  return val||0;
+}
+
+async function loadPricingConfig(dest){
+  const info=DESTINATIONS.find(d=>d.id===dest);
+  CURRENT_TARIFF_TYPE={dest,type:info?info.tariff_type:1};
+  try{
+    const configs=await sbFetch('destination_configs?destination=eq.'+dest);
+    const cfg=configs&&configs.length>0?configs[0]:{};
+    const type=info?info.tariff_type:1;
+    const tkt=cfg.ticket_jod||(type===3||type===1?199:0);
+    const tkCurr=cfg.ticket_currency||'JOD';
+    const trn=cfg.transport_jod||(type===1||type===2?20:0);
+    const trCurr=cfg.transport_currency||'JOD';
+    const prf=cfg.profit_jod||(type===5?50:30);
+    const prCurr=cfg.profit_currency||'JOD';
+    const pct=cfg.profit_pct||0;
+    const vi=cfg.visa_jod||0;
+    const viCurr=cfg.visa_currency||'JOD';
+    const per=cfg.persons||2;
+    const baseCurr=cfg.base_currency||(type===1?(dest==='antalya'?'EUR':'USD'):type===2?'JOD':type===5?'JOD':'USD');
+    const usd=cfg.exchange_rate_usd_jod||0.71;
+    const eur=cfg.exchange_rate_eur_jod||0.78;
+    const outCurr='JOD';
+    const typeLabels=['','👤 سعر شخص/ليلة','🛏️ سعر غرفة/ليلة','📦 سعر شخص/باقة كاملة','🌴 جولة DMC بدون تذكرة','✈️ باقة شاملة مع تذكرة'];
+    const showTrans=type===1||type===2;
+    const showTicket=type!==5;
+    const showPersons=type===2;
+    const html=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+      <div style="font-size:15px;font-weight:700;color:var(--gold)">${info?info.flag+' '+info.name:dest}</div>
+      <div style="font-size:12px;color:var(--muted)">${typeLabels[type]||'النوع '+type}</div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">⚙️ إعدادات الحساب</div>
+      <div class="grid-4" id="pricing-settings-${dest}">
+        <div class="field"><label>عملة سعر الفندق الأساسي</label><select id="pc-bc-${dest}" onchange="calcPricing('${dest}')">
+          <option value="USD" ${baseCurr==='USD'?'selected':''}>USD</option>
+          <option value="EUR" ${baseCurr==='EUR'?'selected':''}>EUR</option>
+          <option value="JOD" ${baseCurr==='JOD'?'selected':''}>JOD</option>
+          <option value="SAR" ${baseCurr==='SAR'?'selected':''}>SAR</option>
+        </select></div>
+        <div class="field" id="pc-tk-wrap-${dest}" style="${showTicket?'':'display:none'}"><label>تذكرة الطيران</label>
+          <div style="display:flex;gap:4px"><input type="number" id="pc-tk-${dest}" value="${tkt}" onchange="calcPricing('${dest}')" style="flex:1">
+          <select id="pc-tc-${dest}" onchange="calcPricing('${dest}')" style="width:70px;flex-shrink:0">
+            <option value="JOD" ${tkCurr==='JOD'?'selected':''}>JOD</option>
+            <option value="USD" ${tkCurr==='USD'?'selected':''}>USD</option>
+            <option value="EUR" ${tkCurr==='EUR'?'selected':''}>EUR</option>
+            <option value="SAR" ${tkCurr==='SAR'?'selected':''}>SAR</option>
+          </select></div>
+        </div>
+        <div class="field" id="pc-tr-wrap-${dest}" style="${showTrans?'':'display:none'}"><label>مواصلات</label>
+          <div style="display:flex;gap:4px"><input type="number" id="pc-tr-${dest}" value="${trn}" onchange="calcPricing('${dest}')" style="flex:1">
+          <select id="pc-trc-${dest}" onchange="calcPricing('${dest}')" style="width:65px;flex-shrink:0">
+            <option value="JOD" ${trCurr==='JOD'?'selected':''}>JOD</option>
+            <option value="USD" ${trCurr==='USD'?'selected':''}>USD</option>
+          </select></div>
+        </div>
+        <div class="field"><label>ربح ثابت</label>
+          <div style="display:flex;gap:4px"><input type="number" id="pc-pf-${dest}" value="${prf}" onchange="calcPricing('${dest}')" style="flex:1">
+          <select id="pc-pfc-${dest}" onchange="calcPricing('${dest}')" style="width:65px;flex-shrink:0">
+            <option value="JOD" ${prCurr==='JOD'?'selected':''}>JOD</option>
+            <option value="USD" ${prCurr==='USD'?'selected':''}>USD</option>
+          </select></div>
+        </div>
+        <div class="field"><label>نسبة ربح (%)</label><input type="number" id="pc-pp-${dest}" value="${pct}" min="0" max="50" onchange="calcPricing('${dest}')"></div>
+        <div class="field"><label>تأشيرة</label>
+          <div style="display:flex;gap:4px"><input type="number" id="pc-vi-${dest}" value="${vi}" onchange="calcPricing('${dest}')" style="flex:1">
+          <select id="pc-vc-${dest}" onchange="calcPricing('${dest}')" style="width:65px;flex-shrink:0">
+            <option value="JOD" ${viCurr==='JOD'?'selected':''}>JOD</option>
+            <option value="USD" ${viCurr==='USD'?'selected':''}>USD</option>
+          </select></div>
+        </div>
+        <div class="field" id="pc-pr-wrap-${dest}" style="${showPersons?'':'display:none'}"><label>عدد الأشخاص بالغرفة</label><input type="number" id="pc-pr-${dest}" value="${per}" min="1" max="6" onchange="calcPricing('${dest}')"></div>
+        <div class="field" id="pc-dt-wrap-${dest}" style="${type===2?'':'display:none'}"><label>نوع اليوم</label>
+          <select id="pc-dt-${dest}" onchange="calcPricing('${dest}')">
+            <option value="weekday">وسط الأسبوع (Weekday)</option>
+            <option value="weekend">نهاية الأسبوع (Weekend)</option>
+          </select>
+        </div>
+        <div class="field"><label>سعر USD ← JOD</label><input type="number" id="pc-usd-${dest}" step="0.001" value="${usd}" onchange="calcPricing('${dest}')"></div>
+        <div class="field"><label>سعر EUR ← JOD</label><input type="number" id="pc-eur-${dest}" step="0.001" value="${eur}" onchange="calcPricing('${dest}')"></div>
+        <div class="field"><label>نوع الغرفة للحساب</label><select id="pc-rm-${dest}" onchange="calcPricing('${dest}')"><option value="double">مزدوج DBL</option><option value="single">فردي SGL</option><option value="triple">ثلاثي TPL</option></select></div>
+        <div class="field"><label>عملة العرض</label><select id="pc-oc-${dest}" onchange="calcPricing('${dest}')"><option value="JOD">دينار JOD</option><option value="USD">دولار USD</option></select></div>
+      </div>
+      <div style="margin-top:12px">
+        <button class="btn btn-gold btn-sm" onclick="savePricingConfig('${dest}')">💾 حفظ الإعدادات</button>
+      </div>
+    </div>
+    <div style="margin-top:8px;font-size:11px;color:var(--muted);background:var(--dark3);padding:8px 12px;border-radius:6px">
+      <strong>طريقة الحساب:</strong> 
+      ${type===1?'(سعر الفندق للشخص بالليلة × عدد الليالي) + تذكرة + مواصلات + فيزا + ربح = السعر الإجمالي للشخص':
+        type===2?'(سعر الغرفة بالليلة ÷ عدد الأشخاص بالغرفة × عدد الليالي) + تذكرة + مواصلات + فيزا + ربح = السعر الإجمالي للشخص':
+        type===3?'(سعر DMC للشخص للباقة كاملة) + تذكرة + فيزا + ربح = السعر الإجمالي للشخص':
+        type===4?'(سعر DMC للشخص للباقة) + تذكرة + فيزا + ربح = السعر الإجمالي للشخص':
+        type===5?'(سعر الباقة الشاملة للشخص) + فيزا + ربح = السعر الإجمالي للشخص':
+      ''}
+      — جميع العملات تُحوّل إلى ${outCurr} داخلياً ثم تُعرض بالعملة المختارة.
+    </div>`;
+    document.getElementById('pricing-dest-content').innerHTML=html;
+  }catch(e){
+    showStatus('خطأ في تحميل إعدادات الأسعار: '+e.message,false);
+  }
+}
+
+async function savePricingConfig(dest){
+  const data={destination:dest,ticket_jod:gf('pc-tk-'+dest),transport_jod:gf('pc-tr-'+dest)||0,
+    profit_jod:gf('pc-pf-'+dest),profit_pct:gf('pc-pp-'+dest),
+    exchange_rate_usd_jod:gf('pc-usd-'+dest),exchange_rate_eur_jod:gf('pc-eur-'+dest),
+    visa_jod:gf('pc-vi-'+dest)||0,visa_currency:gv('pc-vc-'+dest)||'JOD',ticket_currency:gv('pc-tc-'+dest)||'JOD',
+    transport_currency:gv('pc-trc-'+dest)||'JOD',profit_currency:gv('pc-pfc-'+dest)||'JOD',
+    base_currency:gv('pc-bc-'+dest)||'USD',persons:parseInt(gv('pc-pr-'+dest))||2,
+    tariff_type:CURRENT_TARIFF_TYPE.type||1,is_published:false,updated_at:new Date().toISOString()};
+  try{
+    await sbFetch('destination_configs?on_conflict=destination','POST',[data]);
+    showStatus('✅ تم حفظ إعدادات '+dest);
+  }catch(e){showStatus('❌ '+e.message,false);}
+}
+
+async function loadPricingHotels(dest){
+  const info=DESTINATIONS.find(d=>d.id===dest);
+  const type=info?info.tariff_type:1;
+  try{
+    const hotels=await sbFetch('hotels?destination=eq.'+dest+'&is_active=eq.true&order=name');
+    const content=document.getElementById('pricing-dest-content');
+    if(!content) return;
+    // Night selector
+    let nightHtml='';
+    if(type===1||type===2){
+      nightHtml=`<div class="night-tabs" id="pc-ntabs-${dest}">
+        ${[1,2,3,4,5,6,7].map(n=>`<div class="ntab ${n===4?'active':''}" onclick="setPricingNights('${dest}',${n},this)">${n} ليالي</div>`).join('')}
+      </div>`;
+    }else if(type===3){
+      nightHtml=`<div class="night-tabs" id="pc-ntabs-${dest}">
+        ${[3,4,5,6,7,8].map(n=>`<div class="ntab ${n===4?'active':''}" onclick="setPricingNights('${dest}',${n},this)">${n} ليالي</div>`).join('')}
+      </div>`;
+    }else if(type===5||type===4){
+      window['PC_N_'+dest]=0;
+    }else{
+      nightHtml=`<div class="night-tabs" id="pc-ntabs-${dest}">
+        ${[3,4,5,6,7,8,10,14].map(n=>`<div class="ntab ${n===7?'active':''}" onclick="setPricingNights('${dest}',${n},this)">${n} ليالي</div>`).join('')}
+      </div>`;
+      window['PC_N_'+dest]=window['PC_N_'+dest]||7;
+    }
+    let settingsPanel=content.querySelector('.panel');
+    if(settingsPanel) settingsPanel.insertAdjacentHTML('afterend',nightHtml);
+    // Global period tabs for Type 3 (Istanbul/Trabzon)
+    if(type===3){
+      (async()=>{
+        try{
+          const allHotels=await sbFetch('hotels?destination=eq.'+dest+'&is_active=eq.true&select=id');
+          const pSet={};
+          for(const h of allHotels){
+            const pp=await sbFetch('hotel_periods?hotel_id=eq.'+h.id+'&is_active=eq.true&select=date_from,date_to');
+            for(const p of pp) pSet[p.date_from+'|'+(p.date_to||'')]={from:p.date_from,to:p.date_to||''};
+          }
+          const periods=Object.values(pSet).sort((a,b)=>a.from.localeCompare(b.from));
+          if(periods.length>1){
+            const nightTabs=document.getElementById('pc-ntabs-'+dest);
+            if(nightTabs){
+              let ph=`<div style="display:flex;gap:6px;margin:10px 2px 14px;flex-wrap:wrap;align-items:center"><span style="font-size:12px;color:var(--muted)">📅 اختر الفترة:</span>`;
+              ph+=periods.map((p,i)=>{
+                const lbl=p.from+(p.to?' → '+p.to:'');
+                const act=i===0?'active':'';
+                if(i===0){window['PC_PERIOD_FROM_'+dest]=p.from;window['PC_PERIOD_TO_'+dest]=p.to;}
+                return `<div class="tab ${act}" onclick="setPricingPeriod('${dest}','${p.from}','${p.to}',this)">${lbl}</div>`;
+              }).join('');
+              ph+=`</div>`;
+              nightTabs.insertAdjacentHTML('afterend',ph);
+            }
+          }else if(periods.length>0){
+            window['PC_PERIOD_FROM_'+dest]=periods[0].from;
+            window['PC_PERIOD_TO_'+dest]=periods[0].to;
+          }
+        }catch(e){}
+      })();
+    }
+    // Build table
+    let tableHtml=`<div class="panel" style="padding:0;overflow:hidden">
+      <div style="padding:14px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+        <div style="font-weight:700;font-size:13px">قائمة الفنادق — الأسعار المحسوبة</div>
+        <button class="btn btn-pub" onclick="publishPricing('${dest}')"><span>🚀</span> نشر جميع الأسعار</button>
+      </div>
+      <div style="overflow-x:auto"><table class="hotel-table"><thead><tr id="pc-thead-${dest}">
+        ${type===2?'<th>الفندق</th><th>نوع الغرفة</th><th>السعر/ليلة</th><th>تكلفة المبيت</th><th>إضافات</th><th>ربح</th><th>السعر للشخص</th><th>تعديل</th>'
+        :(type===4||type===5)?'<th>الفندق</th><th>نجوم</th><th>المنطقة</th><th>الفترة</th><th>الليالي</th><th>سعر الأساس USD</th><th>تكلفة JOD</th><th>إضافات</th><th>ربح</th><th>السعر النهائي</th><th>تعديل</th>'
+        :'<th>الفندق</th><th>نجوم</th><th>المنطقة</th><th>الفترة</th><th>سعر الأساس USD</th><th>تكلفة JOD</th><th>إضافات</th><th>ربح</th><th>السعر النهائي</th><th>تعديل</th>'}
+      </tr></thead><tbody id="pc-tbody-${dest}"></tbody></table></div>
+    </div>`;
+    content.insertAdjacentHTML('beforeend',tableHtml);
+    await calcPricing(dest);
+  }catch(e){
+    showStatus('خطأ: '+e.message,false);
+  }
+}
+
+async function calcPricing(dest){
+  try{
+    const tk=gf('pc-tk-'+dest),tc=gv('pc-tc-'+dest)||'JOD',tr=gf('pc-tr-'+dest)||0;
+    const trc=gv('pc-trc-'+dest)||'JOD',pf=gf('pc-pf-'+dest),pfc=gv('pc-pfc-'+dest)||'JOD';
+    const pp=gf('pc-pp-'+dest),vi=gf('pc-vi-'+dest)||0,vc=gv('pc-vc-'+dest)||'JOD';
+    const usdRate=gf('pc-usd-'+dest),eurRate=gf('pc-eur-'+dest);
+    const rm=gv('pc-rm-'+dest)||'double',oc=gv('pc-oc-'+dest)||'JOD';
+    const bc=gv('pc-bc-'+dest)||'USD',persons=parseInt(gv('pc-pr-'+dest))||2;
+    const dayType=gv('pc-dt-'+dest)||'weekday';
+    const info=DESTINATIONS.find(d=>d.id===dest);
+    const type=info?info.tariff_type:1;
+    const nights=window['PC_N_'+dest]||4;
+    // Convert all inputs to JOD
+    const tkJOD=toJOD(tk,tc,usdRate,eurRate);
+    const trJOD=toJOD(tr,trc,usdRate,eurRate);
+    const pfJOD=toJOD(pf,pfc,usdRate,eurRate);
+    const viJOD=toJOD(vi,vc,usdRate,eurRate);
+    const hotels=await sbFetch('hotels?destination=eq.'+dest+'&is_active=eq.true&order=name');
+    const tbody=document.getElementById('pc-tbody-'+dest);
+    if(!tbody) return;
+    let rows='',rowIdx=0;
+    for(let i=0;i<hotels.length;i++){
+      const h=hotels[i];
+      // For Type 2: get ALL periods (each = a room type), for others: get single period
+      let periodList=[],allPeriods=[],selPeriodIdx=0;
+      if(type===2){
+        const all=await sbFetch('hotel_periods?hotel_id=eq.'+h.id+'&is_active=eq.true&order=date_from');
+        periodList=all||[];
+        if(periodList.length===0) periodList=[null];
+      }else{
+        let period=null;
+        if(type===3){
+          // Try: selected month + selected nights
+          let flt='&is_active=eq.true&order=date_from&limit=1';
+          const sf=window['PC_PERIOD_FROM_'+dest];
+          if(sf){flt='&date_from=eq.'+sf;const st=window['PC_PERIOD_TO_'+dest];if(st)flt+='&date_to=eq.'+st;flt+='&is_active=eq.true&limit=1';}
+          if(sf){
+            const both=await sbFetch('hotel_periods?hotel_id=eq.'+h.id+'&nights=eq.'+nights+flt.replace('&order=date_from',''));
+            if(both&&both.length>0) period=both[0];
+          }
+          if(!period){
+            const exact=await sbFetch('hotel_periods?hotel_id=eq.'+h.id+'&nights=eq.'+nights+'&is_active=eq.true&order=date_from&limit=1');
+            if(exact&&exact.length>0) period=exact[0];
+          }
+        }
+        if(!period){
+          if(type===1){
+            allPeriods=await sbFetch('hotel_periods?hotel_id=eq.'+h.id+'&is_active=eq.true&order=date_from')||[];
+            selPeriodIdx=window['PC_PERIOD_IDX_'+dest+'_'+h.id]||0;
+            if(selPeriodIdx>=allPeriods.length) selPeriodIdx=0;
+            period=allPeriods[selPeriodIdx]||null;
+          }else if(type===3){
+            let flt='&is_active=eq.true&order=date_from&limit=1';
+            const sf=window['PC_PERIOD_FROM_'+dest];
+            if(sf){flt='&date_from=eq.'+sf;const st=window['PC_PERIOD_TO_'+dest];if(st)flt+='&date_to=eq.'+st;flt+='&is_active=eq.true&limit=1';}
+            const ps=await sbFetch('hotel_periods?hotel_id=eq.'+h.id+flt);
+            period=ps&&ps.length>0?ps[0]:null;
+            if(!period){const fb=await sbFetch('hotel_periods?hotel_id=eq.'+h.id+'&is_active=eq.true&order=date_from&limit=1');period=fb&&fb.length>0?fb[0]:null;}
+          }else{
+            const ps=await sbFetch('hotel_periods?hotel_id=eq.'+h.id+'&is_active=eq.true&order=date_from&limit=1');
+            period=ps&&ps.length>0?ps[0]:null;
+          }
+        }
+        periodList=[period];
+      }
+      for(let pi=0;pi<periodList.length;pi++){
+        const period=periodList[pi];
+        // Get base price: for Type 2 use weekday_price/weekend_price, else use room_type field
+        let ppn=0;
+        if(type===2&&period){
+          if(dayType==='weekend'&&period.weekend_price) ppn=period.weekend_price;
+          else if(dayType==='weekday'&&period.weekday_price) ppn=period.weekday_price;
+          else ppn=period.double_usd||0;
+        }else{
+          ppn=period?(period[rm+'_usd']||period.double_usd||0):0;
+        }
+        const periodCurr=period&&period.currency?period.currency:bc;
+        const ppnJOD=toJOD(ppn,periodCurr,usdRate,eurRate);
+        let hotelJOD=0,addonsJOD=0,profitJOD=0,totalJODV=0;
+        if(type===1){
+          hotelJOD=ppnJOD*nights;
+          addonsJOD=tkJOD+trJOD+viJOD;
+          profitJOD=pfJOD;
+          let base=hotelJOD+addonsJOD+profitJOD;
+          totalJODV=pp>0?Math.round(base*(1+pp/100)):Math.round(base);
+        }else if(type===2){
+          hotelJOD=(ppnJOD*nights)/persons;
+          addonsJOD=tkJOD+trJOD+viJOD;
+          profitJOD=pfJOD;
+          let base=hotelJOD+addonsJOD+profitJOD;
+          totalJODV=pp>0?Math.round(base*(1+pp/100)):Math.round(base);
+        }else if(type===3){
+          hotelJOD=ppnJOD;
+          addonsJOD=tkJOD+viJOD;
+          profitJOD=pfJOD;
+          let base=hotelJOD+addonsJOD+profitJOD;
+          totalJODV=pp>0?Math.round(base*(1+pp/100)):Math.round(base);
+        }else if(type===4){
+          hotelJOD=ppnJOD;
+          addonsJOD=tkJOD+viJOD;
+          profitJOD=pfJOD;
+          let base=hotelJOD+addonsJOD+profitJOD;
+          totalJODV=pp>0?Math.round(base*(1+pp/100)):Math.round(base);
+        }else if(type===5){
+          hotelJOD=ppnJOD;
+          addonsJOD=viJOD;
+          profitJOD=pfJOD;
+          let base=hotelJOD+addonsJOD+profitJOD;
+          totalJODV=pp>0?Math.round(base*(1+pp/100)):Math.round(base);
+        }
+        // Convert output
+        let totalOut=fromJOD(totalJODV,oc,usdRate,eurRate);
+        totalOut=Math.round(totalOut);
+        const currSym=CURR_SYMS[oc]||'JOD';
+        if(type===2){
+          const roomLabel=period?period.room_type||'Standard':'—';
+          const ppnDisplay=period?ppn.toFixed(1):'0';
+          rows+=`<tr>
+            <td style="font-weight:600">${h.name}</td>
+            <td style="font-size:12px">${roomLabel}</td>
+            <td style="color:#7EB3F0">${ppnDisplay} JOD</td>
+            <td>${fmt(hotelJOD)} JOD</td>
+            <td>${fmt(addonsJOD)} JOD</td>
+            <td>${fmt(profitJOD)} JOD</td>
+            <td class="final-price">
+              <input type="number" value="${totalOut}" id="pc-fp-${dest}-${rowIdx}" class="pricing-input" style="width:90px">
+              <span style="font-size:10px;color:var(--muted)">${currSym}</span>
+            </td>
+            <td><input type="number" value="${totalOut}" id="pc-override-${dest}-${rowIdx}" class="pricing-input" style="width:70px" placeholder="تعديل"></td>
+          </tr>`;
+        }else{
+          let periodCell=period?(period.date_from||'—')+' → '+(period.date_to||'—'):'لا توجد فترة';
+          if(type===1&&allPeriods&&allPeriods.length>1){
+            const dd=allPeriods.map((p,i)=>`<option value="${i}" ${i===selPeriodIdx?'selected':''}>${p.date_from||'?'} → ${p.date_to||'?'}</option>`).join('');
+            periodCell=`<select onchange="selectHotelPeriod('${dest}',${h.id},this.value)" class="pricing-input" style="width:100%;font-size:10px;padding:3px 5px">${dd}</select>`;
+          }
+          const nightsCol=(type===4||type===5)&&period?`<td style="color:var(--accent)">${period.nights||'—'}</td>`:'';
+          rows+=`<tr>
+            <td style="font-weight:600">${h.name}</td>
+            <td style="color:var(--gold)">${starsHtml(h.stars)}</td>
+            <td>${h.location||'—'}</td>
+            <td style="font-size:11px">${periodCell}</td>
+            ${nightsCol}
+            <td style="color:#7EB3F0">${ppn?(CURR_SYMS[periodCurr]||'$')+ppn:'—'}</td>
+            <td>${fmt(ppnJOD)} JOD</td>
+            <td>${fmt(addonsJOD)} JOD</td>
+            <td>${fmt(profitJOD)} JOD</td>
+            <td class="final-price">
+              <input type="number" value="${totalOut}" id="pc-fp-${dest}-${rowIdx}" class="pricing-input" style="width:100px">
+              <span style="font-size:10px;color:var(--muted)">${currSym}</span>
+            </td>
+            <td><input type="number" value="${totalOut}" id="pc-override-${dest}-${rowIdx}" class="pricing-input" style="width:80px" placeholder="تعديل يدوي"></td>
+          </tr>`;
+        }
+        rowIdx++;
+      }
+    }
+    tbody.innerHTML=rows||'<tr><td colspan="10" style="text-align:center;color:var(--muted)">لا توجد فنادق نشطة لهذه الوجهة</td></tr>';
+  }catch(e){
+    const tbody=document.getElementById('pc-tbody-'+dest);
+    if(tbody) tbody.innerHTML='<tr><td colspan="10" style="color:var(--red)">خطأ: '+e.message+'</td></tr>';
+  }
+}
+
+function setPricingNights(dest,n,el){
+  window['PC_N_'+dest]=n;
+  document.querySelectorAll('#pc-ntabs-'+dest+' .ntab').forEach(b=>b.classList.remove('active'));
+  if(el) el.classList.add('active');
+  calcPricing(dest);
+}
+
+function setPricingPeriod(dest,from,to,el){
+  window['PC_PERIOD_FROM_'+dest]=from;
+  window['PC_PERIOD_TO_'+dest]=to;
+  const parent=el.parentElement||el.closest('div');
+  if(parent) parent.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  if(el) el.classList.add('active');
+  calcPricing(dest);
+}
+
+function selectHotelPeriod(dest,hotelId,idx){
+  window['PC_PERIOD_IDX_'+dest+'_'+hotelId]=parseInt(idx);
+  calcPricing(dest);
+}
+
+async function publishPricing(dest){
+  const tk=gf('pc-tk-'+dest),tc=gv('pc-tc-'+dest)||'JOD',tr=gf('pc-tr-'+dest)||0;
+  const trc=gv('pc-trc-'+dest)||'JOD',pf=gf('pc-pf-'+dest),pfc=gv('pc-pfc-'+dest)||'JOD';
+  const pp=gf('pc-pp-'+dest),vi=gf('pc-vi-'+dest)||0,vc=gv('pc-vc-'+dest)||'JOD';
+  const usdRate=gf('pc-usd-'+dest),eurRate=gf('pc-eur-'+dest);
+  const rm=gv('pc-rm-'+dest)||'double',oc=gv('pc-oc-'+dest)||'JOD';
+  const bc=gv('pc-bc-'+dest)||'USD',persons=parseInt(gv('pc-pr-'+dest))||2;
+  const dayType=gv('pc-dt-'+dest)||'weekday';
+  const info=DESTINATIONS.find(d=>d.id===dest);
+  const type=info?info.tariff_type:1;
+  const nights=window['PC_N_'+dest]||4;
+  const tkJOD=toJOD(tk,tc,usdRate,eurRate);
+  const trJOD=toJOD(tr,trc,usdRate,eurRate);
+  const pfJOD=toJOD(pf,pfc,usdRate,eurRate);
+  const viJOD=toJOD(vi,vc,usdRate,eurRate);
+  const btn=typeof event!=='undefined'&&event&&event.currentTarget?event.currentTarget:document.querySelector('#pricing-dest-content .btn-pub');
+  if(btn){btn.classList.add('loading');btn.innerHTML='⏳ جاري النشر...';}
+  try{
+    const hotels=await sbFetch('hotels?destination=eq.'+dest+'&is_active=eq.true&order=name');
+    const allRows=[];
+    const nightOptions=(type===1||type===2)?[1,2,3,4,5,6,7]:(type===4||type===5)?[7]:[nights];
+    for(let ni=0;ni<nightOptions.length;ni++){
+      const n=nightOptions[ni];
+      let rowIdx=0;
+      for(let i=0;i<hotels.length;i++){
+        const h=hotels[i];
+        // For Type 2: iterate ALL periods (room types), use rowIdx for override/fp lookup
+        let periodList=[];
+        if(type===2){
+          const all=await sbFetch('hotel_periods?hotel_id=eq.'+h.id+'&is_active=eq.true&order=date_from');
+          periodList=all||[];
+          if(periodList.length===0) periodList=[null];
+        }else{
+          let period=null;
+          if(type===3){
+            // Try: selected month + selected nights
+            const sf=window['PC_PERIOD_FROM_'+dest];
+            if(sf){
+              let dflt='&date_from=eq.'+sf;const st=window['PC_PERIOD_TO_'+dest];if(st)dflt+='&date_to=eq.'+st;dflt+='&is_active=eq.true&limit=1';
+              const both=await sbFetch('hotel_periods?hotel_id=eq.'+h.id+'&nights=eq.'+n+dflt);
+              if(both&&both.length>0) period=both[0];
+            }
+            if(!period){
+              const exact=await sbFetch('hotel_periods?hotel_id=eq.'+h.id+'&nights=eq.'+n+'&is_active=eq.true&order=date_from&limit=1');
+              if(exact&&exact.length>0) period=exact[0];
+            }
+          }
+          if(!period){
+            if(type===1){
+              const allP=await sbFetch('hotel_periods?hotel_id=eq.'+h.id+'&is_active=eq.true&order=date_from')||[];
+              const idx=window['PC_PERIOD_IDX_'+dest+'_'+h.id]||0;
+              period=allP[idx]||allP[0]||null;
+            }else if(type===3){
+              let flt='&is_active=eq.true&order=date_from&limit=1';
+              const sf=window['PC_PERIOD_FROM_'+dest];
+              if(sf){flt='&date_from=eq.'+sf;const st=window['PC_PERIOD_TO_'+dest];if(st)flt+='&date_to=eq.'+st;flt+='&is_active=eq.true&limit=1';}
+              const ps=await sbFetch('hotel_periods?hotel_id=eq.'+h.id+flt);
+              period=ps&&ps.length>0?ps[0]:null;
+              if(!period){const fb=await sbFetch('hotel_periods?hotel_id=eq.'+h.id+'&is_active=eq.true&order=date_from&limit=1');period=fb&&fb.length>0?fb[0]:null;}
+            }else{
+              const ps=await sbFetch('hotel_periods?hotel_id=eq.'+h.id+'&is_active=eq.true&order=date_from&limit=1');
+              period=ps&&ps.length>0?ps[0]:null;
+            }
+          }
+          periodList=[period];
+        }
+        for(let pi=0;pi<periodList.length;pi++){
+          const period=periodList[pi];
+          const overrideEl=document.getElementById('pc-override-'+dest+'-'+rowIdx);
+          const fpEl=document.getElementById('pc-fp-'+dest+'-'+rowIdx);
+          let fp=0;
+          if(!(type===1||type===2)){
+            if(overrideEl&&overrideEl.value&&parseFloat(overrideEl.value)>0) fp=Math.round(parseFloat(overrideEl.value));
+            else if(fpEl) fp=Math.round(parseFloat(fpEl.value))||0;
+            if(fp<=0){rowIdx++;continue;}
+          }
+          // Get base price: Type 2 uses weekday_price/weekend_price
+          let ppn=0;
+          if(type===2&&period){
+            if(dayType==='weekend'&&period.weekend_price) ppn=period.weekend_price;
+            else if(dayType==='weekday'&&period.weekday_price) ppn=period.weekday_price;
+            else ppn=period.double_usd||0;
+          }else{
+            ppn=period?(period[rm+'_usd']||period.double_usd||0):0;
+          }
+          const periodCurr=period&&period.currency?period.currency:bc;
+          const ppnJOD=toJOD(ppn,periodCurr,usdRate,eurRate);
+          let includes='';
+          if(type===1) includes='فندق + تذكرة + مواصلات';
+          else if(type===2) includes='فندق + إفطار';
+          else if(type===3) includes='فندق + تذكرة + Transfer';
+          else if(type===4) includes='فندق + تذكرة + مواصلات + برنامج';
+          else if(type===5) includes='فندق + تذكرة + مواصلات + برنامج (شامل)';
+          let hotelJOD=0,addonsJOD=0,profitJOD=0,totalJODV=0;
+          if(type===1){hotelJOD=ppnJOD*n;addonsJOD=tkJOD+trJOD+viJOD;profitJOD=pfJOD;let b=hotelJOD+addonsJOD+profitJOD;totalJODV=pp>0?Math.round(b*(1+pp/100)):Math.round(b);}
+          else if(type===2){hotelJOD=(ppnJOD*n)/persons;addonsJOD=tkJOD+trJOD+viJOD;profitJOD=pfJOD;let b=hotelJOD+addonsJOD+profitJOD;totalJODV=pp>0?Math.round(b*(1+pp/100)):Math.round(b);}
+          else if(type===3){hotelJOD=ppnJOD;addonsJOD=tkJOD+viJOD;profitJOD=pfJOD;let b=hotelJOD+addonsJOD+profitJOD;totalJODV=pp>0?Math.round(b*(1+pp/100)):Math.round(b);}
+          else if(type===4){hotelJOD=ppnJOD;addonsJOD=tkJOD+viJOD;profitJOD=pfJOD;let b=hotelJOD+addonsJOD+profitJOD;totalJODV=pp>0?Math.round(b*(1+pp/100)):Math.round(b);}
+          else if(type===5){hotelJOD=ppnJOD;addonsJOD=viJOD;profitJOD=pfJOD;let b=hotelJOD+addonsJOD+profitJOD;totalJODV=pp>0?Math.round(b*(1+pp/100)):Math.round(b);}
+          const finalPriceJOD=Math.round(totalJODV);
+          if((type===1||type===2)&&finalPriceJOD<=0){rowIdx++;continue;}
+          let basePriceJOD=Math.round(hotelJOD+addonsJOD);
+          const roomType=period?period.room_type||'Standard':'Standard';
+          allRows.push({
+            destination:dest,hotel_name:h.name,stars:h.stars,location:h.location||dest,
+            nights:(type===4||type===5)?(period&&period.nights?period.nights:n):n,room_type:roomType,meal_plan:period?period.meal_plan||'BB':'BB',
+            dmc_price_usd:ppn,ticket_jod:Math.round(tkJOD),visa_jod:Math.round(vi),
+            profit_jod:Math.round(profitJOD),base_price_jod:basePriceJOD,
+            final_price_jod:Math.round((type===1||type===2)?finalPriceJOD:toJOD(fp,oc,usdRate,eurRate)),
+            currency:oc,is_active:true,
+            period_label:period?((period.date_from||'')+'→'+(period.date_to||'')):'current',
+            tariff_type:type,includes:includes,updated_at:new Date().toISOString()
+          });
+          rowIdx++;
+        }
+      }
+    }
+    for(let i=0;i<allRows.length;i+=50){
+      await sbFetch('packages?on_conflict=destination,hotel_name,nights,room_type','POST',allRows.slice(i,i+50));
+    }
+    showStatus('✅ تم نشر '+allRows.length+' سجل لـ '+dest+' على الموقع!');
+  }catch(e){showStatus('❌ خطأ: '+e.message,false);}
+  if(btn){btn.classList.remove('loading');btn.innerHTML='<span>🚀</span> نشر جميع الأسعار';}
+}
+
+// ==================================================================
+// PUBLISHED PACKAGES
+// ==================================================================
+async function loadPublishedPackages(){
+  try{
+    const filterDest=gv('pub-filter-dest');
+    let allData=[];
+    const knownDests=['sharm','hurghada','antalya','aqaba','istanbul','trabzon','georgia','azerbaijan','bali','thailand','malaysia','vietnam','singapore','maldives','srilanka'];
+    if(filterDest){
+      allData=await sbFetch('packages?destination=eq.'+filterDest+'&order=hotel_name&limit=100000');
+    }else{
+      for(const d of knownDests){
+        const batch=await sbFetch('packages?destination=eq.'+d+'&order=hotel_name&limit=100000');
+        allData=allData.concat(batch);
+      }
+    }
+    const sel=document.getElementById('pub-filter-dest');
+    const allDests=[...new Set(allData.map(p=>p.destination))];
+    if(sel.options.length<=1){
+      allDests.forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;sel.appendChild(o);});
+    }
+    const dests=filterDest?[filterDest]:allDests;
+    document.getElementById('pub-packages-list').innerHTML=dests.map(d=>{
+      const pkgs=allData.filter(p=>p.destination===d);
+      return `<div style="margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px">
+          <span style="font-weight:700;color:var(--gold);font-size:14px">${d.toUpperCase()} (${pkgs.length})</span>
+          <button class="btn btn-red btn-sm" onclick="clearDestinationPackages('${d}')">🗑️ حذف الكل</button>
+        </div>
+        <table class="hotel-table"><thead><tr><th>الفندق</th><th>ليالي</th><th>نوع الغرفة</th><th>السعر النهائي</th><th>الحالة</th><th></th></tr></thead><tbody>`+
+        pkgs.map(p=>`<tr><td>${p.hotel_name}</td><td>${p.nights}N</td><td>${p.room_type||'—'}</td><td class="final-price">${p.final_price_jod} JOD</td><td>${p.is_active?'<span style="color:var(--green)">نشط</span>':'<span style="color:var(--red)">غير نشط</span>'}</td><td><button class="btn btn-red btn-sm" onclick="deletePackage(${p.id})">حذف</button></td></tr>`).join('')+
+        '</tbody></table></div>';
+    }).join('')||'<p style="color:var(--muted)">لا توجد باقات منشورة</p>';
+  }catch(e){document.getElementById('pub-packages-list').innerHTML='<span style="color:var(--red)">خطأ: '+e.message+'</span>';}
+}
+
+async function deletePackage(id){
+  if(!confirm('حذف هذه الباقة؟')) return;
+  try{await sbFetch('packages?id=eq.'+id,'DELETE');loadPublishedPackages();showStatus('✅ تم حذف الباقة');}
+  catch(e){showStatus('❌ '+e.message,false);}
+}
+
+async function clearDestinationPackages(dest){
+  if(!confirm('حذف جميع باقات '+dest+'؟')) return;
+  try{await sbFetch('packages?destination=eq.'+dest,'DELETE');loadPublishedPackages();showStatus('✅ تم حذف جميع باقات '+dest);}
+  catch(e){showStatus('❌ '+e.message,false);}
+}
+
+async function clearAllPackages(){
+  if(!confirm('حذف ALL جميع الباقات المنشورة؟ هذا الإجراء لا يمكن التراجع عنه!')) return;
+  try{await sbFetch('packages','DELETE');loadPublishedPackages();showStatus('✅ تم حذف جميع الباقات');}
+  catch(e){showStatus('❌ '+e.message,false);}
+}
+
+// ==================================================================
+// OFFERS
+// ==================================================================
+let offerEditId=null;
+async function saveOffer(){
+  const data={title_ar:gv('of-title-ar'),title_en:gv('of-title-en'),offer_type:gv('of-type'),
+    destination:gv('of-dest'),price_from_jod:gf('of-price'),valid_until:gv('of-expiry'),
+    description:gv('of-desc'),is_hot:document.getElementById('of-hot').checked,is_active:true};
+  if(!data.title_ar){showStatus('يرجى إدخال عنوان العرض',false);return;}
+  try{
+    if(offerEditId){
+      await sbFetch('offers?id=eq.'+offerEditId,'PATCH',data);
+      showStatus('✅ تم تحديث العرض');
+      offerEditId=null;
+    }else{
+      data.created_at=new Date().toISOString();
+      await sbFetch('offers','POST',[data]);
+      showStatus('✅ تم نشر العرض');
+    }
+    clearOfferForm();
+    loadOffers();
+  }catch(e){showStatus('❌ '+e.message,false);}
+}
+
+function clearOfferForm(){
+  document.getElementById('of-title-ar').value='';document.getElementById('of-title-en').value='';
+  document.getElementById('of-type').value='package';document.getElementById('of-dest').value='';
+  document.getElementById('of-price').value='';document.getElementById('of-expiry').value='';
+  document.getElementById('of-desc').value='';document.getElementById('of-hot').checked=false;
+  document.getElementById('of-edit-id').value='';offerEditId=null;
+}
+
+async function loadOffers(){
+  try{
+    const destFilter=document.getElementById('of-filter-dest').value;
+    let url='offers?order=created_at.desc&limit=50';
+    if(destFilter) url='offers?destination=eq.'+encodeURIComponent(destFilter)+'&order=created_at.desc&limit=50';
+    const data=await sbFetch(url);
+    document.getElementById('offers-list').innerHTML=data.length?
+      `<table class="hotel-table"><thead><tr><th>العنوان</th><th>النوع</th><th>الوجهة</th><th>السعر</th><th>صالح حتى</th><th>مميز</th><th></th></tr></thead><tbody>`+
+      data.map(o=>`<tr><td>${o.title_ar}</td><td>${o.offer_type}</td><td>${o.destination||'—'}</td><td>${o.price_from_jod} JOD</td><td>${o.valid_until||'—'}</td><td>${o.is_hot?'⭐':'—'}</td><td><button class="btn btn-blue btn-sm" onclick="editOffer(${o.id})">✏️</button> <button class="btn btn-red btn-sm" onclick="deleteOffer(${o.id})">🗑️</button></td></tr>`).join('')+
+      '</tbody></table>':'<p>لا توجد عروض حالياً</p>';
+  }catch(e){document.getElementById('offers-list').innerHTML='خطأ: '+e.message;}
+}
+
+async function editOffer(id){
+  try{
+    const o=(await sbFetch('offers?id=eq.'+id))[0];
+    if(!o) return;
+    document.getElementById('of-title-ar').value=o.title_ar||'';
+    document.getElementById('of-title-en').value=o.title_en||'';
+    document.getElementById('of-type').value=o.offer_type||'package';
+    document.getElementById('of-dest').value=o.destination||'';
+    document.getElementById('of-price').value=o.price_from_jod||'';
+    document.getElementById('of-expiry').value=o.valid_until||'';
+    document.getElementById('of-desc').value=o.description||'';
+    document.getElementById('of-hot').checked=o.is_hot||false;
+    document.getElementById('of-edit-id').value=id;
+    offerEditId=id;
+    showStatus('✏️ جاري تعديل العرض');
+  }catch(e){showStatus('❌ '+e.message,false);}
+}
+
+async function deleteOffer(id){if(!confirm('حذف هذا العرض؟'))return;await sbFetch('offers?id=eq.'+id,'DELETE');loadOffers();showStatus('✅ تم حذف العرض');}
+
+// ==================================================================
+// FLIGHTS
+// ==================================================================
+const FLIGHTS_FALLBACK = [
+  { id:'sharm', flag:'🇪🇬', dest:'شرم الشيخ', destEn:'Sharm El-Sheikh', country:'مصر', active:true,
+    airlines:[
+      { name:'Fly Jordan', nameAr:'فلاي جوردن', logo:'🛩️',
+        packages:[
+          { dur:'4 أيام', days:'ثلاثاء وجمعة', price:189, owOut:168, owRet:129 },
+          { dur:'5 أيام', days:'ثلاثاء وجمعة', price:199, owOut:178, owRet:139 },
+          { dur:'8 أيام', days:'ثلاثاء وجمعة', price:219, owOut:198, owRet:159 }
+        ]
+      },
+      { name:'Royal Jordanian', nameAr:'الملكية الأردنية', logo:'👑',
+        packages:[
+          { dur:'3 أيام', days:'ثلاثاء وجمعة', price:210, owOut:189, owRet:150 },
+          { dur:'4 أيام', days:'ثلاثاء وجمعة', price:220, owOut:199, owRet:160 },
+          { dur:'6-8 أيام', days:'ثلاثاء وجمعة', price:260, owOut:239, owRet:200 }
+        ]
+      },
+      { name:'Jordan Aviation', nameAr:'الأردنية للطيران', logo:'✈️',
+        packages:[
+          { dur:'4 أيام', days:'احد وخميس', price:189, owOut:168, owRet:129 },
+          { dur:'5 أيام', days:'احد وخميس', price:199, owOut:178, owRet:139 },
+          { dur:'8 أيام', days:'احد وخميس', price:219, owOut:198, owRet:159 }
+        ]
+      }
+    ]
+  },
+  { id:'istanbul', flag:'🇹🇷', dest:'اسطنبول', destEn:'Istanbul', country:'تركيا', active:true,
+    airlines:[
+      { name:'Fly Jordan', nameAr:'فلاي جوردن', logo:'🛩️',
+        packages:[
+          { dur:'3 أيام', days:'احد وثلاثاء وخميس', price:219, owOut:198, owRet:159 },
+          { dur:'4 أيام', days:'احد وثلاثاء وخميس', price:239, owOut:218, owRet:179 },
+          { dur:'6-8 أيام', days:'احد وثلاثاء وخميس', price:249, owOut:228, owRet:189 }
+        ]
+      },
+      { name:'Royal Jordanian', nameAr:'الملكية الأردنية', logo:'👑',
+        packages:[
+          { dur:'3 أيام', days:'يومياً', price:259, owOut:238, owRet:199 },
+          { dur:'4 أيام', days:'يومياً', price:269, owOut:248, owRet:209 },
+          { dur:'6-8 أيام', days:'يومياً', price:279, owOut:258, owRet:219 }
+        ]
+      },
+      { name:'Jordan Aviation', nameAr:'الأردنية للطيران', logo:'✈️',
+        packages:[
+          { dur:'3 أيام', days:'سبت واثنين وأربعاء', price:239, owOut:218, owRet:179 },
+          { dur:'4 أيام', days:'سبت واثنين وأربعاء', price:259, owOut:238, owRet:199 },
+          { dur:'6-8 أيام', days:'سبت واثنين وأربعاء', price:269, owOut:248, owRet:209 }
+        ]
+      }
+    ]
+  },
+  { id:'trabzon', flag:'🇹🇷', dest:'طرابزون', destEn:'Trabzon', country:'تركيا', active:true,
+    airlines:[
+      { name:'Fly Jordan', nameAr:'فلاي جوردن', logo:'🛩️',
+        packages:[{ dur:'8 أيام', days:'كل سبت', price:269 }]
+      },
+      { name:'Jordan Aviation', nameAr:'الأردنية للطيران', logo:'✈️',
+        packages:[{ dur:'8 أيام', days:'كل أربعاء', price:309 }]
+      }
+    ]
+  },
+  { id:'batumi', flag:'🇬🇪', dest:'باتومي', destEn:'Batumi', country:'جورجيا', active:true,
+    airlines:[
+      { name:'Fly Jordan', nameAr:'فلاي جوردن', logo:'🛩️',
+        packages:[{ dur:'8 أيام', days:'كل خميس', price:259, owOut:244, owRet:209 }]
+      },
+      { name:'Jordan Aviation', nameAr:'الأردنية للطيران', logo:'✈️',
+        packages:[{ dur:'8 أيام', days:'كل جمعة', price:299, owOut:284, owRet:249 }]
+      }
+    ]
+  },
+  { id:'tbilisi', flag:'🇬🇪', dest:'تبليسي', destEn:'Tbilisi', country:'جورجيا', active:true,
+    airlines:[
+      { name:'Fly Jordan', nameAr:'فلاي جوردن', logo:'🛩️',
+        packages:[{ dur:'8 أيام', days:'كل ثلاثاء', price:289, owOut:274, owRet:239 }]
+      },
+      { name:'Jordan Aviation', nameAr:'الأردنية للطيران', logo:'✈️',
+        packages:[{ dur:'8 أيام', days:'كل ثلاثاء وجمعة', price:329, owOut:314, owRet:279 }]
+      }
+    ]
+  },
+  { id:'cairo', flag:'🇪🇬', dest:'القاهرة', destEn:'Cairo', country:'مصر', active:true,
+    airlines:[
+      { name:'Royal Jordanian', nameAr:'الملكية الأردنية', logo:'👑',
+        packages:[
+          { dur:'رحلات يومية', days:'4 رحلات يومية', price:280, flights:[
+            { route:'عمان → القاهرة', dep:'6:10 صباحاً', price:165 },
+            { route:'عمان → القاهرة', dep:'11:25 ظهراً', price:170 },
+            { route:'القاهرة → عمان', dep:'7:35 صباحاً', price:125 },
+            { route:'القاهرة → عمان', dep:'14:05 ظهراً', price:140 }
+          ]},
+          { dur:'رحلات عقبة', days:'أحد، ثلاثاء، أربعاء', price:150, flights:[
+            { route:'عقبة → القاهرة', dep:'حسب الجدولة', price:90 },
+            { route:'القاهرة → عقبة', dep:'حسب الجدولة', price:70 }
+          ]}
+        ]
+      },
+      { name:'Jordan Aviation', nameAr:'الأردنية للطيران', logo:'✈️',
+        packages:[{ dur:'رحلات أسبوعية', days:'سبت، أحد، ثلاثاء، خميس', price:275, flights:[
+          { route:'عمان → القاهرة', dep:'20:00 مساءً', price:155, days:'سبت، أحد، ثلاثاء، خميس' },
+          { route:'القاهرة → عمان', dep:'23:30 ليلاً', price:130, days:'سبت، أحد، ثلاثاء، خميس' }
+        ]}]
+      }
+    ]
+  },
+  { id:'jeddah', flag:'🇸🇦', dest:'جدة', destEn:'Jeddah', country:'السعودية', active:true,
+    airlines:[
+      { name:'flynas', nameAr:'طيران ناس', logo:'✈️',
+        packages:[{ dur:'رحلات يومية', days:'رحلات يومية', price:265, flights:[
+          { route:'عمان → جدة', dep:'15:00 بعد الظهر', price:155, luggage:'7 كيلو أمتعة' },
+          { route:'جدة → عمان', dep:'12:00 ظهراً', price:120, luggage:'7 كيلو أمتعة' }
+        ]}]
+      },
+      { name:'Royal Jordanian', nameAr:'الملكية الأردنية', logo:'👑',
+        packages:[{ dur:'رحلات يومية', days:'رحلات يومية', price:290, flights:[
+          { route:'عمان → جدة', dep:'حسب الجدولة', price:170 },
+          { route:'جدة → عمان', dep:'حسب الجدولة', price:140 }
+        ]}]
+      },
+      { name:'Saudia', nameAr:'الخطوط السعودية', logo:'🇸🇦',
+        packages:[{ dur:'رحلات أسبوعية', days:'أحد، ثلاثاء، خميس', price:290, flights:[
+          { route:'عمان → جدة', dep:'حسب الجدولة', price:170, days:'أحد، ثلاثاء، خميس' },
+          { route:'جدة → عمان', dep:'حسب الجدولة', price:140, days:'أحد، ثلاثاء، خميس' }
+        ]}]
+      }
+    ]
+  },
+  { id:'medina-jeddah', flag:'🇸🇦', dest:'المدينة المنورة وجدة', destEn:'Medina and Jeddah', country:'السعودية', active:true,
+    airlines:[
+      { name:'flynas', nameAr:'طيران ناس', logo:'✈️',
+        packages:[
+          { dur:'المدينة المنورة', days:'ثلاثاء وخميس', price:220, flights:[
+            { route:'عمان → المدينة المنورة', dep:'23:00 ليلاً', arr:'01:00 فجراً', price:110, days:'ثلاثاء، خميس' },
+            { route:'المدينة المنورة → عمان', dep:'21:00 مساءً', arr:'22:35 ليلاً', price:110, days:'ثلاثاء، خميس' }
+          ]},
+          { dur:'متعددة المدن', days:'حسب الجدولة', price:260, flights:[
+            { route:'عمان → المدينة → جدة → عمان', dep:'حسب الجدولة', price:260, multiCity:true },
+            { route:'عمان → جدة → المدينة → عمان', dep:'حسب الجدولة', price:260, multiCity:true }
+          ]}
+        ]
+      },
+      { name:'Royal Jordanian', nameAr:'الملكية الأردنية', logo:'👑',
+        packages:[
+          { dur:'المدينة المنورة', days:'سبت، اثنين، أربعاء', price:340, flights:[
+            { route:'عمان → المدينة المنورة', dep:'حسب الجدولة', price:210, days:'سبت، اثنين، أربعاء' },
+            { route:'المدينة المنورة → عمان', dep:'حسب الجدولة', price:130, days:'سبت، اثنين، أربعاء' }
+          ]},
+          { dur:'متعددة المدن', days:'حسب الجدولة', price:270, flights:[
+            { route:'عمان → المدينة → جدة → عمان', dep:'حسب الجدولة', price:320, multiCity:true },
+            { route:'عمان → جدة → المدينة → عمان', dep:'حسب الجدولة', price:270, multiCity:true }
+          ]}
+        ]
+      }
+    ]
+  },
+  { id:'dubai', flag:'🇦🇪', dest:'دبي', destEn:'Dubai', country:'الإمارات العربية المتحدة', active:true,
+    airlines:[
+      { name:'FlyDubai', nameAr:'فلاي دبي', logo:'🇦🇪',
+        packages:[{ dur:'رحلات يومية', days:'رحلات يومية', price:240, flights:[
+          { route:'عمان → دبي', dep:'حسب الجدولة', price:150 },
+          { route:'دبي → عمان', dep:'حسب الجدولة', price:140 }
+        ]}]
+      },
+      { name:'Royal Jordanian', nameAr:'الملكية الأردنية', logo:'👑',
+        packages:[{ dur:'رحلات يومية', days:'رحلات يومية', price:290, flights:[
+          { route:'عمان → دبي', dep:'حسب الجدولة', price:170 },
+          { route:'دبي → عمان', dep:'حسب الجدولة', price:150 }
+        ]}]
+      },
+      { name:'Emirates', nameAr:'طيران الإمارات', logo:'✈️',
+        packages:[{ dur:'رحلات يومية', days:'رحلات يومية', price:310, flights:[
+          { route:'عمان → دبي', dep:'حسب الجدولة', price:210 },
+          { route:'دبي → عمان', dep:'حسب الجدولة', price:150 }
+        ]}]
+      }
+    ]
+  }
+];
+let FLIGHTS_DATA = [];
+
+async function loadFlightsData(){
+  try{
+    const rows=await sbFetch('flight_data?id=eq.1');
+    if(rows&&rows.length>0&&rows[0].data){
+      FLIGHTS_DATA=rows[0].data;
+    }else{
+      FLIGHTS_DATA=JSON.parse(JSON.stringify(FLIGHTS_FALLBACK));
+    }
+  }catch(e){
+    FLIGHTS_DATA=JSON.parse(JSON.stringify(FLIGHTS_FALLBACK));
+  }
+}
+
+function buildFlightTabs(){
+  const tc=document.getElementById('flight-dest-tabs');
+  tc.innerHTML=FLIGHTS_DATA.map(d=>
+    `<div class="tab" onclick="switchFlightDest('${d.id}',this)">${d.flag||'✈️'} ${d.dest||d.id}</div>`
+  ).join('');
+  const ft=tc.querySelector('.tab');
+  if(ft){ft.classList.add('active');switchFlightDest(FLIGHTS_DATA[0].id,ft);}
+}
+
+function switchFlightDest(id,el){
+  document.querySelectorAll('#flight-dest-tabs .tab').forEach(t=>t.classList.remove('active'));
+  if(el) el.classList.add('active');
+  renderFlightDest(id);
+}
+
+function renderFlightDest(id){
+  const d=FLIGHTS_DATA.find(x=>x.id===id);
+  if(!d){document.getElementById('flight-dest-content').innerHTML='';return;}
+  let html=`<div class="panel" style="margin-top:14px">
+    <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>${d.flag} ${d.dest} — ${d.country}</span>
+      <button class="btn btn-green btn-sm" onclick="saveAllFlights()">💾 حفظ التغييرات</button>
+    </div>`;
+  d.airlines.forEach((al,ai)=>{
+    html+=`<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;margin-bottom:12px;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--border)">
+        <span style="font-size:18px">${al.logo}</span>
+        <span style="font-weight:700;color:var(--gold)">${al.nameAr}</span>
+        <span style="font-size:11px;color:var(--muted)">${al.name}</span>
+      </div>
+      <table class="hotel-table" style="font-size:12px">
+        <thead><tr>
+          <th>المدة</th><th>أيام التشغيل</th><th style="width:80px">ذهاب وإياب</th><th style="width:70px">ذهاب فقط</th><th style="width:70px">عودة فقط</th>
+        </tr></thead>
+        <tbody>`;
+    al.packages.forEach((pk,pi)=>{
+      const inpId=`fl-${id}-${ai}-${pi}`;
+      html+=`<tr>
+        <td><strong>${pk.dur}</strong></td>
+        <td><input class="form-input" style="width:180px" id="fl-days-${inpId}" value="${pk.days||''}" placeholder="أيام التشغيل"></td>
+        <td><input class="form-input" style="width:70px" id="fl-pr-${inpId}" type="number" value="${pk.price}" min="0" step="1"></td>
+        <td><input class="form-input" style="width:70px" id="fl-ow-${inpId}" type="number" value="${pk.owOut||''}" min="0" step="1"></td>
+        <td><input class="form-input" style="width:70px" id="fl-ret-${inpId}" type="number" value="${pk.owRet||''}" min="0" step="1"></td>
+      </tr>`;
+      // Flight schedule rows
+      if(pk.flights&&pk.flights.length>0){
+        pk.flights.forEach((f,fi)=>{
+          const fId=`fl-${id}-${ai}-${pi}-f${fi}`;
+          const isMC=f.multiCity?'<span style="font-size:10px;color:var(--blue)">متعددة المدن</span>':'';
+          html+=`<tr style="background:rgba(41,128,185,.04)">
+            <td colspan="5" style="padding:5px 10px">
+              <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+                <span style="font-size:10px;color:var(--muted);white-space:nowrap">✈️</span>
+                <input class="form-input" style="width:140px" id="fl-route-${fId}" value="${f.route}" placeholder="المسار">
+                <input class="form-input" style="width:80px" id="fl-dep-${fId}" value="${f.dep||''}" placeholder="موعد الإقلاع">
+                ${!isMC?`<input class="form-input" style="width:60px" id="fl-fp-${fId}" type="number" value="${f.price}" min="0" step="1" placeholder="السعر">`:''}
+                ${!isMC&&f.arr?`<input class="form-input" style="width:80px" id="fl-arr-${fId}" value="${f.arr||''}" placeholder="موعد الوصول">`:''}
+                ${f.luggage?`<input class="form-input" style="width:80px" id="fl-lug-${fId}" value="${f.luggage||''}" placeholder="الوزن المسموح">`:''}
+                ${f.days?`<input class="form-input" style="width:120px" id="fl-fdays-${fId}" value="${f.days||''}" placeholder="أيام الرحلة">`:''}
+                ${isMC}
+                ${f.multiCity?`<input class="form-input" style="width:60px" id="fl-fp-${fId}" type="number" value="${f.price}" min="0" step="1" placeholder="السعر">`:''}
+              </div>
+            </td>
+          </tr>`;
+        });
+      }
+    });
+    html+=`</tbody></table></div>`;
+  });
+  html+=`</div>`;
+  document.getElementById('flight-dest-content').innerHTML=html;
+}
+
+async function loadFlights(){
+  document.getElementById('flight-dest-tabs').innerHTML='<div style="color:var(--muted);font-size:13px">جاري التحميل...</div>';
+  document.getElementById('flight-dest-content').innerHTML='';
+  await loadFlightsData();
+  buildFlightTabs();
+}
+
+function syncFlightEdits(){
+  FLIGHTS_DATA.forEach(d=>{
+    d.airlines.forEach((al,ai)=>{
+      al.packages.forEach((pk,pi)=>{
+        const inpId=`fl-${d.id}-${ai}-${pi}`;
+        const daysEl=document.getElementById(`fl-days-${inpId}`);
+        const prEl=document.getElementById(`fl-pr-${inpId}`);
+        const owEl=document.getElementById(`fl-ow-${inpId}`);
+        const retEl=document.getElementById(`fl-ret-${inpId}`);
+        if(daysEl) pk.days=daysEl.value;
+        if(prEl) pk.price=parseFloat(prEl.value)||0;
+        if(owEl) pk.owOut=owEl.value?parseFloat(owEl.value):undefined;
+        if(retEl) pk.owRet=retEl.value?parseFloat(retEl.value):undefined;
+        if(pk.flights){
+          pk.flights.forEach((f,fi)=>{
+            const fId=`fl-${d.id}-${ai}-${pi}-f${fi}`;
+            const rEl=document.getElementById(`fl-route-${fId}`);
+            const dEl=document.getElementById(`fl-dep-${fId}`);
+            const aEl=document.getElementById(`fl-arr-${fId}`);
+            const fpEl=document.getElementById(`fl-fp-${fId}`);
+            const lEl=document.getElementById(`fl-lug-${fId}`);
+            const fdEl=document.getElementById(`fl-fdays-${fId}`);
+            if(rEl) f.route=rEl.value;
+            if(dEl) f.dep=dEl.value;
+            if(aEl) f.arr=aEl.value;
+            if(fpEl&&!f.multiCity) f.price=parseFloat(fpEl.value)||0;
+            if(fpEl&&f.multiCity) f.price=parseFloat(fpEl.value)||0;
+            if(lEl) f.luggage=lEl.value;
+            if(fdEl) f.days=fdEl.value;
+          });
+        }
+      });
+    });
+  });
+}
+
+async function saveAllFlights(){
+  syncFlightEdits();
+  const btn=document.querySelector('button[onclick*="saveAllFlights"]');
+  const msg=document.getElementById('fl-status-msg');
+  if(btn){btn.textContent='⏳ جاري الحفظ...';btn.disabled=true;}
+  msg.textContent='جاري الحفظ...';
+  try{
+    const now=new Date().toISOString();
+    const check=await sbFetch('flight_data?id=eq.1&select=id');
+    if(check&&check.length>0){
+      await sbFetch('flight_data?id=eq.1','PATCH',{data:FLIGHTS_DATA,updated_at:now});
+    }else{
+      await sbFetch('flight_data','POST',{id:1,data:FLIGHTS_DATA,updated_at:now});
+    }
+    msg.textContent='✅ تم الحفظ في قاعدة البيانات';
+  }catch(e){msg.textContent='❌ خطأ: '+e.message;}
+  if(btn){btn.textContent='💾 حفظ الكل في قاعدة البيانات';btn.disabled=false;}
+}
+
+// ==================================================================
+// UMRAH
+// ==================================================================
+let umrahEditId=null;
+async function saveUmrah(){
+  const data={title_ar:gv('um-title'),hotel_mecca:gv('um-mecca'),hotel_medina:gv('um-medina'),
+    nights_mecca:gi('um-mn'),nights_medina:gi('um-dn'),transport:gv('um-transport'),
+    price_jod:gf('um-price'),room_type:gv('um-room'),includes:gv('um-includes'),is_active:true};
+  try{
+    if(umrahEditId){
+      await sbFetch('umrah_packages?id=eq.'+umrahEditId,'PATCH',data);
+      showStatus('✅ تم تحديث الباقة');
+      umrahEditId=null;
+    }else{
+      data.created_at=new Date().toISOString();
+      await sbFetch('umrah_packages','POST',[data]);
+      showStatus('✅ تم نشر باقة العمرة');
+    }
+    document.getElementById('um-title').value='';document.getElementById('um-mecca').value='';
+    document.getElementById('um-medina').value='';document.getElementById('um-mn').value='4';
+    document.getElementById('um-dn').value='3';document.getElementById('um-transport').value='طائرة';
+    document.getElementById('um-price').value='';document.getElementById('um-room').value='مزدوجة';
+    document.getElementById('um-includes').value='';document.getElementById('um-edit-id').value='';
+    umrahEditId=null;
+    loadUmrah();
+  }catch(e){showStatus('❌ '+e.message,false);}
+}
+
+async function loadUmrah(){
+  try{
+    const data=await sbFetch('umrah_packages?order=price_jod&limit=30');
+    document.getElementById('umrah-list').innerHTML=data.length?
+      `<table class="hotel-table"><thead><tr><th>الباقة</th><th>مكة</th><th>المدينة</th><th>السعر</th><th></th></tr></thead><tbody>`+
+      data.map(u=>`<tr><td>${u.title_ar}</td><td>${u.hotel_mecca} (${u.nights_mecca}N)</td><td>${u.hotel_medina||'—'} (${u.nights_medina||0}N)</td><td class="final-price">${u.price_jod} JOD</td><td><button class="btn btn-blue btn-sm" onclick="editUmrah(${u.id})">✏️</button> <button class="btn btn-red btn-sm" onclick="deleteUmrah(${u.id})">🗑️</button></td></tr>`).join('')+
+      '</tbody></table>':'<p>لا توجد باقات عمرة</p>';
+  }catch(e){document.getElementById('umrah-list').innerHTML='خطأ: '+e.message;}
+}
+
+async function editUmrah(id){
+  try{
+    const u=(await sbFetch('umrah_packages?id=eq.'+id))[0];
+    if(!u) return;
+    document.getElementById('um-title').value=u.title_ar||'';
+    document.getElementById('um-mecca').value=u.hotel_mecca||'';
+    document.getElementById('um-medina').value=u.hotel_medina||'';
+    document.getElementById('um-mn').value=u.nights_mecca||4;
+    document.getElementById('um-dn').value=u.nights_medina||3;
+    document.getElementById('um-transport').value=u.transport||'طائرة';
+    document.getElementById('um-price').value=u.price_jod||'';
+    document.getElementById('um-room').value=u.room_type||'مزدوجة';
+    document.getElementById('um-includes').value=u.includes||'';
+    document.getElementById('um-edit-id').value=id;
+    umrahEditId=id;
+    showStatus('✏️ جاري تعديل باقة العمرة');
+  }catch(e){showStatus('❌ '+e.message,false);}
+}
+
+async function deleteUmrah(id){if(!confirm('حذف باقة العمرة؟'))return;await sbFetch('umrah_packages?id=eq.'+id,'DELETE');loadUmrah();showStatus('✅ تم حذف الباقة');}
+
+// ==================================================================
+// IMPORT DATA
+// ==================================================================
+function populateImportDest(){
+  const sel=document.getElementById('imp-dest');
+  sel.innerHTML=DESTINATIONS.map(d=>`<option value="${d.id}">${d.flag} ${d.name}</option>`).join('');
+}
+
+function loadImportFile(e){
+  const file=e.target.files[0];if(!file)return;
+  document.getElementById('imp-file-name').textContent=file.name;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    document.getElementById('imp-json').value=ev.target.result;
+    document.getElementById('import-status').textContent='✅ تم تحميل الملف: '+file.name;
+    document.getElementById('import-status').className='import-status ok';
+  };
+  reader.readAsText(file);
+}
+
+async function doImport(){
+  const dest=gv('imp-dest');
+  const mealPlan=gv('imp-meal')||'BB';
+  const jsonText=gv('imp-json');
+  if(!jsonText){showStatus('يرجى لصق بيانات JSON',false);return;}
+  let data;
+  try{data=JSON.parse(jsonText);}catch(e){showStatus('❌ خطأ في تنسيق JSON: '+e.message,false);return;}
+  if(!Array.isArray(data)){showStatus('❌ JSON يجب أن يكون مصفوفة []',false);return;}
+  let importedHotels=0,importedPeriods=0,errors=0;
+  const statusEl=document.getElementById('import-status');
+  statusEl.className='import-status';
+  statusEl.textContent='⏳ جاري الاستيراد...';
+  // Helper: return val if not null/undefined, else fallback
+  const nvl=(v,fb)=>v!=null?v:fb;
+  for(const item of data){
+    if(!item.name){errors++;continue;}
+    try{
+      const hotelData={destination:dest,name:item.name,stars:nvl(item.stars,3),
+        location:nvl(item.location,''),room_type:nvl(item.room_type,'Standard'),
+        meal_plan:nvl(item.meal_plan,mealPlan),child_policy:nvl(item.child_policy,''),
+        is_active:true,created_at:new Date().toISOString(),updated_at:new Date().toISOString()};
+      const hotels=await sbFetch('hotels?on_conflict=destination,name','POST',[hotelData]);
+      const hotel=Array.isArray(hotels)?hotels[0]:null;
+      if(!hotel||!hotel.id){errors++;continue;}
+      importedHotels++;
+      const periods=item.periods||[];
+      for(const p of periods){
+        try{
+          const periodData={hotel_id:hotel.id,date_from:nvl(p.date_from,null),date_to:nvl(p.date_to,null),
+            room_type:nvl(p.room_type,nvl(item.room_type,'Standard')),
+            meal_plan:nvl(p.meal_plan,nvl(item.meal_plan,mealPlan)),
+            single_usd:nvl(p.single,nvl(p.single_usd,null)),
+            double_usd:nvl(p.double,nvl(p.double_usd,null)),
+            triple_usd:nvl(p.triple,nvl(p.triple_usd,null)),
+            extra_bed_usd:nvl(p.extra_bed,nvl(p.extra_bed_usd,null)),
+            nights:nvl(p.nights,null),
+            currency:nvl(p.currency,nvl(item.currency,null)),
+            is_active:true};
+          await sbFetch('hotel_periods','POST',[periodData]);
+          importedPeriods++;
+        }catch(e){errors++;}
+      }
+    }catch(e){errors++;}
+  }
+  const msg=`✅ تم استيراد ${importedHotels} فندق و ${importedPeriods} فترة${errors?' مع '+errors+' خطأ':''}`;
+  statusEl.textContent=msg;statusEl.className='import-status '+(errors?'err':'ok');
+  showStatus(msg);
+  document.getElementById('imp-json').value='';
+}
+
+// ==================================================================
+// SETTINGS
+// ==================================================================
+async function loadSettings(){
+  try{
+    const data=await sbFetch('site_settings?select=key,value&limit=10');
+    data.forEach(s=>{
+      if(s.key==='exchange_rates'){
+        const r=JSON.parse(s.value);
+        if(r.USD) document.getElementById('cfg-usd').value=r.USD;
+        if(r.EUR) document.getElementById('cfg-eur').value=r.EUR;
+        if(r.SAR) document.getElementById('cfg-sar').value=r.SAR;
+        if(r.AED) document.getElementById('cfg-aed').value=r.AED;
+      }
+      if(s.key==='contact_info'){
+        const c=JSON.parse(s.value);
+        if(c.whatsapp) document.getElementById('cfg-wa').value=c.whatsapp;
+        if(c.phone) document.getElementById('cfg-phone').value=c.phone;
+      }
+      if(s.key==='homepage_banners'&&typeof s.value==='string'){
+        try{
+          const b=JSON.parse(s.value);
+          if(b[0]){document.getElementById('b1-ico').value=b[0].icon||'🌙';document.getElementById('b1-title').value=b[0].title||'';document.getElementById('b1-desc').value=b[0].desc||'';}
+          if(b[1]){document.getElementById('b2-ico').value=b[1].icon||'🌏';document.getElementById('b2-title').value=b[1].title||'';document.getElementById('b2-desc').value=b[1].desc||'';}
+          if(b[2]){document.getElementById('b3-ico').value=b[2].icon||'✈️';document.getElementById('b3-title').value=b[2].title||'';document.getElementById('b3-desc').value=b[2].desc||'';}
+        }catch(e){}
+      }
+    });
+  }catch(e){}
+}
+
+async function saveSettings(){
+  try{
+    const rates={USD:gf('cfg-usd'),EUR:gf('cfg-eur'),SAR:gf('cfg-sar'),AED:gf('cfg-aed')};
+    await sbFetch('site_settings','POST',[{key:'exchange_rates',value:JSON.stringify(rates),updated_at:new Date().toISOString()}]);
+    const contact={whatsapp:gv('cfg-wa'),phone:gv('cfg-phone')};
+    await sbFetch('site_settings','POST',[{key:'contact_info',value:JSON.stringify(contact),updated_at:new Date().toISOString()}]);
+    const banners=[1,2,3].map(i=>({icon:gv('b'+i+'-ico'),title:gv('b'+i+'-title'),desc:gv('b'+i+'-desc')}));
+    await sbFetch('site_settings','POST',[{key:'homepage_banners',value:JSON.stringify(banners),updated_at:new Date().toISOString()}]);
+    showStatus('✅ تم حفظ جميع الإعدادات');
+  }catch(e){showStatus('❌ '+e.message,false);}
+}
+
+// ==================================================================
+// INIT
+// ==================================================================
+function initApp(){
+  loadOverview();
+  buildHotelTabs();
+}
+</script>
+</body>
+</html>

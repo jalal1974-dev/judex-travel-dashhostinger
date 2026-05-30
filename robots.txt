@@ -1,0 +1,69 @@
+# robots.txt — AL JUDE Travel & Tourism (الجود للسياحة والسفر)
+# https://judextravel.com — Travel agency in Amman, Jordan
+# Last updated: 2026-05-23
+
+# ── Allow all crawlers on public content ──
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /admin2.html
+Disallow: /*dashboard*
+Disallow: /*dashboard*/
+Disallow: /*pricing_dashboard*
+Disallow: /*_dashboard*
+Disallow: /charter_dashboard*
+Disallow: /*.json$
+Disallow: /*.sql$
+Disallow: /*.ps1$
+Disallow: /*_clean.json
+Crawl-delay: 2
+
+# ── Major search engines ──
+User-agent: Googlebot
+Allow: /
+Disallow: /admin*.html
+Disallow: /charter_dashboard*
+Disallow: /*dashboard*
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin*.html
+Disallow: /*dashboard*
+
+User-agent: Googlebot-Image
+Allow: /
+Disallow: /admin*.html
+
+User-agent: BingPreview
+Allow: /
+
+# ── AI / LLM crawlers (GEO) — allow for AI search visibility ──
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Omgilibot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+# ── Sitemaps ──
+Sitemap: https://judextravel.com/sitemap.xml

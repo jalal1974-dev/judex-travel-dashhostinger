@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://judextravel.com/</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://judextravel.com/"/>
+    <xhtml:link rel="alternate" hreflang="ar-JO" href="https://judextravel.com/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://judextravel.com/"/>
+    <lastmod>2026-05-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://judextravel.com/packages.html</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://judextravel.com/packages.html"/>
+    <xhtml:link rel="alternate" hreflang="ar-JO" href="https://judextravel.com/packages.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://judextravel.com/packages.html"/>
+    <lastmod>2026-05-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://judextravel.com/offers.html</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://judextravel.com/offers.html"/>
+    <xhtml:link rel="alternate" hreflang="ar-JO" href="https://judextravel.com/offers.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://judextravel.com/offers.html"/>
+    <lastmod>2026-05-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://judextravel.com/hotels-transport.html</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://judextravel.com/hotels-transport.html"/>
+    <xhtml:link rel="alternate" hreflang="ar-JO" href="https://judextravel.com/hotels-transport.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://judextravel.com/hotels-transport.html"/>
+    <lastmod>2026-05-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://judextravel.com/umrah.html</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://judextravel.com/umrah.html"/>
+    <xhtml:link rel="alternate" hreflang="ar-JO" href="https://judextravel.com/umrah.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://judextravel.com/umrah.html"/>
+    <lastmod>2026-05-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://judextravel.com/flights.html</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://judextravel.com/flights.html"/>
+    <xhtml:link rel="alternate" hreflang="ar-JO" href="https://judextravel.com/flights.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://judextravel.com/flights.html"/>
+    <lastmod>2026-05-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://judextravel.com/aircraft-leasing.html</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://judextravel.com/aircraft-leasing.html"/>
+    <xhtml:link rel="alternate" hreflang="ar-JO" href="https://judextravel.com/aircraft-leasing.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://judextravel.com/aircraft-leasing.html"/>
+    <lastmod>2026-05-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://judextravel.com/contact.html</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://judextravel.com/contact.html"/>
+    <xhtml:link rel="alternate" hreflang="ar-JO" href="https://judextravel.com/contact.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://judextravel.com/contact.html"/>
+    <lastmod>2026-05-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://judextravel.com/help.html</loc>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://judextravel.com/help.html"/>
+    <xhtml:link rel="alternate" hreflang="ar-JO" href="https://judextravel.com/help.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://judextravel.com/help.html"/>
+    <lastmod>2026-05-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+</urlset>

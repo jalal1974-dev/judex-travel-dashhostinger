@@ -1,0 +1,41 @@
+# JSON data files (generated from admin)
+*_clean.json
+*_fareast*.json
+*_packages_clean.json
+
+# HTML dashboards (generated/admin tools)
+*dashboard*.html
+*dashboard*.html
+
+# PowerShell / extraction scripts
+*.ps1
+extract*.js
+fix_json.ps1
+
+# Data / pricing folders
+*/terrif/
+*/terrifs/
+thiland/
+georgia/
+aqapa/
+
+# Misc generated
+GUIDE.md
+SKILLS-REPORT.md
+skills-analyzer.js
+skills-report.json
+supabase_*.sql
+create_flight_table.sql
+fix_*.sql
+schema_hotels.sql
+hrg_hotels_data.txt
+
+# Logo / design files
+jude_logo_navy.html
+jude_logo_navy.pdf
+jude_logo_navy.txt
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
