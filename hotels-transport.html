@@ -472,6 +472,23 @@ function setSearch(val,dest){FILTERS.search=val;renderDest(dest);}
 // ════════════════════════════════════════════════════════════════
 const HT_FE_TICKET = {vietnam:349,srilanka:349,maldives:399,thailand:299,singapore:299,malaysia:299,bali:349};
 const HT_FE_PROFIT = {vietnam:30,srilanka:30,maldives:30,thailand:30,singapore:30,malaysia:30,bali:30};
+
+async function initHTFEConfig() {
+  try {
+    var res=await fetch(SB_URL+'/rest/v1/destination_configs?destination=in.(vietnam,srilanka,maldives,thailand,singapore,malaysia,bali)&select=destination,ticket_jod,profit_jod',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
+    var configs=await res.json();
+    configs.forEach(function(c) {
+      if (c.profit_jod) HT_FE_PROFIT[c.destination] = Math.round(c.profit_jod);
+    });
+  } catch(e) { console.warn('HT FE config fallback to defaults', e); }
+  HT_VIETNAM_PACKAGES.forEach(function(p){p.double+=HT_FE_PROFIT.vietnam;p.single+=HT_FE_PROFIT.vietnam;});
+  HT_SRI_LANKA_PACKAGES.forEach(function(p){p.double+=HT_FE_PROFIT.srilanka;p.single+=HT_FE_PROFIT.srilanka;});
+  HT_MALDIVES_PACKAGES.forEach(function(p){p.double+=HT_FE_PROFIT.maldives;p.single+=HT_FE_PROFIT.maldives;});
+  HT_THAILAND_PACKAGES.forEach(function(p){p.double+=HT_FE_PROFIT.thailand;p.single+=HT_FE_PROFIT.thailand;});
+  HT_SINGAPORE_PACKAGES.forEach(function(p){p.double+=HT_FE_PROFIT.singapore;p.single+=HT_FE_PROFIT.singapore;});
+  HT_MALAYSIA_PACKAGES.forEach(function(p){p.double+=HT_FE_PROFIT.malaysia;p.single+=HT_FE_PROFIT.malaysia;});
+  HT_BALI_PACKAGES.forEach(function(p){p.double+=HT_FE_PROFIT.bali;p.single+=HT_FE_PROFIT.bali;});
+}
 // ════════════════════════════════════════════════════════════════
 // VIETNAM RICH PACKAGE DATA (dashboard-style with PDF itinerary)
 // ════════════════════════════════════════════════════════════════
@@ -507,7 +524,6 @@ var HT_VIETNAM_PACKAGES = [
    single:555,double:555,room:"Superior / Ocean View / 1BR Villa / Deluxe",
    location:"HCM - Phu Quoc",nights:8,pdf:"itineraries/vn/vn_pkg1.pdf"}
 ];
-HT_VIETNAM_PACKAGES.forEach(p=>{p.double+=HT_FE_PROFIT.vietnam;p.single+=HT_FE_PROFIT.vietnam;});
 var HT_VN_ACTIVE_ID = null;
 var HT_VN_ACTIVE_TAB = 'pricing';
 function htVnShowDetail(id){
@@ -659,7 +675,6 @@ var HT_SRI_LANKA_PACKAGES = [
    single:458,double:458,room:"Standard Pool View / Deluxe / Standard City View",
    location:"Negombo - Kandy - Colombo",nights:7,pdf:"itineraries/sl/sl_pkg4.pdf"}
 ];
-HT_SRI_LANKA_PACKAGES.forEach(p=>{p.double+=HT_FE_PROFIT.srilanka;p.single+=HT_FE_PROFIT.srilanka;});
 var HT_SL_ACTIVE_ID = null;
 var HT_SL_ACTIVE_TAB = 'pricing';
 function htSlShowDetail(id){
@@ -812,7 +827,6 @@ var HT_MALDIVES_PACKAGES = [
    single:726,double:726,room:"Overwater Villa Deluxe w Pool",
    location:"Maldives",nights:4,pdf:"itineraries/mv/mv_pkg4.pdf"}
 ];
-HT_MALDIVES_PACKAGES.forEach(p=>{p.double+=HT_FE_PROFIT.maldives;p.single+=HT_FE_PROFIT.maldives;});
 var HT_MV_ACTIVE_ID = null;
 var HT_MV_ACTIVE_TAB = 'pricing';
 function htMvShowDetail(id){
@@ -980,7 +994,6 @@ var HT_THAILAND_PACKAGES = [
    single:664,double:664,room:"Luxury Honeymoon",
    location:"Bangkok - Phuket",nights:8,pdf:"itineraries/th/th_pkg7.pdf"}
 ];
-HT_THAILAND_PACKAGES.forEach(p=>{p.double+=HT_FE_PROFIT.thailand;p.single+=HT_FE_PROFIT.thailand;});
 var HT_TH_ACTIVE_ID = null;
 var HT_TH_ACTIVE_TAB = 'pricing';
 function htThShowDetail(id){
@@ -1133,7 +1146,6 @@ var HT_SINGAPORE_PACKAGES = [
    single:675,double:675,room:"Standard",
    location:"Singapore",nights:5,pdf:"itineraries/sg/sg_pkg4.pdf"}
 ];
-HT_SINGAPORE_PACKAGES.forEach(p=>{p.double+=HT_FE_PROFIT.singapore;p.single+=HT_FE_PROFIT.singapore;});
 var HT_SG_ACTIVE_ID = null;
 var HT_SG_ACTIVE_TAB = 'pricing';
 function htSgShowDetail(id){
@@ -1304,9 +1316,8 @@ var HT_MALAYSIA_PACKAGES = [
    arabic:"صن واي ريزورت سيلانغور + ويستن سبا لنكاوي + بولمان كوالالمبور",
    subtitle:"Selangor \u2192 Langkawi \u2192 KL",route:"Amman \u2194 Kuala Lumpur",stars:5,meal:"BB",
    single:859,double:859,room:"Deluxe / Sea-view Villa / Deluxe",
-   location:"Selangor - Langkawi - KL",nights:8,pdf:"itineraries/my/my_pkg8.pdf"}
+    location:"Selangor - Langkawi - KL",nights:8,pdf:"itineraries/my/my_pkg8.pdf"}
 ];
-HT_MALAYSIA_PACKAGES.forEach(p=>{p.double+=HT_FE_PROFIT.malaysia;p.single+=HT_FE_PROFIT.malaysia;});
 var HT_MY_ACTIVE_ID = null;
 var HT_MY_ACTIVE_TAB = 'pricing';
 function htMyShowDetail(id){
@@ -1477,9 +1488,8 @@ var HT_BALI_PACKAGES = [
    arabic:"لو إيميننس بونشاك + ديسكفري كارتيكا + واكانغا + ويندهام كازابلانكا جاكرتا",
    subtitle:"Bonchak \u2192 Bali \u2192 Jakarta",route:"Amman \u2194 Jakarta",stars:5,meal:"BB",
    single:641,double:641,room:"Multi-City Luxury",
-   location:"Bonchak - Bali - Jakarta",nights:8,pdf:"itineraries/bi/bi_pkg8.pdf"}
+    location:"Bonchak - Bali - Jakarta",nights:8,pdf:"itineraries/bi/bi_pkg8.pdf"}
 ];
-HT_BALI_PACKAGES.forEach(p=>{p.double+=HT_FE_PROFIT.bali;p.single+=HT_FE_PROFIT.bali;});
 var HT_BI_ACTIVE_ID = null;
 var HT_BI_ACTIVE_TAB = 'pricing';
 function htBiShowDetail(id){
@@ -1823,7 +1833,7 @@ renderDest = function(dest){
   _htOrigRenderDest(dest);
 };
 
-loadData();
+initHTFEConfig().then(function(){ loadData(); });
 
 // Re-render when currency changes
 document.addEventListener('DOMContentLoaded',()=>{

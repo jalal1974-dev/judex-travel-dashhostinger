@@ -817,7 +817,23 @@ const GEORGIA_PACKAGES = [
 // Update these values when admin2.html ticket/profit changes
 const FE_TICKET = {vietnam:349,srilanka:349,maldives:399,thailand:299,singapore:299,malaysia:299,bali:349};
 const FE_PROFIT = {vietnam:30,srilanka:30,maldives:30,thailand:30,singapore:30,malaysia:30,bali:30};
-function fePrice(base,dest){return (base||0)+(FE_TICKET[dest]||0)+(FE_PROFIT[dest]||0);}
+
+async function initFEConfig() {
+  try {
+    const configs = await sbGet('destination_configs?destination=in.(vietnam,srilanka,maldives,thailand,singapore,malaysia,bali)&select=destination,ticket_jod,profit_jod');
+    configs.forEach(function(c) {
+      if (c.ticket_jod) FE_TICKET[c.destination] = Math.round(c.ticket_jod);
+      if (c.profit_jod) FE_PROFIT[c.destination] = Math.round(c.profit_jod);
+    });
+  } catch(e) { console.warn('FE config fallback to defaults', e); }
+  VIETNAM_PACKAGES.forEach(function(p){p.double+=FE_TICKET.vietnam+FE_PROFIT.vietnam;p.single+=FE_TICKET.vietnam+FE_PROFIT.vietnam;});
+  SRI_LANKA_PACKAGES.forEach(function(p){p.double+=FE_TICKET.srilanka+FE_PROFIT.srilanka;p.single+=FE_TICKET.srilanka+FE_PROFIT.srilanka;});
+  MALDIVES_PACKAGES.forEach(function(p){p.double+=FE_TICKET.maldives+FE_PROFIT.maldives;p.single+=FE_TICKET.maldives+FE_PROFIT.maldives;});
+  THAILAND_PACKAGES.forEach(function(p){p.double+=FE_TICKET.thailand+FE_PROFIT.thailand;p.single+=FE_TICKET.thailand+FE_PROFIT.thailand;});
+  SINGAPORE_PACKAGES.forEach(function(p){p.double+=FE_TICKET.singapore+FE_PROFIT.singapore;p.single+=FE_TICKET.singapore+FE_PROFIT.singapore;});
+  MALAYSIA_PACKAGES.forEach(function(p){p.double+=FE_TICKET.malaysia+FE_PROFIT.malaysia;p.single+=FE_TICKET.malaysia+FE_PROFIT.malaysia;});
+  BALI_PACKAGES.forEach(function(p){p.double+=FE_TICKET.bali+FE_PROFIT.bali;p.single+=FE_TICKET.bali+FE_PROFIT.bali;});
+}
 // ════════════════════════════════════════════════════════════════
 // VIETNAM RICH PACKAGE DATA (dashboard-style with PDF itinerary)
 // ════════════════════════════════════════════════════════════════
@@ -853,7 +869,6 @@ const VIETNAM_PACKAGES = [
    single:555,double:555,room:"Superior / Ocean View / 1BR Villa / Deluxe",
    location:"HCM - Phu Quoc",nights:8,pdf:"itineraries/vn/vn_pkg1.pdf"}
 ];
-VIETNAM_PACKAGES.forEach(p=>{p.double+=FE_TICKET.vietnam+FE_PROFIT.vietnam;p.single+=FE_TICKET.vietnam+FE_PROFIT.vietnam;});
 let VN_ACTIVE_ID = null;
 let VN_ACTIVE_TAB = 'pricing';
 function vnShowDetail(id){
@@ -1005,7 +1020,6 @@ const SRI_LANKA_PACKAGES = [
    single:458,double:458,room:"Standard Pool View / Deluxe / Standard City View",
    location:"Negombo - Kandy - Colombo",nights:7,pdf:"itineraries/sl/sl_pkg4.pdf"}
 ];
-SRI_LANKA_PACKAGES.forEach(p=>{p.double+=FE_TICKET.srilanka+FE_PROFIT.srilanka;p.single+=FE_TICKET.srilanka+FE_PROFIT.srilanka;});
 let SL_ACTIVE_ID = null;
 let SL_ACTIVE_TAB = 'pricing';
 function slShowDetail(id){
@@ -1157,7 +1171,6 @@ const MALDIVES_PACKAGES = [
    single:726,double:726,room:"Overwater Villa Deluxe w Pool",
    location:"Maldives",nights:4,pdf:"itineraries/mv/mv_pkg4.pdf"}
 ];
-MALDIVES_PACKAGES.forEach(p=>{p.double+=FE_TICKET.maldives+FE_PROFIT.maldives;p.single+=FE_TICKET.maldives+FE_PROFIT.maldives;});
 let MV_ACTIVE_ID = null;
 let MV_ACTIVE_TAB = 'pricing';
 function mvShowDetail(id){
@@ -1324,7 +1337,6 @@ const THAILAND_PACKAGES = [
    single:664,double:664,room:"Luxury Honeymoon",
    location:"Bangkok - Phuket",nights:8,pdf:"itineraries/th/th_pkg7.pdf"}
 ];
-THAILAND_PACKAGES.forEach(p=>{p.double+=FE_TICKET.thailand+FE_PROFIT.thailand;p.single+=FE_TICKET.thailand+FE_PROFIT.thailand;});
 let TH_ACTIVE_ID = null;
 let TH_ACTIVE_TAB = 'pricing';
 function thShowDetail(id){
@@ -1476,7 +1488,6 @@ const SINGAPORE_PACKAGES = [
    single:675,double:675,room:"Standard",
    location:"Singapore",nights:5,pdf:"itineraries/sg/sg_pkg4.pdf"}
 ];
-SINGAPORE_PACKAGES.forEach(p=>{p.double+=FE_TICKET.singapore+FE_PROFIT.singapore;p.single+=FE_TICKET.singapore+FE_PROFIT.singapore;});
 let SG_ACTIVE_ID = null;
 let SG_ACTIVE_TAB = 'pricing';
 function sgShowDetail(id){
@@ -1648,7 +1659,6 @@ const MALAYSIA_PACKAGES = [
    single:859,double:859,room:"Deluxe / Sea-view Villa / Deluxe",
    location:"Selangor - Langkawi - KL",nights:8,pdf:"itineraries/my/my_pkg8.pdf"}
 ];
-MALAYSIA_PACKAGES.forEach(p=>{p.double+=FE_TICKET.malaysia+FE_PROFIT.malaysia;p.single+=FE_TICKET.malaysia+FE_PROFIT.malaysia;});
 let MY_ACTIVE_ID = null;
 let MY_ACTIVE_TAB = 'pricing';
 function myShowDetail(id){
@@ -1820,7 +1830,6 @@ const BALI_PACKAGES = [
    single:641,double:641,room:"Multi-City Luxury",
    location:"Bonchak - Bali - Jakarta",nights:8,pdf:"itineraries/bi/bi_pkg8.pdf"}
 ];
-BALI_PACKAGES.forEach(p=>{p.double+=FE_TICKET.bali+FE_PROFIT.bali;p.single+=FE_TICKET.bali+FE_PROFIT.bali;});
 let BI_ACTIVE_ID = null;
 let BI_ACTIVE_TAB = 'pricing';
 function biShowDetail(id){
@@ -2534,7 +2543,7 @@ renderDest = function(dest){
   _origRenderDest(dest);
 };
 
-loadPackages();
+initFEConfig().then(function(){ loadPackages(); });
 
 document.addEventListener('DOMContentLoaded',()=>{
   if(typeof LC!=='undefined'){
