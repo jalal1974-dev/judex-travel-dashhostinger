@@ -835,6 +835,48 @@ async function initFEConfig() {
   BALI_PACKAGES.forEach(function(p){p.double+=FE_TICKET.bali+FE_PROFIT.bali;p.single+=FE_TICKET.bali+FE_PROFIT.bali;});
 }
 // ════════════════════════════════════════════════════════════════
+// FAR EAST PRINT/PDF HELPERS — renders PDF pages as canvases for combined output
+// ════════════════════════════════════════════════════════════════
+async function feRenderPDF(pdfUrl, container) {
+  try {
+    if (typeof pdfjsLib==='undefined') { container.innerHTML='<div style="text-align:center;padding:20px"><a href="'+pdfUrl+'" target="_blank" style="color:var(--gold);font-weight:700">📄 Open Itinerary PDF</a></div>'; return; }
+    var pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+    container.innerHTML = '';
+    for (var i = 1; i <= pdf.numPages; i++) {
+      var page = await pdf.getPage(i);
+      var vp = page.getViewport({scale: 1.5});
+      var canvas = document.createElement('canvas');
+      canvas.width = vp.width;
+      canvas.height = vp.height;
+      canvas.style.cssText = 'width:100%;max-width:800px;height:auto;margin:0 auto 10px;display:block;border:1px solid #ddd;border-radius:6px';
+      await page.render({canvasContext: canvas.getContext('2d'), viewport: vp}).promise;
+      container.appendChild(canvas);
+    }
+  } catch(e) {
+    container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted)">⚠️ Could not load itinerary. <a href="'+pdfUrl+'" target="_blank" style="color:var(--gold)">Open PDF directly</a></div>';
+  }
+}
+async function _fePrintAction(id, title, prefix, pkgs, isPdf) {
+  var itinTab = document.getElementById(prefix+'-tab-itinerary');
+  var origHTML = itinTab ? itinTab.innerHTML : '';
+  var pkg = pkgs.find(function(p){return p.id===id;});
+  var showFn = window[prefix+'ShowAllTabs'];
+  var restoreFn = window[prefix+'RestoreTabs'];
+  if (showFn) showFn();
+  if (itinTab && pkg && pkg.pdf) {
+    itinTab.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted)">⏳ Loading itinerary pages...</div>';
+    await feRenderPDF(pkg.pdf, itinTab);
+  }
+  setTimeout(function(){
+    if (isPdf) PJ.downloadPDF(document.getElementById(prefix+'-print-area-'+id), title);
+    else PJ.printElement(document.getElementById(prefix+'-print-area-'+id), title);
+    setTimeout(function(){
+      if (itinTab) itinTab.innerHTML = origHTML;
+      if (restoreFn) restoreFn();
+    }, 500);
+  }, 200);
+}
+// ════════════════════════════════════════════════════════════════
 // VIETNAM RICH PACKAGE DATA (dashboard-style with PDF itinerary)
 // ════════════════════════════════════════════════════════════════
 const VIETNAM_PACKAGES = [
@@ -890,20 +932,8 @@ function vnRestoreTabs(){
     if(el) el.style.display=(id==='vn-tab-pricing'?t==='pricing':id==='vn-tab-itinerary'?t==='itinerary':t==='info')?'block':'none';
   });
 }
-function vnPrintPkg(id,title){
-  vnShowAllTabs();
-  setTimeout(function(){
-    PJ.printElement(document.getElementById('vn-print-area-'+id),title);
-    setTimeout(vnRestoreTabs,200);
-  },50);
-}
-function vnPdfPkg(id,title){
-  vnShowAllTabs();
-  setTimeout(function(){
-    PJ.downloadPDF(document.getElementById('vn-print-area-'+id),title);
-    setTimeout(vnRestoreTabs,200);
-  },50);
-}
+function vnPrintPkg(id,title){_fePrintAction(id,title,'vn',VIETNAM_PACKAGES,false);}
+function vnPdfPkg(id,title){_fePrintAction(id,title,'vn',VIETNAM_PACKAGES,true);}
 function vnRenderDetail(){
   var panel = document.getElementById('vn-detail');
   if(!VN_ACTIVE_ID){panel.style.display='none';return;}
@@ -1041,20 +1071,8 @@ function slRestoreTabs(){
     if(el) el.style.display=(id==='sl-tab-pricing'?t==='pricing':id==='sl-tab-itinerary'?t==='itinerary':t==='info')?'block':'none';
   });
 }
-function slPrintPkg(id,title){
-  slShowAllTabs();
-  setTimeout(function(){
-    PJ.printElement(document.getElementById('sl-print-area-'+id),title);
-    setTimeout(slRestoreTabs,200);
-  },50);
-}
-function slPdfPkg(id,title){
-  slShowAllTabs();
-  setTimeout(function(){
-    PJ.downloadPDF(document.getElementById('sl-print-area-'+id),title);
-    setTimeout(slRestoreTabs,200);
-  },50);
-}
+function slPrintPkg(id,title){_fePrintAction(id,title,'sl',SRI_LANKA_PACKAGES,false);}
+function slPdfPkg(id,title){_fePrintAction(id,title,'sl',SRI_LANKA_PACKAGES,true);}
 function slRenderDetail(){
   var panel = document.getElementById('sl-detail');
   if(!SL_ACTIVE_ID){panel.style.display='none';return;}
@@ -1192,20 +1210,8 @@ function mvRestoreTabs(){
     if(el) el.style.display=(id==='mv-tab-pricing'?t==='pricing':id==='mv-tab-itinerary'?t==='itinerary':t==='info')?'block':'none';
   });
 }
-function mvPrintPkg(id,title){
-  mvShowAllTabs();
-  setTimeout(function(){
-    PJ.printElement(document.getElementById('mv-print-area-'+id),title);
-    setTimeout(mvRestoreTabs,200);
-  },50);
-}
-function mvPdfPkg(id,title){
-  mvShowAllTabs();
-  setTimeout(function(){
-    PJ.downloadPDF(document.getElementById('mv-print-area-'+id),title);
-    setTimeout(mvRestoreTabs,200);
-  },50);
-}
+function mvPrintPkg(id,title){_fePrintAction(id,title,'mv',MALDIVES_PACKAGES,false);}
+function mvPdfPkg(id,title){_fePrintAction(id,title,'mv',MALDIVES_PACKAGES,true);}
 function mvRenderDetail(){
   var panel = document.getElementById('mv-detail');
   if(!MV_ACTIVE_ID){panel.style.display='none';return;}
@@ -1358,20 +1364,8 @@ function thRestoreTabs(){
     if(el) el.style.display=(id==='th-tab-pricing'?t==='pricing':id==='th-tab-itinerary'?t==='itinerary':t==='info')?'block':'none';
   });
 }
-function thPrintPkg(id,title){
-  thShowAllTabs();
-  setTimeout(function(){
-    PJ.printElement(document.getElementById('th-print-area-'+id),title);
-    setTimeout(thRestoreTabs,200);
-  },50);
-}
-function thPdfPkg(id,title){
-  thShowAllTabs();
-  setTimeout(function(){
-    PJ.downloadPDF(document.getElementById('th-print-area-'+id),title);
-    setTimeout(thRestoreTabs,200);
-  },50);
-}
+function thPrintPkg(id,title){_fePrintAction(id,title,'th',THAILAND_PACKAGES,false);}
+function thPdfPkg(id,title){_fePrintAction(id,title,'th',THAILAND_PACKAGES,true);}
 function thRenderDetail(){
   var panel = document.getElementById('th-detail');
   if(!TH_ACTIVE_ID){panel.style.display='none';return;}
@@ -1509,20 +1503,8 @@ function sgRestoreTabs(){
     if(el) el.style.display=(id==='sg-tab-pricing'?t==='pricing':id==='sg-tab-itinerary'?t==='itinerary':t==='info')?'block':'none';
   });
 }
-function sgPrintPkg(id,title){
-  sgShowAllTabs();
-  setTimeout(function(){
-    PJ.printElement(document.getElementById('sg-print-area-'+id),title);
-    setTimeout(sgRestoreTabs,200);
-  },50);
-}
-function sgPdfPkg(id,title){
-  sgShowAllTabs();
-  setTimeout(function(){
-    PJ.downloadPDF(document.getElementById('sg-print-area-'+id),title);
-    setTimeout(sgRestoreTabs,200);
-  },50);
-}
+function sgPrintPkg(id,title){_fePrintAction(id,title,'sg',SINGAPORE_PACKAGES,false);}
+function sgPdfPkg(id,title){_fePrintAction(id,title,'sg',SINGAPORE_PACKAGES,true);}
 function sgRenderDetail(){
   var panel = document.getElementById('sg-detail');
   if(!SG_ACTIVE_ID){panel.style.display='none';return;}
@@ -1680,20 +1662,8 @@ function myRestoreTabs(){
     if(el) el.style.display=(id==='my-tab-pricing'?t==='pricing':id==='my-tab-itinerary'?t==='itinerary':t==='info')?'block':'none';
   });
 }
-function myPrintPkg(id,title){
-  myShowAllTabs();
-  setTimeout(function(){
-    PJ.printElement(document.getElementById('my-print-area-'+id),title);
-    setTimeout(myRestoreTabs,200);
-  },50);
-}
-function myPdfPkg(id,title){
-  myShowAllTabs();
-  setTimeout(function(){
-    PJ.downloadPDF(document.getElementById('my-print-area-'+id),title);
-    setTimeout(myRestoreTabs,200);
-  },50);
-}
+function myPrintPkg(id,title){_fePrintAction(id,title,'my',MALAYSIA_PACKAGES,false);}
+function myPdfPkg(id,title){_fePrintAction(id,title,'my',MALAYSIA_PACKAGES,true);}
 function myRenderDetail(){
   var panel = document.getElementById('my-detail');
   if(!MY_ACTIVE_ID){panel.style.display='none';return;}
@@ -1851,20 +1821,8 @@ function biRestoreTabs(){
     if(el) el.style.display=(id==='bi-tab-pricing'?t==='pricing':id==='bi-tab-itinerary'?t==='itinerary':t==='info')?'block':'none';
   });
 }
-function biPrintPkg(id,title){
-  biShowAllTabs();
-  setTimeout(function(){
-    PJ.printElement(document.getElementById('bi-print-area-'+id),title);
-    setTimeout(biRestoreTabs,200);
-  },50);
-}
-function biPdfPkg(id,title){
-  biShowAllTabs();
-  setTimeout(function(){
-    PJ.downloadPDF(document.getElementById('bi-print-area-'+id),title);
-    setTimeout(biRestoreTabs,200);
-  },50);
-}
+function biPrintPkg(id,title){_fePrintAction(id,title,'bi',BALI_PACKAGES,false);}
+function biPdfPkg(id,title){_fePrintAction(id,title,'bi',BALI_PACKAGES,true);}
 function biRenderDetail(){
   var panel = document.getElementById('bi-detail');
   if(!BI_ACTIVE_ID){panel.style.display='none';return;}
@@ -2564,6 +2522,8 @@ document.addEventListener('DOMContentLoaded',()=>{
 <script src="lang-currency.js"></script>
 <script src="booking.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
 <script src="print-pdf.js"></script>
 <script>PJ.injectPrintCSS();</script>
 </body>
