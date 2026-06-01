@@ -171,6 +171,7 @@ footer a{color:var(--gold);text-decoration:none;word-break:break-word}
       <a href="hotels-transport.html" class="active">فنادق ومواصلات</a>
       <a href="umrah.html">العمرة</a>
       <a href="flights.html">تذاكر تشارتر من الأردن</a>
+      <a href="flight-search.html" style="color:#C9A84C;font-weight:800;">✈ بحث عن رحلات</a>
       <a href="aircraft-leasing.html">تأجير الطائرات</a>
       <a href="contact.html">اتصل بنا</a>
     </div>
@@ -465,6 +466,1350 @@ function setFilter(key,val,btn,dest){
   renderDest(dest);
 }
 function setSearch(val,dest){FILTERS.search=val;renderDest(dest);}
+
+// ════════════════════════════════════════════════════════════════
+// VIETNAM RICH PACKAGE DATA (dashboard-style with PDF itinerary)
+// ════════════════════════════════════════════════════════════════
+var HT_VIETNAM_PACKAGES = [
+  {id:1,title:"Fraser Suites Hanoi + Windham Golden Bay Da Nang + The Five Residences Hanoi",
+   arabic:"فريزر سويتس + ويندهام جولدن باي + ذا فايف ريزيدنسز",
+   subtitle:"Hanoi (3) \u2192 Da Nang (3) \u2192 Hanoi (2)",route:"Amman \u2194 Hanoi",stars:5,meal:"BB",
+   single:443,double:443,room:"Executive Studio / 2BR Corner Suite / 2BR Superior",
+   location:"Hanoi - Da Nang",nights:8,pdf:"itineraries/vn/vn_pkg5.pdf"},
+  {id:2,title:"Flora Center Hotel + Balcona Da Nang + FV Hotel An Hanoi",
+   arabic:"فلورا سنتر + بالكونا دا نانغ + إف في هوتل آن هانوي",
+   subtitle:"Hanoi (3) \u2192 Da Nang (3) \u2192 Hanoi (2)",route:"Amman \u2194 Hanoi",stars:4,meal:"BB",
+   single:408,double:408,room:"Deluxe x2 / Partial Sea View Deluxe x2 / Deluxe x2",
+   location:"Hanoi - Da Nang",nights:8,pdf:"itineraries/vn/vn_pkg6.pdf"},
+  {id:3,title:"FV Hotel An Hanoi + Four Points Da Nang + Fusion Villas + Movenpick Le Vinhome",
+   arabic:"إف في هانوي + فور بوينتس دا نانغ + فيوجن فيلاز + موفنبيك",
+   subtitle:"Luxury Hanoi (2) \u2192 Da Nang (4) \u2192 Hanoi (2)",route:"Amman \u2194 Hanoi",stars:5,meal:"BB",
+   single:700,double:700,room:"Studio Deluxe / Panoramic Sea View / Suite with Pool / Deluxe",
+   location:"Hanoi - Da Nang",nights:8,pdf:"itineraries/vn/vn_pkg3.pdf"},
+  {id:4,title:"FV Hotel An Hanoi + Balcona Da Nang + Windham Garden Hanoi",
+   arabic:"إف في هانوي + بالكونا دا نانغ + ويندهام غاردن هانوي",
+   subtitle:"Hanoi (3) \u2192 Da Nang (3) \u2192 Hanoi (2)",route:"Amman \u2194 Hanoi",stars:4,meal:"BB",
+   single:484,double:484,room:"Deluxe / Partial Sea View Deluxe / Deluxe",
+   location:"Hanoi - Da Nang",nights:8,pdf:"itineraries/vn/vn_pkg2.pdf"},
+  {id:5,title:"La Siesta Saigon + Wyndham Grand Phu Quoc + Movenpick Villas Phu Quoc + La Villa Saigon",
+   arabic:"لا سييستا سايغون + ويندهام غاند فو كوك + موفنبيك فيلا + لا فيلا",
+   subtitle:"HCM (2) \u2192 Phu Quoc (4) \u2192 HCM (2)",route:"Amman \u2194 Ho Chi Minh",stars:5,meal:"BB",
+   single:700,double:700,room:"Superior / Ocean View / 1BR Villa w Pool / Deluxe",
+   location:"HCM - Phu Quoc",nights:8,pdf:"itineraries/vn/vn_pkg4.pdf"},
+  {id:6,title:"Park Royal Saigon + Sol Bay Melia Phu Quoc + Melia Vinpearl + Eastin Grand Saigon",
+   arabic:"بارك رويال سايغون + سول باي ميليا + ميليا فينبيرل + إيستن غراند",
+   subtitle:"HCM (2) \u2192 Phu Quoc (4) \u2192 HCM (2)",route:"Amman \u2194 Ho Chi Minh",stars:4,meal:"BB",
+   single:555,double:555,room:"Superior / Ocean View / 1BR Villa / Deluxe",
+   location:"HCM - Phu Quoc",nights:8,pdf:"itineraries/vn/vn_pkg1.pdf"}
+];
+var HT_VN_ACTIVE_ID = null;
+var HT_VN_ACTIVE_TAB = 'pricing';
+function htVnShowDetail(id){
+  HT_VN_ACTIVE_ID = HT_VN_ACTIVE_ID===id?null:id;
+  HT_VN_ACTIVE_TAB = 'pricing';
+  renderDest('vietnam');
+}
+function htVnSwitchTab(t){HT_VN_ACTIVE_TAB=t;htVnRenderDetail();}
+function htVnCloseDetail(){HT_VN_ACTIVE_ID=null;renderDest('vietnam');}
+function htVnShowAllTabs(){
+  ['ht-vn-tab-pricing','ht-vn-tab-itinerary','ht-vn-tab-info'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.style.display='block';
+  });
+}
+function htVnRestoreTabs(){
+  var t=HT_VN_ACTIVE_TAB;
+  ['ht-vn-tab-pricing','ht-vn-tab-itinerary','ht-vn-tab-info'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.style.display=(id==='ht-vn-tab-pricing'?t==='pricing':id==='ht-vn-tab-itinerary'?t==='itinerary':t==='info')?'block':'none';
+  });
+}
+function htVnPrintPkg(id,title){
+  htVnShowAllTabs();
+  setTimeout(function(){
+    PJ.printElement(document.getElementById('ht-vn-print-area-'+id),title);
+    setTimeout(htVnRestoreTabs,200);
+  },50);
+}
+function htVnPdfPkg(id,title){
+  htVnShowAllTabs();
+  setTimeout(function(){
+    PJ.downloadPDF(document.getElementById('ht-vn-print-area-'+id),title);
+    setTimeout(htVnRestoreTabs,200);
+  },50);
+}
+function htVnRenderDetail(){
+  var panel = document.getElementById('ht-vn-detail');
+  if(!HT_VN_ACTIVE_ID){panel.style.display='none';return;}
+  panel.style.display='block';
+  var p = HT_VIETNAM_PACKAGES.find(function(x){return x.id===HT_VN_ACTIVE_ID;});
+  var fmt = function(v){return (v||0).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0})+' JOD';};
+  var starsStr = function(s){return '\u2605'.repeat(s);};
+  var pricingHtml = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">'+
+    '<thead><tr>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Hotel(s) \u00b7 الفندق</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Stars</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Room Type</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Meal</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Double (p.p)</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Single</th>'+
+      '<th style="text-align:center;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px"></th>'+
+    '</tr></thead><tbody>'+
+    '<tr>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:11px;font-weight:500;line-height:1.3">'+p.title+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);color:var(--gold);font-size:11px" dir="ltr">'+starsStr(p.stars)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:10px;color:var(--muted)">'+p.room+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border)"><span style="background:rgba(39,174,96,.15);color:var(--green);padding:2px 8px;border-radius:4px;font-size:10px">'+p.meal+'</span></td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:700;color:var(--gold)">'+fmt(p.double)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:700">'+fmt(p.single)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);text-align:center"><button onclick="openBooking({type:\'package\',name:\''+p.title.replace(/'/g,"\\'")+'\',destination:\'Vietnam\',nights:'+p.nights+',price:\''+p.double+'\'})" style="padding:4px 10px;background:#25D366;border:none;border-radius:5px;color:#fff;font-family:Cairo,sans-serif;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap">\uD83D\uDCF2 Book</button></td>'+
+    '</tr></tbody></table></div>'+
+    '<div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.8">\u2605 All prices in JOD per person \u00b7 '+p.nights+' nights / '+(p.nights+1)+' days \u00b7 Route: '+p.route+'</div>';
+  var pdfPath = p.pdf;
+  var itinHtml = '<div style="text-align:center;padding:10px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:10px;margin-bottom:12px;font-size:12px">\uD83D\uDCC4 <strong>Detailed Itinerary</strong> \u2014 click below to view or download</div>'+
+    '<iframe src="'+pdfPath+'" style="width:100%;height:600px;border:1px solid var(--border);border-radius:10px;background:#fff" title="Vietnam Itinerary PDF"></iframe>'+
+    '<div style="margin-top:10px;text-align:center"><a href="'+pdfPath+'" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:var(--gold);color:#fff;border-radius:8px;text-decoration:none;font-size:12px;font-weight:700">\uD83D\uDCE5 Download PDF</a></div>';
+  var infoHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:16px">'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Duration</div>'+
+      '<div style="font-weight:700;font-size:13px">'+(p.nights+1)+' days / '+p.nights+' nights</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Flight Route</div>'+
+      '<div style="font-weight:700;font-size:12px">'+p.route+'</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Accommodation</div>'+
+      '<div style="font-weight:700;font-size:11px;line-height:1.4">'+p.location+'</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Meal Plan</div>'+
+      '<div style="font-weight:700">'+p.meal+'</div></div></div>'+
+    '<div style="font-weight:700;color:var(--gold);margin-bottom:8px;font-size:12px">What\'s Included</div>'+
+    '<ul style="list-style:none;padding:0;margin:0 0 14px">'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Round-trip flights (Amman \u2194 Vietnam)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Airport transfers (arrival and departure)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Hotel accommodation for the full duration</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Meals: '+p.meal+' (Breakfast)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Arabic-speaking professional tour guide</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Daily tours in modern AC vehicles</li>'+
+    '</ul>'+
+    '<div style="font-weight:700;color:var(--muted);margin-bottom:8px;font-size:12px">Not Included</div>'+
+    '<ul style="list-style:none;padding:0;margin:0 0 14px">'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Attraction entrance fees</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Meals outside the hotel</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Optional excursions</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Health insurance (recommended before travel)</li>'+
+    '</ul>';
+  var vId = p.id;
+  var tabBtns = [
+    {id:'pricing',label:'Pricing',icon:'\uD83D\uDCB0'},
+    {id:'itinerary',label:'Itinerary (PDF)',icon:'\uD83D\uDCC4'},
+    {id:'info',label:'Details & Inclusions',icon:'\u2139\uFE0F'}
+  ];
+  panel.innerHTML = '<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;margin-top:16px;overflow:hidden" id="ht-vn-print-area-'+vId+'">'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--card2);border-bottom:1px solid var(--border)">'+
+      '<div>'+
+        '<div style="font-size:10px;color:var(--muted)">Package '+p.id+'</div>'+
+        '<div style="font-size:15px;font-weight:800">'+p.title+'</div>'+
+        '<div style="font-size:12px;color:var(--gold)">'+p.arabic+'</div>'+
+        '<div style="font-size:11px;color:var(--muted);margin-top:2px">'+p.subtitle+'</div>'+
+      '</div>'+
+      '<div style="display:flex;gap:6px;align-items:center">'+
+        '<button onclick="htVnPrintPkg('+vId+',\''+p.title.replace(/'/g,"\\'")+' - '+p.arabic+'\')" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:10px">\uD83D\uDDA8\uFE0F Print</button>'+
+        '<button onclick="htVnPdfPkg('+vId+',\''+p.title.replace(/'/g,"\\'")+' - '+p.arabic+'\')" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:10px">\uD83D\uDCC4 PDF</button>'+
+        '<button onclick="htVnCloseDetail()" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:11px">\u2715</button>'+
+      '</div>'+
+    '</div>'+
+    '<div style="display:flex;gap:4px;padding:0 18px;background:var(--dark3);border-bottom:1px solid var(--border)">'+
+      tabBtns.map(function(t){return '<button onclick="htVnSwitchTab(\''+t.id+'\')" style="padding:8px 14px;border:none;background:none;cursor:pointer;font-family:Cairo,sans-serif;font-size:12px;font-weight:600;color:'+(HT_VN_ACTIVE_TAB===t.id?'var(--gold)':'var(--muted)')+';border-bottom:2px solid '+(HT_VN_ACTIVE_TAB===t.id?'var(--gold)':'transparent')+';transition:all .2s">'+t.icon+' '+t.label+'</button>';}).join('')+
+    '</div>'+
+    '<div style="padding:18px">'+
+      '<div id="ht-vn-tab-pricing" style="display:'+(HT_VN_ACTIVE_TAB==='pricing'?'block':'none')+'">'+pricingHtml+'</div>'+
+      '<div id="ht-vn-tab-itinerary" style="display:'+(HT_VN_ACTIVE_TAB==='itinerary'?'block':'none')+'">'+itinHtml+'</div>'+
+      '<div id="ht-vn-tab-info" style="display:'+(HT_VN_ACTIVE_TAB==='info'?'block':'none')+'">'+infoHtml+'</div>'+
+    '</div>'+
+  '</div>';
+}
+
+// ════════════════════════════════════════════════════════════════
+// SRI LANKA RICH PACKAGE DATA (dashboard-style with PDF itinerary)
+// ════════════════════════════════════════════════════════════════
+var HT_SRI_LANKA_PACKAGES = [
+  {id:1,title:"Amagi Aria Negombo + Radisson Kandy + Eco Surf Bentota + Granbell Colombo",
+   arabic:"أماجي آريا نيغومبو + راديسون كاندي + إيكو سيرف بينتوتا + غرانبيل كولومبو",
+   subtitle:"Negombo (1) \u2192 Kandy (2) \u2192 Bentota (2) \u2192 Colombo (2)",route:"Amman \u2194 Colombo",stars:4,meal:"BB",
+   single:370,double:370,room:"Standard Pool / Deluxe / Superior Sea View / Standard Sea View",
+   location:"Negombo - Kandy - Bentota - Colombo",nights:7,pdf:"itineraries/sl/sl_pkg1.pdf"},
+  {id:2,title:"Sentido Heritance Negombo + Mahaweli Reach Kandy + Amari Colombo",
+   arabic:"سينتيدو هيريتانس نيغومبو + ماهويلي ريتش كاندي + أماري كولومبو",
+   subtitle:"Negombo (1) \u2192 Kandy (3) \u2192 Colombo (3)",route:"Amman \u2194 Colombo",stars:5,meal:"BB",
+   single:391,double:391,room:"Standard Pool View / Deluxe / Standard City View",
+   location:"Negombo - Kandy - Colombo",nights:7,pdf:"itineraries/sl/sl_pkg2.pdf"},
+  {id:3,title:"Sentido Heritance Negombo + The Golden Crown Kandy + Thala Bentota + Amari Colombo",
+   arabic:"سينتيدو هيريتانس نيغومبو + ذا غولدن كراون كاندي + تالا بينتوتا + أماري كولومبو",
+   subtitle:"Negombo (1) \u2192 Kandy (2) \u2192 Bentota (2) \u2192 Colombo (2)",route:"Amman \u2194 Colombo",stars:5,meal:"BB",
+   single:447,double:447,room:"Deluxe / Deluxe / Standard Sea View / Deluxe City View",
+   location:"Negombo - Kandy - Bentota - Colombo",nights:7,pdf:"itineraries/sl/sl_pkg3.pdf"},
+  {id:4,title:"Sentido Heritance Negombo + The Golden Crown Kandy + Amari Colombo",
+   arabic:"سينتيدو هيريتانس نيغومبو + ذا غولدن كراون كاندي + أماري كولومبو",
+   subtitle:"Negombo (1) \u2192 Kandy (3) \u2192 Colombo (3)",route:"Amman \u2194 Colombo",stars:4,meal:"BB",
+   single:458,double:458,room:"Standard Pool View / Deluxe / Standard City View",
+   location:"Negombo - Kandy - Colombo",nights:7,pdf:"itineraries/sl/sl_pkg4.pdf"}
+];
+var HT_SL_ACTIVE_ID = null;
+var HT_SL_ACTIVE_TAB = 'pricing';
+function htSlShowDetail(id){
+  HT_SL_ACTIVE_ID = HT_SL_ACTIVE_ID===id?null:id;
+  HT_SL_ACTIVE_TAB = 'pricing';
+  renderDest('srilanka');
+}
+function htSlSwitchTab(t){HT_SL_ACTIVE_TAB=t;htSlRenderDetail();}
+function htSlCloseDetail(){HT_SL_ACTIVE_ID=null;renderDest('srilanka');}
+function htSlShowAllTabs(){
+  ['ht-sl-tab-pricing','ht-sl-tab-itinerary','ht-sl-tab-info'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.style.display='block';
+  });
+}
+function htSlRestoreTabs(){
+  var t=HT_SL_ACTIVE_TAB;
+  ['ht-sl-tab-pricing','ht-sl-tab-itinerary','ht-sl-tab-info'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.style.display=(id==='ht-sl-tab-pricing'?t==='pricing':id==='ht-sl-tab-itinerary'?t==='itinerary':t==='info')?'block':'none';
+  });
+}
+function htSlPrintPkg(id,title){
+  htSlShowAllTabs();
+  setTimeout(function(){
+    PJ.printElement(document.getElementById('ht-sl-print-area-'+id),title);
+    setTimeout(htSlRestoreTabs,200);
+  },50);
+}
+function htSlPdfPkg(id,title){
+  htSlShowAllTabs();
+  setTimeout(function(){
+    PJ.downloadPDF(document.getElementById('ht-sl-print-area-'+id),title);
+    setTimeout(htSlRestoreTabs,200);
+  },50);
+}
+function htSlRenderDetail(){
+  var panel = document.getElementById('ht-sl-detail');
+  if(!HT_SL_ACTIVE_ID){panel.style.display='none';return;}
+  panel.style.display='block';
+  var p = HT_SRI_LANKA_PACKAGES.find(function(x){return x.id===HT_SL_ACTIVE_ID;});
+  var fmt = function(v){return (v||0).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0})+' JOD';};
+  var starsStr = function(s){return '\u2605'.repeat(s);};
+  var pricingHtml = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">'+
+    '<thead><tr>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Hotel(s) \u00b7 الفندق</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Stars</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Room Type</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Meal</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Double (p.p)</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Single</th>'+
+      '<th style="text-align:center;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px"></th>'+
+    '</tr></thead><tbody>'+
+    '<tr>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:11px;font-weight:500;line-height:1.3">'+p.title+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);color:var(--gold);font-size:11px" dir="ltr">'+starsStr(p.stars)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:10px;color:var(--muted)">'+p.room+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border)"><span style="background:rgba(39,174,96,.15);color:var(--green);padding:2px 8px;border-radius:4px;font-size:10px">'+p.meal+'</span></td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:700;color:var(--gold)">'+fmt(p.double)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:700">'+fmt(p.single)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);text-align:center"><button onclick="openBooking({type:\'package\',name:\''+p.title.replace(/'/g,"\\'")+'\',destination:\'Sri Lanka\',nights:'+p.nights+',price:\''+p.double+'\'})" style="padding:4px 10px;background:#25D366;border:none;border-radius:5px;color:#fff;font-family:Cairo,sans-serif;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap">\uD83D\uDCF2 Book</button></td>'+
+    '</tr></tbody></table></div>'+
+    '<div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.8">\u2605 All prices in JOD per person \u00b7 '+p.nights+' nights / '+(p.nights+1)+' days \u00b7 Route: '+p.route+'</div>';
+  var pdfPath = p.pdf;
+  var itinHtml = '<div style="text-align:center;padding:10px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:10px;margin-bottom:12px;font-size:12px">\uD83D\uDCC4 <strong>Detailed Itinerary</strong> \u2014 click below to view or download</div>'+
+    '<iframe src="'+pdfPath+'" style="width:100%;height:600px;border:1px solid var(--border);border-radius:10px;background:#fff" title="Sri Lanka Itinerary PDF"></iframe>'+
+    '<div style="margin-top:10px;text-align:center"><a href="'+pdfPath+'" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:var(--gold);color:#fff;border-radius:8px;text-decoration:none;font-size:12px;font-weight:700">\uD83D\uDCE5 Download PDF</a></div>';
+  var infoHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:16px">'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Duration</div>'+
+      '<div style="font-weight:700;font-size:13px">'+(p.nights+1)+' days / '+p.nights+' nights</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Flight Route</div>'+
+      '<div style="font-weight:700;font-size:12px">'+p.route+'</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Accommodation</div>'+
+      '<div style="font-weight:700;font-size:11px;line-height:1.4">'+p.location+'</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Meal Plan</div>'+
+      '<div style="font-weight:700">'+p.meal+'</div></div></div>'+
+    '<div style="font-weight:700;color:var(--gold);margin-bottom:8px;font-size:12px">What\'s Included</div>'+
+    '<ul style="list-style:none;padding:0;margin:0 0 14px">'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Round-trip flights (Amman \u2194 Sri Lanka)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Airport transfers (arrival and departure)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Hotel accommodation for the full duration</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Meals: '+p.meal+' (Breakfast)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Arabic-speaking professional tour guide</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Daily tours in modern AC vehicles</li>'+
+    '</ul>'+
+    '<div style="font-weight:700;color:var(--muted);margin-bottom:8px;font-size:12px">Not Included</div>'+
+    '<ul style="list-style:none;padding:0;margin:0 0 14px">'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Attraction entrance fees</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Meals outside the hotel</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Optional excursions</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Health insurance (recommended before travel)</li>'+
+    '</ul>'+
+    '<div style="background:rgba(39,174,96,.1);border:1px solid var(--green);border-radius:10px;padding:10px;display:flex;align-items:center;gap:8px;font-size:12px">\u2708\uFE0F <span><strong>Visa:</strong> Jordanian passport holders require an ETA (Electronic Travel Authorization) before travel to Sri Lanka. We can assist with the process.</span></div>';
+  var vId = p.id;
+  var tabBtns = [
+    {id:'pricing',label:'Pricing',icon:'\uD83D\uDCB0'},
+    {id:'itinerary',label:'Itinerary (PDF)',icon:'\uD83D\uDCC4'},
+    {id:'info',label:'Details & Inclusions',icon:'\u2139\uFE0F'}
+  ];
+  panel.innerHTML = '<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;margin-top:16px;overflow:hidden" id="ht-sl-print-area-'+vId+'">'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--card2);border-bottom:1px solid var(--border)">'+
+      '<div>'+
+        '<div style="font-size:10px;color:var(--muted)">Package '+p.id+'</div>'+
+        '<div style="font-size:15px;font-weight:800">'+p.title+'</div>'+
+        '<div style="font-size:12px;color:var(--gold)">'+p.arabic+'</div>'+
+        '<div style="font-size:11px;color:var(--muted);margin-top:2px">'+p.subtitle+'</div>'+
+      '</div>'+
+      '<div style="display:flex;gap:6px;align-items:center">'+
+        '<button onclick="htSlPrintPkg('+vId+',\''+p.title.replace(/'/g,"\\'")+' - '+p.arabic+'\')" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:10px">\uD83D\uDDA8\uFE0F Print</button>'+
+        '<button onclick="htSlPdfPkg('+vId+',\''+p.title.replace(/'/g,"\\'")+' - '+p.arabic+'\')" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:10px">\uD83D\uDCC4 PDF</button>'+
+        '<button onclick="htSlCloseDetail()" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:11px">\u2715</button>'+
+      '</div>'+
+    '</div>'+
+    '<div style="display:flex;gap:4px;padding:0 18px;background:var(--dark3);border-bottom:1px solid var(--border)">'+
+      tabBtns.map(function(t){return '<button onclick="htSlSwitchTab(\''+t.id+'\')" style="padding:8px 14px;border:none;background:none;cursor:pointer;font-family:Cairo,sans-serif;font-size:12px;font-weight:600;color:'+(HT_SL_ACTIVE_TAB===t.id?'var(--gold)':'var(--muted)')+';border-bottom:2px solid '+(HT_SL_ACTIVE_TAB===t.id?'var(--gold)':'transparent')+';transition:all .2s">'+t.icon+' '+t.label+'</button>';}).join('')+
+    '</div>'+
+    '<div style="padding:18px">'+
+      '<div id="ht-sl-tab-pricing" style="display:'+(HT_SL_ACTIVE_TAB==='pricing'?'block':'none')+'">'+pricingHtml+'</div>'+
+      '<div id="ht-sl-tab-itinerary" style="display:'+(HT_SL_ACTIVE_TAB==='itinerary'?'block':'none')+'">'+itinHtml+'</div>'+
+      '<div id="ht-sl-tab-info" style="display:'+(HT_SL_ACTIVE_TAB==='info'?'block':'none')+'">'+infoHtml+'</div>'+
+    '</div>'+
+  '</div>';
+}
+
+// ════════════════════════════════════════════════════════════════
+// MALDIVES RICH PACKAGE DATA (dashboard-style with PDF itinerary)
+// ════════════════════════════════════════════════════════════════
+var HT_MALDIVES_PACKAGES = [
+  {id:1,title:"Noi Maldives Resort (Family Overwater)",
+   arabic:"نوي مالديفز ريزورت (أوفر ووتر عائلي)",
+   subtitle:"Maldives \u2014 4 nights",route:"Amman \u2194 Mal\u00e9",stars:4,meal:"BB",
+   single:530,double:530,room:"Overwater Villa Deluxe w Pool",
+   location:"Maldives",nights:4,pdf:"itineraries/mv/mv_pkg1.pdf"},
+  {id:2,title:"Kandima Maldives Hotel (Family)",
+   arabic:"كانديما مالديفز هوتيل (عائلي)",
+   subtitle:"Maldives \u2014 4 nights",route:"Amman \u2194 Mal\u00e9",stars:5,meal:"BB",
+   single:618,double:618,room:"Studio Sky x2",
+   location:"Maldives",nights:4,pdf:"itineraries/mv/mv_pkg2.pdf"},
+  {id:3,title:"Fihalhohi Maldives Hotel (Honeymoon Economy)",
+   arabic:"فيهالهوهي مالديفز هوتيل (شهر عسل اقتصادي)",
+   subtitle:"Maldives \u2014 4 nights",route:"Amman \u2194 Mal\u00e9",stars:4,meal:"BB",
+   single:700,double:700,room:"Beach Villa w Pool",
+   location:"Maldives",nights:4,pdf:"itineraries/mv/mv_pkg3.pdf"},
+  {id:4,title:"Noi Maldives Resort (Honeymoon Luxury)",
+   arabic:"نوي مالديفز ريزورت (شهر عسل فاخر)",
+   subtitle:"Maldives \u2014 4 nights",route:"Amman \u2194 Mal\u00e9",stars:5,meal:"BB",
+   single:726,double:726,room:"Overwater Villa Deluxe w Pool",
+   location:"Maldives",nights:4,pdf:"itineraries/mv/mv_pkg4.pdf"}
+];
+var HT_MV_ACTIVE_ID = null;
+var HT_MV_ACTIVE_TAB = 'pricing';
+function htMvShowDetail(id){
+  HT_MV_ACTIVE_ID = HT_MV_ACTIVE_ID===id?null:id;
+  HT_MV_ACTIVE_TAB = 'pricing';
+  renderDest('maldives');
+}
+function htMvSwitchTab(t){HT_MV_ACTIVE_TAB=t;htMvRenderDetail();}
+function htMvCloseDetail(){HT_MV_ACTIVE_ID=null;renderDest('maldives');}
+function htMvShowAllTabs(){
+  ['ht-mv-tab-pricing','ht-mv-tab-itinerary','ht-mv-tab-info'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.style.display='block';
+  });
+}
+function htMvRestoreTabs(){
+  var t=HT_MV_ACTIVE_TAB;
+  ['ht-mv-tab-pricing','ht-mv-tab-itinerary','ht-mv-tab-info'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.style.display=(id==='ht-mv-tab-pricing'?t==='pricing':id==='ht-mv-tab-itinerary'?t==='itinerary':t==='info')?'block':'none';
+  });
+}
+function htMvPrintPkg(id,title){
+  htMvShowAllTabs();
+  setTimeout(function(){
+    PJ.printElement(document.getElementById('ht-mv-print-area-'+id),title);
+    setTimeout(htMvRestoreTabs,200);
+  },50);
+}
+function htMvPdfPkg(id,title){
+  htMvShowAllTabs();
+  setTimeout(function(){
+    PJ.downloadPDF(document.getElementById('ht-mv-print-area-'+id),title);
+    setTimeout(htMvRestoreTabs,200);
+  },50);
+}
+function htMvRenderDetail(){
+  var panel = document.getElementById('ht-mv-detail');
+  if(!HT_MV_ACTIVE_ID){panel.style.display='none';return;}
+  panel.style.display='block';
+  var p = HT_MALDIVES_PACKAGES.find(function(x){return x.id===HT_MV_ACTIVE_ID;});
+  var fmt = function(v){return (v||0).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0})+' JOD';};
+  var starsStr = function(s){return '\u2605'.repeat(s);};
+  var pricingHtml = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">'+
+    '<thead><tr>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Hotel(s) \u00b7 الفندق</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Stars</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Room Type</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Meal</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Double (p.p)</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Single</th>'+
+      '<th style="text-align:center;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px"></th>'+
+    '</tr></thead><tbody>'+
+    '<tr>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:11px;font-weight:500;line-height:1.3">'+p.title+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);color:var(--gold);font-size:11px" dir="ltr">'+starsStr(p.stars)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:10px;color:var(--muted)">'+p.room+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border)"><span style="background:rgba(39,174,96,.15);color:var(--green);padding:2px 8px;border-radius:4px;font-size:10px">'+p.meal+'</span></td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:700;color:var(--gold)">'+fmt(p.double)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:700">'+fmt(p.single)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);text-align:center"><button onclick="openBooking({type:\'package\',name:\''+p.title.replace(/'/g,"\\'")+'\',destination:\'Maldives\',nights:'+p.nights+',price:\''+p.double+'\'})" style="padding:4px 10px;background:#25D366;border:none;border-radius:5px;color:#fff;font-family:Cairo,sans-serif;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap">\uD83D\uDCF2 Book</button></td>'+
+    '</tr></tbody></table></div>'+
+    '<div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.8">\u2605 All prices in JOD per person \u00b7 '+p.nights+' nights / '+(p.nights+1)+' days \u00b7 Route: '+p.route+'</div>';
+  var pdfPath = p.pdf;
+  var itinHtml = '<div style="text-align:center;padding:10px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:10px;margin-bottom:12px;font-size:12px">\uD83D\uDCC4 <strong>Detailed Itinerary</strong> \u2014 click below to view or download</div>'+
+    '<iframe src="'+pdfPath+'" style="width:100%;height:600px;border:1px solid var(--border);border-radius:10px;background:#fff" title="Maldives Itinerary PDF"></iframe>'+
+    '<div style="margin-top:10px;text-align:center"><a href="'+pdfPath+'" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:var(--gold);color:#fff;border-radius:8px;text-decoration:none;font-size:12px;font-weight:700">\uD83D\uDCE5 Download PDF</a></div>';
+  var infoHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:16px">'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Duration</div>'+
+      '<div style="font-weight:700;font-size:13px">'+(p.nights+1)+' days / '+p.nights+' nights</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Flight Route</div>'+
+      '<div style="font-weight:700;font-size:12px">'+p.route+'</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Accommodation</div>'+
+      '<div style="font-weight:700;font-size:11px;line-height:1.4">'+p.location+'</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Meal Plan</div>'+
+      '<div style="font-weight:700">'+p.meal+'</div></div></div>'+
+    '<div style="font-weight:700;color:var(--gold);margin-bottom:8px;font-size:12px">What\'s Included</div>'+
+    '<ul style="list-style:none;padding:0;margin:0 0 14px">'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Round-trip flights (Amman \u2194 Maldives)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Airport transfers (arrival and departure)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Hotel accommodation for the full duration</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Meals: '+p.meal+' (Breakfast)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Arabic-speaking professional tour guide</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Daily tours in modern AC vehicles</li>'+
+    '</ul>'+
+    '<div style="font-weight:700;color:var(--muted);margin-bottom:8px;font-size:12px">Not Included</div>'+
+    '<ul style="list-style:none;padding:0;margin:0 0 14px">'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Attraction entrance fees</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Meals outside the hotel</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Optional excursions</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Health insurance (recommended before travel)</li>'+
+    '</ul>'+
+    '<div style="background:rgba(39,174,96,.1);border:1px solid var(--green);border-radius:10px;padding:10px;display:flex;align-items:center;gap:8px;font-size:12px">\u2708\uFE0F <span><strong>Visa:</strong> Jordanian passport holders receive a free 30-day visa on arrival in the Maldives.</span></div>';
+  var vId = p.id;
+  var tabBtns = [
+    {id:'pricing',label:'Pricing',icon:'\uD83D\uDCB0'},
+    {id:'itinerary',label:'Itinerary (PDF)',icon:'\uD83D\uDCC4'},
+    {id:'info',label:'Details & Inclusions',icon:'\u2139\uFE0F'}
+  ];
+  panel.innerHTML = '<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;margin-top:16px;overflow:hidden" id="ht-mv-print-area-'+vId+'">'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--card2);border-bottom:1px solid var(--border)">'+
+      '<div>'+
+        '<div style="font-size:10px;color:var(--muted)">Package '+p.id+'</div>'+
+        '<div style="font-size:15px;font-weight:800">'+p.title+'</div>'+
+        '<div style="font-size:12px;color:var(--gold)">'+p.arabic+'</div>'+
+        '<div style="font-size:11px;color:var(--muted);margin-top:2px">'+p.subtitle+'</div>'+
+      '</div>'+
+      '<div style="display:flex;gap:6px;align-items:center">'+
+        '<button onclick="htMvPrintPkg('+vId+',\''+p.title.replace(/'/g,"\\'")+' - '+p.arabic+'\')" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:10px">\uD83D\uDDA8\uFE0F Print</button>'+
+        '<button onclick="htMvPdfPkg('+vId+',\''+p.title.replace(/'/g,"\\'")+' - '+p.arabic+'\')" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:10px">\uD83D\uDCC4 PDF</button>'+
+        '<button onclick="htMvCloseDetail()" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:11px">\u2715</button>'+
+      '</div>'+
+    '</div>'+
+    '<div style="display:flex;gap:4px;padding:0 18px;background:var(--dark3);border-bottom:1px solid var(--border)">'+
+      tabBtns.map(function(t){return '<button onclick="htMvSwitchTab(\''+t.id+'\')" style="padding:8px 14px;border:none;background:none;cursor:pointer;font-family:Cairo,sans-serif;font-size:12px;font-weight:600;color:'+(HT_MV_ACTIVE_TAB===t.id?'var(--gold)':'var(--muted)')+';border-bottom:2px solid '+(HT_MV_ACTIVE_TAB===t.id?'var(--gold)':'transparent')+';transition:all .2s">'+t.icon+' '+t.label+'</button>';}).join('')+
+    '</div>'+
+    '<div style="padding:18px">'+
+      '<div id="ht-mv-tab-pricing" style="display:'+(HT_MV_ACTIVE_TAB==='pricing'?'block':'none')+'">'+pricingHtml+'</div>'+
+      '<div id="ht-mv-tab-itinerary" style="display:'+(HT_MV_ACTIVE_TAB==='itinerary'?'block':'none')+'">'+itinHtml+'</div>'+
+      '<div id="ht-mv-tab-info" style="display:'+(HT_MV_ACTIVE_TAB==='info'?'block':'none')+'">'+infoHtml+'</div>'+
+    '</div>'+
+  '</div>';
+}
+
+// ════════════════════════════════════════════════════════════════
+// THAILAND RICH PACKAGE DATA (dashboard-style with PDF itinerary)
+// ════════════════════════════════════════════════════════════════
+var HT_THAILAND_PACKAGES = [
+  {id:1,title:"Marina Gallery Resort Kasha + Soliitaire Bangkok Sukhumvit 11",
+   arabic:"مارينا غاليري ريزورت كاشا + سوليتير بانكوك سوكومفيت 11",
+   subtitle:"Phuket \u2192 Bangkok",route:"Amman \u2194 Bangkok",stars:4,meal:"BB",
+   single:324,double:324,room:"Deluxe x2",
+   location:"Phuket - Bangkok",nights:7,pdf:"itineraries/th/th_pkg1.pdf"},
+  {id:2,title:"The Senses Resort + Movenpick Sukhumvit 15",
+   arabic:"ذا سينسز ريزورت + موفنبيك سوكومفيت 15",
+   subtitle:"Phuket \u2192 Bangkok",route:"Amman \u2194 Bangkok",stars:5,meal:"BB",
+   single:371,double:371,room:"Deluxe Sea View / Superior",
+   location:"Phuket - Bangkok",nights:7,pdf:"itineraries/th/th_pkg2.pdf"},
+  {id:3,title:"Marina Gallery Resort + Malabar Villa + Soliitaire Bangkok",
+   arabic:"مارينا غاليري ريزورت + مالابار فيلا + سوليتير بانكوك",
+   subtitle:"Phuket \u2192 Bangkok",route:"Amman \u2194 Bangkok",stars:4,meal:"BB",
+   single:407,double:407,room:"Deluxe / Villa / Superior",
+   location:"Phuket - Bangkok",nights:7,pdf:"itineraries/th/th_pkg3.pdf"},
+  {id:4,title:"Wyndham Grand Phuket + Laqari Sinai + Avani Bangkok",
+   arabic:"ويندهام غراند فوكيت + لاكاري سيناي + أفاني بانكوك",
+   subtitle:"Phuket \u2192 Bangkok",route:"Amman \u2194 Bangkok",stars:5,meal:"BB",
+   single:555,double:555,room:"Deluxe Sea View / Premier Plus",
+   location:"Phuket - Bangkok",nights:7,pdf:"itineraries/th/th_pkg4.pdf"},
+  {id:5,title:"Movenpick Sukhumvit 15 + The Senses Resort + Barcel\u00f3 Coconut + Avani Bangkok",
+   arabic:"موفنبيك سوكومفيت 15 + ذا سينسز ريزورت + برشلونة كوكونت + أفاني بانكوك",
+   subtitle:"Bangkok \u2192 Phuket \u2192 Bangkok",route:"Amman \u2194 Bangkok",stars:5,meal:"BB",
+   single:480,double:480,room:"Superior / Deluxe / Premier Plus",
+   location:"Bangkok - Phuket",nights:8,pdf:"itineraries/th/th_pkg5.pdf"},
+  {id:6,title:"Al-Meerath Hotel + Marina Gallery + Malabar Villa + Soliitaire Bangkok",
+   arabic:"الميرات هوتيل + مارينا غاليري + مالابار فيلا + سوليتير بانكوك",
+   subtitle:"Bangkok \u2192 Phuket \u2192 Bangkok",route:"Amman \u2194 Bangkok",stars:4,meal:"BB",
+   single:513,double:513,room:"Superior / Deluxe / Grand Superior",
+   location:"Bangkok - Phuket",nights:8,pdf:"itineraries/th/th_pkg6.pdf"},
+  {id:7,title:"Movenpick Sukhumvit 15 + Crest Resort + Laqari Sinai + Avani Bangkok",
+   arabic:"موفنبيك سوكومفيت 15 + كريست ريزورت + لاكاري سيناي + أفاني بانكوك",
+   subtitle:"Bangkok \u2192 Phuket \u2192 Bangkok",route:"Amman \u2194 Bangkok",stars:5,meal:"BB",
+   single:664,double:664,room:"Luxury Honeymoon",
+   location:"Bangkok - Phuket",nights:8,pdf:"itineraries/th/th_pkg7.pdf"}
+];
+var HT_TH_ACTIVE_ID = null;
+var HT_TH_ACTIVE_TAB = 'pricing';
+function htThShowDetail(id){
+  HT_TH_ACTIVE_ID = HT_TH_ACTIVE_ID===id?null:id;
+  HT_TH_ACTIVE_TAB = 'pricing';
+  renderDest('thailand');
+}
+function htThSwitchTab(t){HT_TH_ACTIVE_TAB=t;htThRenderDetail();}
+function htThCloseDetail(){HT_TH_ACTIVE_ID=null;renderDest('thailand');}
+function htThShowAllTabs(){
+  ['ht-th-tab-pricing','ht-th-tab-itinerary','ht-th-tab-info'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.style.display='block';
+  });
+}
+function htThRestoreTabs(){
+  var t=HT_TH_ACTIVE_TAB;
+  ['ht-th-tab-pricing','ht-th-tab-itinerary','ht-th-tab-info'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.style.display=(id==='ht-th-tab-pricing'?t==='pricing':id==='ht-th-tab-itinerary'?t==='itinerary':t==='info')?'block':'none';
+  });
+}
+function htThPrintPkg(id,title){
+  htThShowAllTabs();
+  setTimeout(function(){
+    PJ.printElement(document.getElementById('ht-th-print-area-'+id),title);
+    setTimeout(htThRestoreTabs,200);
+  },50);
+}
+function htThPdfPkg(id,title){
+  htThShowAllTabs();
+  setTimeout(function(){
+    PJ.downloadPDF(document.getElementById('ht-th-print-area-'+id),title);
+    setTimeout(htThRestoreTabs,200);
+  },50);
+}
+function htThRenderDetail(){
+  var panel = document.getElementById('ht-th-detail');
+  if(!HT_TH_ACTIVE_ID){panel.style.display='none';return;}
+  panel.style.display='block';
+  var p = HT_THAILAND_PACKAGES.find(function(x){return x.id===HT_TH_ACTIVE_ID;});
+  var fmt = function(v){return (v||0).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0})+' JOD';};
+  var starsStr = function(s){return '\u2605'.repeat(s);};
+  var pricingHtml = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">'+
+    '<thead><tr>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Hotel(s) \u00b7 الفندق</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Stars</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Room Type</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Meal</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Double (p.p)</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Single</th>'+
+      '<th style="text-align:center;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px"></th>'+
+    '</tr></thead><tbody>'+
+    '<tr>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:11px;font-weight:500;line-height:1.3">'+p.title+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);color:var(--gold);font-size:11px" dir="ltr">'+starsStr(p.stars)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:10px;color:var(--muted)">'+p.room+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border)"><span style="background:rgba(39,174,96,.15);color:var(--green);padding:2px 8px;border-radius:4px;font-size:10px">'+p.meal+'</span></td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:700;color:var(--gold)">'+fmt(p.double)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:700">'+fmt(p.single)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);text-align:center"><button onclick="openBooking({type:\'package\',name:\''+p.title.replace(/'/g,"\\'")+'\',destination:\'Thailand\',nights:'+p.nights+',price:\''+p.double+'\'})" style="padding:4px 10px;background:#25D366;border:none;border-radius:5px;color:#fff;font-family:Cairo,sans-serif;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap">\uD83D\uDCF2 Book</button></td>'+
+    '</tr></tbody></table></div>'+
+    '<div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.8">\u2605 All prices in JOD per person \u00b7 '+p.nights+' nights / '+(p.nights+1)+' days \u00b7 Route: '+p.route+'</div>';
+  var pdfPath = p.pdf;
+  var itinHtml = '<div style="text-align:center;padding:10px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:10px;margin-bottom:12px;font-size:12px">\uD83D\uDCC4 <strong>Detailed Itinerary</strong> \u2014 click below to view or download</div>'+
+    '<iframe src="'+pdfPath+'" style="width:100%;height:600px;border:1px solid var(--border);border-radius:10px;background:#fff" title="Thailand Itinerary PDF"></iframe>'+
+    '<div style="margin-top:10px;text-align:center"><a href="'+pdfPath+'" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:var(--gold);color:#fff;border-radius:8px;text-decoration:none;font-size:12px;font-weight:700">\uD83D\uDCE5 Download PDF</a></div>';
+  var infoHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:16px">'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Duration</div>'+
+      '<div style="font-weight:700;font-size:13px">'+(p.nights+1)+' days / '+p.nights+' nights</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Flight Route</div>'+
+      '<div style="font-weight:700;font-size:12px">'+p.route+'</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Accommodation</div>'+
+      '<div style="font-weight:700;font-size:11px;line-height:1.4">'+p.location+'</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Meal Plan</div>'+
+      '<div style="font-weight:700">'+p.meal+'</div></div></div>'+
+    '<div style="font-weight:700;color:var(--gold);margin-bottom:8px;font-size:12px">What\'s Included</div>'+
+    '<ul style="list-style:none;padding:0;margin:0 0 14px">'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Round-trip flights (Amman \u2194 Thailand)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Airport transfers (arrival and departure)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Hotel accommodation for the full duration</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Meals: '+p.meal+' (Breakfast)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Arabic-speaking professional tour guide</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Daily tours in modern AC vehicles</li>'+
+    '</ul>'+
+    '<div style="font-weight:700;color:var(--muted);margin-bottom:8px;font-size:12px">Not Included</div>'+
+    '<ul style="list-style:none;padding:0;margin:0 0 14px">'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Attraction entrance fees</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Meals outside the hotel</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Optional excursions</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Health insurance (recommended before travel)</li>'+
+    '</ul>'+
+    '<div style="background:rgba(39,174,96,.1);border:1px solid var(--green);border-radius:10px;padding:10px;display:flex;align-items:center;gap:8px;font-size:12px">\u2708\uFE0F <span><strong>Visa:</strong> Jordanian passport holders can obtain a visa on arrival in Thailand (up to 30 days). Please check requirements before travel.</span></div>';
+  var vId = p.id;
+  var tabBtns = [
+    {id:'pricing',label:'Pricing',icon:'\uD83D\uDCB0'},
+    {id:'itinerary',label:'Itinerary (PDF)',icon:'\uD83D\uDCC4'},
+    {id:'info',label:'Details & Inclusions',icon:'\u2139\uFE0F'}
+  ];
+  panel.innerHTML = '<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;margin-top:16px;overflow:hidden" id="ht-th-print-area-'+vId+'">'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--card2);border-bottom:1px solid var(--border)">'+
+      '<div>'+
+        '<div style="font-size:10px;color:var(--muted)">Package '+p.id+'</div>'+
+        '<div style="font-size:15px;font-weight:800">'+p.title+'</div>'+
+        '<div style="font-size:12px;color:var(--gold)">'+p.arabic+'</div>'+
+        '<div style="font-size:11px;color:var(--muted);margin-top:2px">'+p.subtitle+'</div>'+
+      '</div>'+
+      '<div style="display:flex;gap:6px;align-items:center">'+
+        '<button onclick="htThPrintPkg('+vId+',\''+p.title.replace(/'/g,"\\'")+' - '+p.arabic+'\')" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:10px">\uD83D\uDDA8\uFE0F Print</button>'+
+        '<button onclick="htThPdfPkg('+vId+',\''+p.title.replace(/'/g,"\\'")+' - '+p.arabic+'\')" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:10px">\uD83D\uDCC4 PDF</button>'+
+        '<button onclick="htThCloseDetail()" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:11px">\u2715</button>'+
+      '</div>'+
+    '</div>'+
+    '<div style="display:flex;gap:4px;padding:0 18px;background:var(--dark3);border-bottom:1px solid var(--border)">'+
+      tabBtns.map(function(t){return '<button onclick="htThSwitchTab(\''+t.id+'\')" style="padding:8px 14px;border:none;background:none;cursor:pointer;font-family:Cairo,sans-serif;font-size:12px;font-weight:600;color:'+(HT_TH_ACTIVE_TAB===t.id?'var(--gold)':'var(--muted)')+';border-bottom:2px solid '+(HT_TH_ACTIVE_TAB===t.id?'var(--gold)':'transparent')+';transition:all .2s">'+t.icon+' '+t.label+'</button>';}).join('')+
+    '</div>'+
+    '<div style="padding:18px">'+
+      '<div id="ht-th-tab-pricing" style="display:'+(HT_TH_ACTIVE_TAB==='pricing'?'block':'none')+'">'+pricingHtml+'</div>'+
+      '<div id="ht-th-tab-itinerary" style="display:'+(HT_TH_ACTIVE_TAB==='itinerary'?'block':'none')+'">'+itinHtml+'</div>'+
+      '<div id="ht-th-tab-info" style="display:'+(HT_TH_ACTIVE_TAB==='info'?'block':'none')+'">'+infoHtml+'</div>'+
+    '</div>'+
+  '</div>';
+}
+
+// ════════════════════════════════════════════════════════════════
+// SINGAPORE RICH PACKAGE DATA (dashboard-style with PDF itinerary)
+// ════════════════════════════════════════════════════════════════
+var HT_SINGAPORE_PACKAGES = [
+  {id:1,title:"Holiday Inn Express Singapore Katong (Family)",
+   arabic:"هوليداي إن إكسبرس سنغافورة كاتونغ (عائلي)",
+   subtitle:"Singapore \u2014 4 nights",route:"Amman \u2194 Singapore",stars:4,meal:"BB",
+   single:405,double:405,room:"Standard",
+   location:"Singapore",nights:4,pdf:"itineraries/sg/sg_pkg1.pdf"},
+  {id:2,title:"One Farrer Hotel (Family)",
+   arabic:"ون فارير هوتيل (عائلي)",
+   subtitle:"Singapore \u2014 4 nights",route:"Amman \u2194 Singapore",stars:5,meal:"BB",
+   single:494,double:494,room:"Mint Room x2",
+   location:"Singapore",nights:4,pdf:"itineraries/sg/sg_pkg2.pdf"},
+  {id:3,title:"One Farrer Hotel (Honeymoon)",
+   arabic:"ون فارير هوتيل (شهر عسل)",
+   subtitle:"Singapore \u2014 4 nights",route:"Amman \u2194 Singapore",stars:5,meal:"BB",
+   single:494,double:494,room:"Mint Room",
+   location:"Singapore",nights:4,pdf:"itineraries/sg/sg_pkg3.pdf"},
+  {id:4,title:"Holiday Inn Express Singapore Katong (Honeymoon)",
+   arabic:"هوليداي إن إكسبرس سنغافورة كاتونغ (شهر عسل)",
+   subtitle:"Singapore \u2014 5 nights",route:"Amman \u2194 Singapore",stars:4,meal:"BB",
+   single:675,double:675,room:"Standard",
+   location:"Singapore",nights:5,pdf:"itineraries/sg/sg_pkg4.pdf"}
+];
+var HT_SG_ACTIVE_ID = null;
+var HT_SG_ACTIVE_TAB = 'pricing';
+function htSgShowDetail(id){
+  HT_SG_ACTIVE_ID = HT_SG_ACTIVE_ID===id?null:id;
+  HT_SG_ACTIVE_TAB = 'pricing';
+  renderDest('singapore');
+}
+function htSgSwitchTab(t){HT_SG_ACTIVE_TAB=t;htSgRenderDetail();}
+function htSgCloseDetail(){HT_SG_ACTIVE_ID=null;renderDest('singapore');}
+function htSgShowAllTabs(){
+  ['ht-sg-tab-pricing','ht-sg-tab-itinerary','ht-sg-tab-info'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.style.display='block';
+  });
+}
+function htSgRestoreTabs(){
+  var t=HT_SG_ACTIVE_TAB;
+  ['ht-sg-tab-pricing','ht-sg-tab-itinerary','ht-sg-tab-info'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.style.display=(id==='ht-sg-tab-pricing'?t==='pricing':id==='ht-sg-tab-itinerary'?t==='itinerary':t==='info')?'block':'none';
+  });
+}
+function htSgPrintPkg(id,title){
+  htSgShowAllTabs();
+  setTimeout(function(){
+    PJ.printElement(document.getElementById('ht-sg-print-area-'+id),title);
+    setTimeout(htSgRestoreTabs,200);
+  },50);
+}
+function htSgPdfPkg(id,title){
+  htSgShowAllTabs();
+  setTimeout(function(){
+    PJ.downloadPDF(document.getElementById('ht-sg-print-area-'+id),title);
+    setTimeout(htSgRestoreTabs,200);
+  },50);
+}
+function htSgRenderDetail(){
+  var panel = document.getElementById('ht-sg-detail');
+  if(!HT_SG_ACTIVE_ID){panel.style.display='none';return;}
+  panel.style.display='block';
+  var p = HT_SINGAPORE_PACKAGES.find(function(x){return x.id===HT_SG_ACTIVE_ID;});
+  var fmt = function(v){return (v||0).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0})+' JOD';};
+  var starsStr = function(s){return '\u2605'.repeat(s);};
+  var pricingHtml = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">'+
+    '<thead><tr>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Hotel(s) \u00b7 الفندق</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Stars</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Room Type</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Meal</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Double (p.p)</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Single</th>'+
+      '<th style="text-align:center;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px"></th>'+
+    '</tr></thead><tbody>'+
+    '<tr>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:11px;font-weight:500;line-height:1.3">'+p.title+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);color:var(--gold);font-size:11px" dir="ltr">'+starsStr(p.stars)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:10px;color:var(--muted)">'+p.room+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border)"><span style="background:rgba(39,174,96,.15);color:var(--green);padding:2px 8px;border-radius:4px;font-size:10px">'+p.meal+'</span></td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:700;color:var(--gold)">'+fmt(p.double)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:700">'+fmt(p.single)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);text-align:center"><button onclick="openBooking({type:\'package\',name:\''+p.title.replace(/'/g,"\\'")+'\',destination:\'Singapore\',nights:'+p.nights+',price:\''+p.double+'\'})" style="padding:4px 10px;background:#25D366;border:none;border-radius:5px;color:#fff;font-family:Cairo,sans-serif;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap">\uD83D\uDCF2 Book</button></td>'+
+    '</tr></tbody></table></div>'+
+    '<div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.8">\u2605 All prices in JOD per person \u00b7 '+p.nights+' nights / '+(p.nights+1)+' days \u00b7 Route: '+p.route+'</div>';
+  var pdfPath = p.pdf;
+  var itinHtml = '<div style="text-align:center;padding:10px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:10px;margin-bottom:12px;font-size:12px">\uD83D\uDCC4 <strong>Detailed Itinerary</strong> \u2014 click below to view or download</div>'+
+    '<iframe src="'+pdfPath+'" style="width:100%;height:600px;border:1px solid var(--border);border-radius:10px;background:#fff" title="Singapore Itinerary PDF"></iframe>'+
+    '<div style="margin-top:10px;text-align:center"><a href="'+pdfPath+'" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:var(--gold);color:#fff;border-radius:8px;text-decoration:none;font-size:12px;font-weight:700">\uD83D\uDCE5 Download PDF</a></div>';
+  var infoHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:16px">'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Duration</div>'+
+      '<div style="font-weight:700;font-size:13px">'+(p.nights+1)+' days / '+p.nights+' nights</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Flight Route</div>'+
+      '<div style="font-weight:700;font-size:12px">'+p.route+'</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Accommodation</div>'+
+      '<div style="font-weight:700;font-size:11px;line-height:1.4">'+p.location+'</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Meal Plan</div>'+
+      '<div style="font-weight:700">'+p.meal+'</div></div></div>'+
+    '<div style="font-weight:700;color:var(--gold);margin-bottom:8px;font-size:12px">What\'s Included</div>'+
+    '<ul style="list-style:none;padding:0;margin:0 0 14px">'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Round-trip flights (Amman \u2194 Singapore)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Airport transfers (arrival and departure)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Hotel accommodation for the full duration</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Meals: '+p.meal+' (Breakfast)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Arabic-speaking professional tour guide</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Daily tours in modern AC vehicles</li>'+
+    '</ul>'+
+    '<div style="font-weight:700;color:var(--muted);margin-bottom:8px;font-size:12px">Not Included</div>'+
+    '<ul style="list-style:none;padding:0;margin:0 0 14px">'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Attraction entrance fees</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Meals outside the hotel</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Optional excursions</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Health insurance (recommended before travel)</li>'+
+    '</ul>'+
+    '<div style="background:rgba(39,174,96,.1);border:1px solid var(--green);border-radius:10px;padding:10px;display:flex;align-items:center;gap:8px;font-size:12px">\u2708\uFE0F <span><strong>Visa:</strong> Jordanian passport holders require a visa for Singapore. We can assist with the application process.</span></div>';
+  var vId = p.id;
+  var tabBtns = [
+    {id:'pricing',label:'Pricing',icon:'\uD83D\uDCB0'},
+    {id:'itinerary',label:'Itinerary (PDF)',icon:'\uD83D\uDCC4'},
+    {id:'info',label:'Details & Inclusions',icon:'\u2139\uFE0F'}
+  ];
+  panel.innerHTML = '<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;margin-top:16px;overflow:hidden" id="ht-sg-print-area-'+vId+'">'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--card2);border-bottom:1px solid var(--border)">'+
+      '<div>'+
+        '<div style="font-size:10px;color:var(--muted)">Package '+p.id+'</div>'+
+        '<div style="font-size:15px;font-weight:800">'+p.title+'</div>'+
+        '<div style="font-size:12px;color:var(--gold)">'+p.arabic+'</div>'+
+        '<div style="font-size:11px;color:var(--muted);margin-top:2px">'+p.subtitle+'</div>'+
+      '</div>'+
+      '<div style="display:flex;gap:6px;align-items:center">'+
+        '<button onclick="htSgPrintPkg('+vId+',\''+p.title.replace(/'/g,"\\'")+' - '+p.arabic+'\')" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:10px">\uD83D\uDDA8\uFE0F Print</button>'+
+        '<button onclick="htSgPdfPkg('+vId+',\''+p.title.replace(/'/g,"\\'")+' - '+p.arabic+'\')" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:10px">\uD83D\uDCC4 PDF</button>'+
+        '<button onclick="htSgCloseDetail()" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:11px">\u2715</button>'+
+      '</div>'+
+    '</div>'+
+    '<div style="display:flex;gap:4px;padding:0 18px;background:var(--dark3);border-bottom:1px solid var(--border)">'+
+      tabBtns.map(function(t){return '<button onclick="htSgSwitchTab(\''+t.id+'\')" style="padding:8px 14px;border:none;background:none;cursor:pointer;font-family:Cairo,sans-serif;font-size:12px;font-weight:600;color:'+(HT_SG_ACTIVE_TAB===t.id?'var(--gold)':'var(--muted)')+';border-bottom:2px solid '+(HT_SG_ACTIVE_TAB===t.id?'var(--gold)':'transparent')+';transition:all .2s">'+t.icon+' '+t.label+'</button>';}).join('')+
+    '</div>'+
+    '<div style="padding:18px">'+
+      '<div id="ht-sg-tab-pricing" style="display:'+(HT_SG_ACTIVE_TAB==='pricing'?'block':'none')+'">'+pricingHtml+'</div>'+
+      '<div id="ht-sg-tab-itinerary" style="display:'+(HT_SG_ACTIVE_TAB==='itinerary'?'block':'none')+'">'+itinHtml+'</div>'+
+      '<div id="ht-sg-tab-info" style="display:'+(HT_SG_ACTIVE_TAB==='info'?'block':'none')+'">'+infoHtml+'</div>'+
+    '</div>'+
+  '</div>';
+}
+
+// ════════════════════════════════════════════════════════════════
+// MALAYSIA RICH PACKAGE DATA (dashboard-style with PDF itinerary)
+// ════════════════════════════════════════════════════════════════
+var HT_MALAYSIA_PACKAGES = [
+  {id:1,title:"Snow-Y Pyramid Hotel + Phyto Bay Langkawi + Royal Signature KL",
+   arabic:"سنو-واي بيراميد هوتيل + فيتو باي لنكاوي + رويال سيغنيتشر كوالالمبور",
+   subtitle:"Selangor \u2192 Langkawi \u2192 KL",route:"Amman \u2194 Kuala Lumpur",stars:4,meal:"BB",
+   single:404,double:404,room:"2 Deluxe Plus / Premier Sea-view / Deluxe",
+   location:"Selangor - Langkawi - KL",nights:7,pdf:"itineraries/my/my_pkg1.pdf"},
+  {id:2,title:"Snow-Y Pyramid Hotel + Ritz-Carlton Langkawi + Imperial Lex KL (Family)",
+   arabic:"سنو-واي بيراميد + ريتز كارلتون لنكاوي + إمبريال لكس كوالالمبور (عائلي)",
+   subtitle:"Selangor \u2192 Langkawi \u2192 KL",route:"Amman \u2194 Kuala Lumpur",stars:5,meal:"BB",
+   single:450,double:450,room:"2 Deluxe / Family Suite / Apartment",
+   location:"Selangor - Langkawi - KL",nights:7,pdf:"itineraries/my/my_pkg2.pdf"},
+  {id:3,title:"Sun Way Lagoon Hotel + Ritz-Carlton Langkawi + Imperial Lex KL",
+   arabic:"صن واي لاغون هوتيل + ريتز كارلتون لنكاوي + إمبريال لكس كوالالمبور",
+   subtitle:"Selangor \u2192 Langkawi \u2192 KL",route:"Amman \u2194 Kuala Lumpur",stars:5,meal:"BB",
+   single:636,double:636,room:"Deluxe Plus / Studio Sea-view / Executive",
+   location:"Selangor - Langkawi - KL",nights:7,pdf:"itineraries/my/my_pkg3.pdf"},
+  {id:4,title:"Stripes Hotel KL + Westin Spa Langkawi + Pullman KL",
+   arabic:"سترايبس هوتيل كوالالمبور + ويستن سبا لنكاوي + بولمان كوالالمبور",
+   subtitle:"KL \u2192 Langkawi \u2192 KL",route:"Amman \u2194 Kuala Lumpur",stars:5,meal:"BB",
+   single:847,double:847,room:"Deluxe Plus / Sea-view Villa / Deluxe",
+   location:"KL - Langkawi - KL",nights:7,pdf:"itineraries/my/my_pkg4.pdf"},
+  {id:5,title:"Snow-Y Pyramid Hotel + Aloft Langkawi + Capri Bay Frazer KL",
+   arabic:"سنو-واي بيراميد + ألوفت لنكاوي + كابري باي فرايزر كوالالمبور",
+   subtitle:"Selangor \u2192 Langkawi \u2192 KL",route:"Amman \u2194 Kuala Lumpur",stars:4,meal:"BB",
+   single:560,double:560,room:"Deluxe / Sea-view / Executive Studio",
+   location:"Selangor - Langkawi - KL",nights:8,pdf:"itineraries/my/my_pkg5.pdf"},
+  {id:6,title:"Sun Way Resort Selangor + Ritz-Carlton Langkawi + Pullman KL (Family)",
+   arabic:"صن واي ريزورت سيلانغور + ريتز كارلتون لنكاوي + بولمان كوالالمبور (عائلي)",
+   subtitle:"Selangor \u2192 Langkawi \u2192 KL",route:"Amman \u2194 Kuala Lumpur",stars:5,meal:"BB",
+   single:562,double:562,room:"2 Deluxe / Family Suite / 2-Suite",
+   location:"Selangor - Langkawi - KL",nights:8,pdf:"itineraries/my/my_pkg6.pdf"},
+  {id:7,title:"Sun Way Resort Selangor + Ritz-Carlton Langkawi + Imperial Lex KL",
+   arabic:"صن واي ريزورت سيلانغور + ريتز كارلتون لنكاوي + إمبريال لكس كوالالمبور",
+   subtitle:"Selangor \u2192 Langkawi \u2192 KL",route:"Amman \u2194 Kuala Lumpur",stars:5,meal:"BB",
+   single:758,double:758,room:"Deluxe / Studio Sea-view / Executive",
+   location:"Selangor - Langkawi - KL",nights:8,pdf:"itineraries/my/my_pkg7.pdf"},
+  {id:8,title:"Sun Way Resort Selangor + Westin Spa Langkawi + Pullman KL",
+   arabic:"صن واي ريزورت سيلانغور + ويستن سبا لنكاوي + بولمان كوالالمبور",
+   subtitle:"Selangor \u2192 Langkawi \u2192 KL",route:"Amman \u2194 Kuala Lumpur",stars:5,meal:"BB",
+   single:859,double:859,room:"Deluxe / Sea-view Villa / Deluxe",
+   location:"Selangor - Langkawi - KL",nights:8,pdf:"itineraries/my/my_pkg8.pdf"}
+];
+var HT_MY_ACTIVE_ID = null;
+var HT_MY_ACTIVE_TAB = 'pricing';
+function htMyShowDetail(id){
+  HT_MY_ACTIVE_ID = HT_MY_ACTIVE_ID===id?null:id;
+  HT_MY_ACTIVE_TAB = 'pricing';
+  renderDest('malaysia');
+}
+function htMySwitchTab(t){HT_MY_ACTIVE_TAB=t;htMyRenderDetail();}
+function htMyCloseDetail(){HT_MY_ACTIVE_ID=null;renderDest('malaysia');}
+function htMyShowAllTabs(){
+  ['ht-my-tab-pricing','ht-my-tab-itinerary','ht-my-tab-info'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.style.display='block';
+  });
+}
+function htMyRestoreTabs(){
+  var t=HT_MY_ACTIVE_TAB;
+  ['ht-my-tab-pricing','ht-my-tab-itinerary','ht-my-tab-info'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.style.display=(id==='ht-my-tab-pricing'?t==='pricing':id==='ht-my-tab-itinerary'?t==='itinerary':t==='info')?'block':'none';
+  });
+}
+function htMyPrintPkg(id,title){
+  htMyShowAllTabs();
+  setTimeout(function(){
+    PJ.printElement(document.getElementById('ht-my-print-area-'+id),title);
+    setTimeout(htMyRestoreTabs,200);
+  },50);
+}
+function htMyPdfPkg(id,title){
+  htMyShowAllTabs();
+  setTimeout(function(){
+    PJ.downloadPDF(document.getElementById('ht-my-print-area-'+id),title);
+    setTimeout(htMyRestoreTabs,200);
+  },50);
+}
+function htMyRenderDetail(){
+  var panel = document.getElementById('ht-my-detail');
+  if(!HT_MY_ACTIVE_ID){panel.style.display='none';return;}
+  panel.style.display='block';
+  var p = HT_MALAYSIA_PACKAGES.find(function(x){return x.id===HT_MY_ACTIVE_ID;});
+  var fmt = function(v){return (v||0).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0})+' JOD';};
+  var starsStr = function(s){return '\u2605'.repeat(s);};
+  var pricingHtml = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">'+
+    '<thead><tr>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Hotel(s) \u00b7 الفندق</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Stars</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Room Type</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Meal</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Double (p.p)</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Single</th>'+
+      '<th style="text-align:center;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px"></th>'+
+    '</tr></thead><tbody>'+
+    '<tr>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:11px;font-weight:500;line-height:1.3">'+p.title+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);color:var(--gold);font-size:11px" dir="ltr">'+starsStr(p.stars)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:10px;color:var(--muted)">'+p.room+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border)"><span style="background:rgba(39,174,96,.15);color:var(--green);padding:2px 8px;border-radius:4px;font-size:10px">'+p.meal+'</span></td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:700;color:var(--gold)">'+fmt(p.double)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:700">'+fmt(p.single)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);text-align:center"><button onclick="openBooking({type:\'package\',name:\''+p.title.replace(/'/g,"\\'")+'\',destination:\'Malaysia\',nights:'+p.nights+',price:\''+p.double+'\'})" style="padding:4px 10px;background:#25D366;border:none;border-radius:5px;color:#fff;font-family:Cairo,sans-serif;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap">\uD83D\uDCF2 Book</button></td>'+
+    '</tr></tbody></table></div>'+
+    '<div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.8">\u2605 All prices in JOD per person \u00b7 '+p.nights+' nights / '+(p.nights+1)+' days \u00b7 Route: '+p.route+'</div>';
+  var pdfPath = p.pdf;
+  var itinHtml = '<div style="text-align:center;padding:10px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:10px;margin-bottom:12px;font-size:12px">\uD83D\uDCC4 <strong>Detailed Itinerary</strong> \u2014 click below to view or download</div>'+
+    '<iframe src="'+pdfPath+'" style="width:100%;height:600px;border:1px solid var(--border);border-radius:10px;background:#fff" title="Malaysia Itinerary PDF"></iframe>'+
+    '<div style="margin-top:10px;text-align:center"><a href="'+pdfPath+'" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:var(--gold);color:#fff;border-radius:8px;text-decoration:none;font-size:12px;font-weight:700">\uD83D\uDCE5 Download PDF</a></div>';
+  var infoHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:16px">'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Duration</div>'+
+      '<div style="font-weight:700;font-size:13px">'+(p.nights+1)+' days / '+p.nights+' nights</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Flight Route</div>'+
+      '<div style="font-weight:700;font-size:12px">'+p.route+'</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Accommodation</div>'+
+      '<div style="font-weight:700;font-size:11px;line-height:1.4">'+p.location+'</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Meal Plan</div>'+
+      '<div style="font-weight:700">'+p.meal+'</div></div></div>'+
+    '<div style="font-weight:700;color:var(--gold);margin-bottom:8px;font-size:12px">What\'s Included</div>'+
+    '<ul style="list-style:none;padding:0;margin:0 0 14px">'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Round-trip flights (Amman \u2194 Malaysia)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Airport transfers (arrival and departure)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Hotel accommodation for the full duration</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Meals: '+p.meal+' (Breakfast)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Arabic-speaking professional tour guide</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Daily tours in modern AC vehicles</li>'+
+    '</ul>'+
+    '<div style="font-weight:700;color:var(--muted);margin-bottom:8px;font-size:12px">Not Included</div>'+
+    '<ul style="list-style:none;padding:0;margin:0 0 14px">'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Attraction entrance fees</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Meals outside the hotel</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Optional excursions</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Health insurance (recommended before travel)</li>'+
+    '</ul>'+
+    '<div style="background:rgba(39,174,96,.1);border:1px solid var(--green);border-radius:10px;padding:10px;display:flex;align-items:center;gap:8px;font-size:12px">\u2708\uFE0F <span><strong>Visa:</strong> Jordanian passport holders can enter Malaysia visa-free for up to 30 days.</span></div>';
+  var vId = p.id;
+  var tabBtns = [
+    {id:'pricing',label:'Pricing',icon:'\uD83D\uDCB0'},
+    {id:'itinerary',label:'Itinerary (PDF)',icon:'\uD83D\uDCC4'},
+    {id:'info',label:'Details & Inclusions',icon:'\u2139\uFE0F'}
+  ];
+  panel.innerHTML = '<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;margin-top:16px;overflow:hidden" id="ht-my-print-area-'+vId+'">'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--card2);border-bottom:1px solid var(--border)">'+
+      '<div>'+
+        '<div style="font-size:10px;color:var(--muted)">Package '+p.id+'</div>'+
+        '<div style="font-size:15px;font-weight:800">'+p.title+'</div>'+
+        '<div style="font-size:12px;color:var(--gold)">'+p.arabic+'</div>'+
+        '<div style="font-size:11px;color:var(--muted);margin-top:2px">'+p.subtitle+'</div>'+
+      '</div>'+
+      '<div style="display:flex;gap:6px;align-items:center">'+
+        '<button onclick="htMyPrintPkg('+vId+',\''+p.title.replace(/'/g,"\\'")+' - '+p.arabic+'\')" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:10px">\uD83D\uDDA8\uFE0F Print</button>'+
+        '<button onclick="htMyPdfPkg('+vId+',\''+p.title.replace(/'/g,"\\'")+' - '+p.arabic+'\')" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:10px">\uD83D\uDCC4 PDF</button>'+
+        '<button onclick="htMyCloseDetail()" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:11px">\u2715</button>'+
+      '</div>'+
+    '</div>'+
+    '<div style="display:flex;gap:4px;padding:0 18px;background:var(--dark3);border-bottom:1px solid var(--border)">'+
+      tabBtns.map(function(t){return '<button onclick="htMySwitchTab(\''+t.id+'\')" style="padding:8px 14px;border:none;background:none;cursor:pointer;font-family:Cairo,sans-serif;font-size:12px;font-weight:600;color:'+(HT_MY_ACTIVE_TAB===t.id?'var(--gold)':'var(--muted)')+';border-bottom:2px solid '+(HT_MY_ACTIVE_TAB===t.id?'var(--gold)':'transparent')+';transition:all .2s">'+t.icon+' '+t.label+'</button>';}).join('')+
+    '</div>'+
+    '<div style="padding:18px">'+
+      '<div id="ht-my-tab-pricing" style="display:'+(HT_MY_ACTIVE_TAB==='pricing'?'block':'none')+'">'+pricingHtml+'</div>'+
+      '<div id="ht-my-tab-itinerary" style="display:'+(HT_MY_ACTIVE_TAB==='itinerary'?'block':'none')+'">'+itinHtml+'</div>'+
+      '<div id="ht-my-tab-info" style="display:'+(HT_MY_ACTIVE_TAB==='info'?'block':'none')+'">'+infoHtml+'</div>'+
+    '</div>'+
+  '</div>';
+}
+
+// ════════════════════════════════════════════════════════════════
+// BALI RICH PACKAGE DATA (dashboard-style with PDF itinerary)
+// ════════════════════════════════════════════════════════════════
+var HT_BALI_PACKAGES = [
+  {id:1,title:"Bintang Bali Resort + Komaneka at Keramas Beach",
+   arabic:"بينتانج بالي ريزورت + كومانيكا في كيراماس بيتش",
+   subtitle:"Bali \u2014 7 nights",route:"Amman \u2194 Bali",stars:4,meal:"BB",
+   single:225,double:225,room:"Special 2BR / Deluxe",
+   location:"Bali Island",nights:7,pdf:"itineraries/bi/bi_pkg1.pdf"},
+  {id:2,title:"Discovery Kartika Plaza Kuta + Monteigo Seminyak Resort",
+   arabic:"ديسكفري كارتيكا بلازا كوتا + مونتيغو سيمينياك ريزورت",
+   subtitle:"Bali \u2014 7 nights",route:"Amman \u2194 Bali",stars:5,meal:"BB",
+   single:277,double:277,room:"Deluxe",
+   location:"Bali Island",nights:7,pdf:"itineraries/bi/bi_pkg2.pdf"},
+  {id:3,title:"Aryaduta Bali + Monoloco Seminyak Bay",
+   arabic:"أريادوتا بالي + مونولوكو سيمينياك باي",
+   subtitle:"Bali \u2014 7 nights",route:"Amman \u2194 Bali",stars:4,meal:"BB",
+   single:311,double:311,room:"Superior / Villa 1BR",
+   location:"Bali Island",nights:7,pdf:"itineraries/bi/bi_pkg3.pdf"},
+  {id:4,title:"Bali Beach Hotel Sanur + Komaneka at Keramas Beach",
+   arabic:"بالي بيتش هوتيل سانور + كومانيكا في كيراماس بيتش",
+   subtitle:"Bali \u2014 7 nights",route:"Amman \u2194 Bali",stars:5,meal:"BB",
+   single:540,double:540,room:"Deluxe Sea View / Villa",
+   location:"Bali Island",nights:7,pdf:"itineraries/bi/bi_pkg4.pdf"},
+  {id:5,title:"Rama Beach Villas & Resort + Aloft Bali Seminyak",
+   arabic:"راما بيتش فيلاز آند ريزورت + ألوفت بالي سيمينياك",
+   subtitle:"Bali \u2014 8 nights",route:"Amman \u2194 Bali",stars:5,meal:"BB",
+   single:313,double:313,room:"Deluxe / Aloft Room",
+   location:"Bali Island",nights:8,pdf:"itineraries/bi/bi_pkg5.pdf"},
+  {id:6,title:"Pesona Alam Bonchak + Rama Beach Villas + Novotel Jakarta Cikini",
+   arabic:"بيسونا ألام بونشاك + راما بيتش فيلاز + نوفوتيل جاكرتا سيكيني",
+   subtitle:"Bonchak \u2192 Bali \u2192 Jakarta",route:"Amman \u2194 Jakarta",stars:4,meal:"BB",
+   single:483,double:483,room:"Multi-City Family",
+   location:"Bonchak - Bali - Jakarta",nights:8,pdf:"itineraries/bi/bi_pkg6.pdf"},
+  {id:7,title:"Pesona Alam Bonchak + Trabi Bali Kuta + Villas Vaspa Tandia + Novotel Jakarta",
+   arabic:"بيسونا ألام بونشاك + ترابي بالي كوتا + فيلاس فاسبا تانديا + نوفوتيل جاكرتا",
+   subtitle:"Bonchak \u2192 Bali \u2192 Jakarta",route:"Amman \u2194 Jakarta",stars:4,meal:"BB",
+   single:535,double:535,room:"Multi-City",
+   location:"Bonchak - Bali - Jakarta",nights:8,pdf:"itineraries/bi/bi_pkg7.pdf"},
+  {id:8,title:"Le Eminence Bonchak + Discovery Kartika + Waka Gangga + Windham Casablanca Jakarta",
+   arabic:"لو إيميننس بونشاك + ديسكفري كارتيكا + واكانغا + ويندهام كازابلانكا جاكرتا",
+   subtitle:"Bonchak \u2192 Bali \u2192 Jakarta",route:"Amman \u2194 Jakarta",stars:5,meal:"BB",
+   single:641,double:641,room:"Multi-City Luxury",
+   location:"Bonchak - Bali - Jakarta",nights:8,pdf:"itineraries/bi/bi_pkg8.pdf"}
+];
+var HT_BI_ACTIVE_ID = null;
+var HT_BI_ACTIVE_TAB = 'pricing';
+function htBiShowDetail(id){
+  HT_BI_ACTIVE_ID = HT_BI_ACTIVE_ID===id?null:id;
+  HT_BI_ACTIVE_TAB = 'pricing';
+  renderDest('bali');
+}
+function htBiSwitchTab(t){HT_BI_ACTIVE_TAB=t;htBiRenderDetail();}
+function htBiCloseDetail(){HT_BI_ACTIVE_ID=null;renderDest('bali');}
+function htBiShowAllTabs(){
+  ['ht-bi-tab-pricing','ht-bi-tab-itinerary','ht-bi-tab-info'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.style.display='block';
+  });
+}
+function htBiRestoreTabs(){
+  var t=HT_BI_ACTIVE_TAB;
+  ['ht-bi-tab-pricing','ht-bi-tab-itinerary','ht-bi-tab-info'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.style.display=(id==='ht-bi-tab-pricing'?t==='pricing':id==='ht-bi-tab-itinerary'?t==='itinerary':t==='info')?'block':'none';
+  });
+}
+function htBiPrintPkg(id,title){
+  htBiShowAllTabs();
+  setTimeout(function(){
+    PJ.printElement(document.getElementById('ht-bi-print-area-'+id),title);
+    setTimeout(htBiRestoreTabs,200);
+  },50);
+}
+function htBiPdfPkg(id,title){
+  htBiShowAllTabs();
+  setTimeout(function(){
+    PJ.downloadPDF(document.getElementById('ht-bi-print-area-'+id),title);
+    setTimeout(htBiRestoreTabs,200);
+  },50);
+}
+function htBiRenderDetail(){
+  var panel = document.getElementById('ht-bi-detail');
+  if(!HT_BI_ACTIVE_ID){panel.style.display='none';return;}
+  panel.style.display='block';
+  var p = HT_BALI_PACKAGES.find(function(x){return x.id===HT_BI_ACTIVE_ID;});
+  var fmt = function(v){return (v||0).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0})+' JOD';};
+  var starsStr = function(s){return '\u2605'.repeat(s);};
+  var pricingHtml = '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:12px">'+
+    '<thead><tr>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Hotel(s) \u00b7 الفندق</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Stars</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Room Type</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Meal</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Double (p.p)</th>'+
+      '<th style="text-align:right;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px">Single</th>'+
+      '<th style="text-align:center;padding:8px 10px;background:var(--dark3);border-bottom:2px solid var(--gold);color:var(--gold);font-size:11px"></th>'+
+    '</tr></thead><tbody>'+
+    '<tr>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:11px;font-weight:500;line-height:1.3">'+p.title+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);color:var(--gold);font-size:11px" dir="ltr">'+starsStr(p.stars)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-size:10px;color:var(--muted)">'+p.room+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border)"><span style="background:rgba(39,174,96,.15);color:var(--green);padding:2px 8px;border-radius:4px;font-size:10px">'+p.meal+'</span></td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:700;color:var(--gold)">'+fmt(p.double)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:700">'+fmt(p.single)+'</td>'+
+      '<td style="padding:8px 10px;border-bottom:1px solid var(--border);text-align:center"><button onclick="openBooking({type:\'package\',name:\''+p.title.replace(/'/g,"\\'")+'\',destination:\'Bali\',nights:'+p.nights+',price:\''+p.double+'\'})" style="padding:4px 10px;background:#25D366;border:none;border-radius:5px;color:#fff;font-family:Cairo,sans-serif;font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap">\uD83D\uDCF2 Book</button></td>'+
+    '</tr></tbody></table></div>'+
+    '<div style="margin-top:10px;font-size:11px;color:var(--muted);line-height:1.8">\u2605 All prices in JOD per person \u00b7 '+p.nights+' nights / '+(p.nights+1)+' days \u00b7 Route: '+p.route+'</div>';
+  var pdfPath = p.pdf;
+  var itinHtml = '<div style="text-align:center;padding:10px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:10px;margin-bottom:12px;font-size:12px">\uD83D\uDCC4 <strong>Detailed Itinerary</strong> \u2014 click below to view or download</div>'+
+    '<iframe src="'+pdfPath+'" style="width:100%;height:600px;border:1px solid var(--border);border-radius:10px;background:#fff" title="Bali Itinerary PDF"></iframe>'+
+    '<div style="margin-top:10px;text-align:center"><a href="'+pdfPath+'" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:var(--gold);color:#fff;border-radius:8px;text-decoration:none;font-size:12px;font-weight:700">\uD83D\uDCE5 Download PDF</a></div>';
+  var infoHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:16px">'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Duration</div>'+
+      '<div style="font-weight:700;font-size:13px">'+(p.nights+1)+' days / '+p.nights+' nights</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Flight Route</div>'+
+      '<div style="font-weight:700;font-size:12px">'+p.route+'</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Accommodation</div>'+
+      '<div style="font-weight:700;font-size:11px;line-height:1.4">'+p.location+'</div></div>'+
+    '<div style="background:var(--card2);border-radius:10px;padding:12px;border:1px solid var(--border)">'+
+      '<div style="font-size:10px;color:var(--muted);margin-bottom:4px">Meal Plan</div>'+
+      '<div style="font-weight:700">'+p.meal+'</div></div></div>'+
+    '<div style="font-weight:700;color:var(--gold);margin-bottom:8px;font-size:12px">What\'s Included</div>'+
+    '<ul style="list-style:none;padding:0;margin:0 0 14px">'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Round-trip flights (Amman \u2194 Indonesia)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Airport transfers (arrival and departure)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Hotel accommodation for the full duration</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Meals: '+p.meal+' (Breakfast)</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Arabic-speaking professional tour guide</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px">\u2705 Daily tours in modern AC vehicles</li>'+
+    '</ul>'+
+    '<div style="font-weight:700;color:var(--muted);margin-bottom:8px;font-size:12px">Not Included</div>'+
+    '<ul style="list-style:none;padding:0;margin:0 0 14px">'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Attraction entrance fees</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Meals outside the hotel</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Optional excursions</li>'+
+      '<li style="padding:4px 0;font-size:12px;display:flex;align-items:center;gap:8px;color:var(--muted)">\u274C Health insurance (recommended before travel)</li>'+
+    '</ul>'+
+    '<div style="background:rgba(39,174,96,.1);border:1px solid var(--green);border-radius:10px;padding:10px;display:flex;align-items:center;gap:8px;font-size:12px">\u2708\uFE0F <span><strong>Visa:</strong> Jordanian passport holders can obtain a visa on arrival in Indonesia (up to 30 days).</span></div>';
+  var vId = p.id;
+  var tabBtns = [
+    {id:'pricing',label:'Pricing',icon:'\uD83D\uDCB0'},
+    {id:'itinerary',label:'Itinerary (PDF)',icon:'\uD83D\uDCC4'},
+    {id:'info',label:'Details & Inclusions',icon:'\u2139\uFE0F'}
+  ];
+  panel.innerHTML = '<div style="background:var(--card);border:1px solid var(--border);border-radius:16px;margin-top:16px;overflow:hidden" id="ht-bi-print-area-'+vId+'">'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--card2);border-bottom:1px solid var(--border)">'+
+      '<div>'+
+        '<div style="font-size:10px;color:var(--muted)">Package '+p.id+'</div>'+
+        '<div style="font-size:15px;font-weight:800">'+p.title+'</div>'+
+        '<div style="font-size:12px;color:var(--gold)">'+p.arabic+'</div>'+
+        '<div style="font-size:11px;color:var(--muted);margin-top:2px">'+p.subtitle+'</div>'+
+      '</div>'+
+      '<div style="display:flex;gap:6px;align-items:center">'+
+        '<button onclick="htBiPrintPkg('+vId+',\''+p.title.replace(/'/g,"\\'")+' - '+p.arabic+'\')" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:10px">\uD83D\uDDA8\uFE0F Print</button>'+
+        '<button onclick="htBiPdfPkg('+vId+',\''+p.title.replace(/'/g,"\\'")+' - '+p.arabic+'\')" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:10px">\uD83D\uDCC4 PDF</button>'+
+        '<button onclick="htBiCloseDetail()" style="padding:5px 10px;background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--muted);cursor:pointer;font-family:Cairo,sans-serif;font-size:11px">\u2715</button>'+
+      '</div>'+
+    '</div>'+
+    '<div style="display:flex;gap:4px;padding:0 18px;background:var(--dark3);border-bottom:1px solid var(--border)">'+
+      tabBtns.map(function(t){return '<button onclick="htBiSwitchTab(\''+t.id+'\')" style="padding:8px 14px;border:none;background:none;cursor:pointer;font-family:Cairo,sans-serif;font-size:12px;font-weight:600;color:'+(HT_BI_ACTIVE_TAB===t.id?'var(--gold)':'var(--muted)')+';border-bottom:2px solid '+(HT_BI_ACTIVE_TAB===t.id?'var(--gold)':'transparent')+';transition:all .2s">'+t.icon+' '+t.label+'</button>';}).join('')+
+    '</div>'+
+    '<div style="padding:18px">'+
+      '<div id="ht-bi-tab-pricing" style="display:'+(HT_BI_ACTIVE_TAB==='pricing'?'block':'none')+'">'+pricingHtml+'</div>'+
+      '<div id="ht-bi-tab-itinerary" style="display:'+(HT_BI_ACTIVE_TAB==='itinerary'?'block':'none')+'">'+itinHtml+'</div>'+
+      '<div id="ht-bi-tab-info" style="display:'+(HT_BI_ACTIVE_TAB==='info'?'block':'none')+'">'+infoHtml+'</div>'+
+    '</div>'+
+  '</div>';
+}
+
+// Override renderDest for Vietnam
+var _htOrigRenderDest = renderDest;
+renderDest = function(dest){
+  if(dest === 'vietnam'){
+    var sec = document.getElementById('sec-vietnam');
+    if(!sec) return;
+    sec.innerHTML = '<div style="margin-bottom:20px">'+
+      '<div style="text-align:center;padding:12px;background:rgba(39,174,96,.1);border:1px solid var(--green);border-radius:12px;margin-bottom:18px;font-size:13px">'+
+        '\u2708\uFE0F All prices include flights, hotel &amp; transport \u00a0\u00b7\u00a0 \uD83D\uDCB0 All prices in <strong>JOD</strong> per person \u00a0\u00b7\u00a0 9 days / 8 nights'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px" id="ht-vn-cards">'+
+        HT_VIETNAM_PACKAGES.map(function(p){
+          var active = HT_VN_ACTIVE_ID===p.id;
+          return '<div onclick="htVnShowDetail('+p.id+')" style="background:var(--card);border:1px solid '+(active?'var(--gold)':'var(--border)')+';border-radius:14px;padding:16px;cursor:pointer;transition:all .2s;box-shadow:'+(active?'0 0 0 2px rgba(201,168,76,.3)':'none')+'">'+
+            '<div style="font-size:11px;color:var(--muted);margin-bottom:4px">Package '+p.id+'</div>'+
+            '<div style="font-weight:800;font-size:14px;line-height:1.3">'+p.title+'</div>'+
+            '<div style="color:var(--gold);font-size:12px;margin-bottom:4px">'+p.arabic+'</div>'+
+            '<div style="font-size:11px;color:var(--muted);margin-bottom:10px">'+p.location+'</div>'+
+            '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">'+
+              '<span style="background:rgba(39,174,96,.2);color:var(--green);padding:2px 8px;border-radius:4px;font-size:10px;border:1px solid var(--green)">\u2713 Ticket Included</span>'+
+              '<span style="padding:2px 8px;border-radius:4px;font-size:10px;border:1px solid var(--gold);color:var(--gold)" dir="ltr">'+'\u2605'.repeat(p.stars)+' '+p.stars+'\u2605</span>'+
+            '</div>'+
+            '<div style="font-size:20px;font-weight:800;color:var(--gold)">'+(p.double||0).toLocaleString('en-US')+' <span style="font-size:12px;font-weight:400">JOD</span></div>'+
+            '<div style="font-size:11px;color:var(--muted)">per person (double) \u00b7 '+p.nights+' nights \u00b7 '+p.meal+'</div>'+
+            (!active?'<div style="margin-top:12px"><span style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--gold);color:#fff;border-radius:8px;font-size:12px;font-weight:700;box-shadow:0 4px 15px rgba(201,168,76,.3)">\uD83D\uDCCA \u0639\u0631\u0636 \u0627\u0644\u062A\u0641\u0627\u0635\u064A\u0644 \u0648\u0627\u0644\u0623\u0633\u0639\u0627\u0631</span></div>':'')+
+          '</div>';
+        }).join('')+
+      '</div>'+
+      '<div id="ht-vn-detail"></div>'+
+    '</div>';
+    htVnRenderDetail();
+    return;
+  }
+  if(dest === 'srilanka'){
+    var sec = document.getElementById('sec-srilanka');
+    if(!sec) return;
+    sec.innerHTML = '<div style="margin-bottom:20px">'+
+      '<div style="text-align:center;padding:12px;background:rgba(39,174,96,.1);border:1px solid var(--green);border-radius:12px;margin-bottom:18px;font-size:13px">'+
+        '\u2708\uFE0F All prices include flights, hotel &amp; transport \u00a0\u00b7\u00a0 \uD83D\uDCB0 All prices in <strong>JOD</strong> per person \u00a0\u00b7\u00a0 8 days / 7 nights'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px" id="ht-sl-cards">'+
+        HT_SRI_LANKA_PACKAGES.map(function(p){
+          var active = HT_SL_ACTIVE_ID===p.id;
+          return '<div onclick="htSlShowDetail('+p.id+')" style="background:var(--card);border:1px solid '+(active?'var(--gold)':'var(--border)')+';border-radius:14px;padding:16px;cursor:pointer;transition:all .2s;box-shadow:'+(active?'0 0 0 2px rgba(201,168,76,.3)':'none')+'">'+
+            '<div style="font-size:11px;color:var(--muted);margin-bottom:4px">Package '+p.id+'</div>'+
+            '<div style="font-weight:800;font-size:14px;line-height:1.3">'+p.title+'</div>'+
+            '<div style="color:var(--gold);font-size:12px;margin-bottom:4px">'+p.arabic+'</div>'+
+            '<div style="font-size:11px;color:var(--muted);margin-bottom:10px">'+p.location+'</div>'+
+            '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">'+
+              '<span style="background:rgba(39,174,96,.2);color:var(--green);padding:2px 8px;border-radius:4px;font-size:10px;border:1px solid var(--green)">\u2713 Ticket Included</span>'+
+              '<span style="padding:2px 8px;border-radius:4px;font-size:10px;border:1px solid var(--gold);color:var(--gold)" dir="ltr">'+'\u2605'.repeat(p.stars)+' '+p.stars+'\u2605</span>'+
+            '</div>'+
+            '<div style="font-size:20px;font-weight:800;color:var(--gold)">'+(p.double||0).toLocaleString('en-US')+' <span style="font-size:12px;font-weight:400">JOD</span></div>'+
+            '<div style="font-size:11px;color:var(--muted)">per person (double) \u00b7 '+p.nights+' nights \u00b7 '+p.meal+'</div>'+
+            (!active?'<div style="margin-top:12px"><span style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--gold);color:#fff;border-radius:8px;font-size:12px;font-weight:700;box-shadow:0 4px 15px rgba(201,168,76,.3)">\uD83D\uDCCA \u0639\u0631\u0636 \u0627\u0644\u062A\u0641\u0627\u0635\u064A\u0644 \u0648\u0627\u0644\u0623\u0633\u0639\u0627\u0631</span></div>':'')+
+          '</div>';
+        }).join('')+
+      '</div>'+
+      '<div id="ht-sl-detail"></div>'+
+    '</div>';
+    htSlRenderDetail();
+    return;
+  }
+  if(dest === 'maldives'){
+    var sec = document.getElementById('sec-maldives');
+    if(!sec) return;
+    sec.innerHTML = '<div style="margin-bottom:20px">'+
+      '<div style="text-align:center;padding:12px;background:rgba(39,174,96,.1);border:1px solid var(--green);border-radius:12px;margin-bottom:18px;font-size:13px">'+
+        '\u2708\uFE0F All prices include flights, hotel &amp; transport \u00a0\u00b7\u00a0 \uD83D\uDCB0 All prices in <strong>JOD</strong> per person \u00a0\u00b7\u00a0 5 days / 4 nights'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px" id="ht-mv-cards">'+
+        HT_MALDIVES_PACKAGES.map(function(p){
+          var active = HT_MV_ACTIVE_ID===p.id;
+          return '<div onclick="htMvShowDetail('+p.id+')" style="background:var(--card);border:1px solid '+(active?'var(--gold)':'var(--border)')+';border-radius:14px;padding:16px;cursor:pointer;transition:all .2s;box-shadow:'+(active?'0 0 0 2px rgba(201,168,76,.3)':'none')+'">'+
+            '<div style="font-size:11px;color:var(--muted);margin-bottom:4px">Package '+p.id+'</div>'+
+            '<div style="font-weight:800;font-size:14px;line-height:1.3">'+p.title+'</div>'+
+            '<div style="color:var(--gold);font-size:12px;margin-bottom:4px">'+p.arabic+'</div>'+
+            '<div style="font-size:11px;color:var(--muted);margin-bottom:10px">'+p.location+'</div>'+
+            '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">'+
+              '<span style="background:rgba(39,174,96,.2);color:var(--green);padding:2px 8px;border-radius:4px;font-size:10px;border:1px solid var(--green)">\u2713 Ticket Included</span>'+
+              '<span style="padding:2px 8px;border-radius:4px;font-size:10px;border:1px solid var(--gold);color:var(--gold)" dir="ltr">'+'\u2605'.repeat(p.stars)+' '+p.stars+'\u2605</span>'+
+            '</div>'+
+            '<div style="font-size:20px;font-weight:800;color:var(--gold)">'+(p.double||0).toLocaleString('en-US')+' <span style="font-size:12px;font-weight:400">JOD</span></div>'+
+            '<div style="font-size:11px;color:var(--muted)">per person (double) \u00b7 '+p.nights+' nights \u00b7 '+p.meal+'</div>'+
+            (!active?'<div style="margin-top:12px"><span style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--gold);color:#fff;border-radius:8px;font-size:12px;font-weight:700;box-shadow:0 4px 15px rgba(201,168,76,.3)">\uD83D\uDCCA \u0639\u0631\u0636 \u0627\u0644\u062A\u0641\u0627\u0635\u064A\u0644 \u0648\u0627\u0644\u0623\u0633\u0639\u0627\u0631</span></div>':'')+
+          '</div>';
+        }).join('')+
+      '</div>'+
+      '<div id="ht-mv-detail"></div>'+
+    '</div>';
+    htMvRenderDetail();
+    return;
+  }
+  if(dest === 'thailand'){
+    var sec = document.getElementById('sec-thailand');
+    if(!sec) return;
+    sec.innerHTML = '<div style="margin-bottom:20px">'+
+      '<div style="text-align:center;padding:12px;background:rgba(39,174,96,.1);border:1px solid var(--green);border-radius:12px;margin-bottom:18px;font-size:13px">'+
+        '\u2708\uFE0F All prices include flights, hotel &amp; transport \u00a0\u00b7\u00a0 \uD83D\uDCB0 All prices in <strong>JOD</strong> per person \u00a0\u00b7\u00a0 7-8 nights'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px" id="ht-th-cards">'+
+        HT_THAILAND_PACKAGES.map(function(p){
+          var active = HT_TH_ACTIVE_ID===p.id;
+          return '<div onclick="htThShowDetail('+p.id+')" style="background:var(--card);border:1px solid '+(active?'var(--gold)':'var(--border)')+';border-radius:14px;padding:16px;cursor:pointer;transition:all .2s;box-shadow:'+(active?'0 0 0 2px rgba(201,168,76,.3)':'none')+'">'+
+            '<div style="font-size:11px;color:var(--muted);margin-bottom:4px">Package '+p.id+'</div>'+
+            '<div style="font-weight:800;font-size:14px;line-height:1.3">'+p.title+'</div>'+
+            '<div style="color:var(--gold);font-size:12px;margin-bottom:4px">'+p.arabic+'</div>'+
+            '<div style="font-size:11px;color:var(--muted);margin-bottom:10px">'+p.location+'</div>'+
+            '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">'+
+              '<span style="background:rgba(39,174,96,.2);color:var(--green);padding:2px 8px;border-radius:4px;font-size:10px;border:1px solid var(--green)">\u2713 Ticket Included</span>'+
+              '<span style="padding:2px 8px;border-radius:4px;font-size:10px;border:1px solid var(--gold);color:var(--gold)" dir="ltr">'+'\u2605'.repeat(p.stars)+' '+p.stars+'\u2605</span>'+
+            '</div>'+
+            '<div style="font-size:20px;font-weight:800;color:var(--gold)">'+(p.double||0).toLocaleString('en-US')+' <span style="font-size:12px;font-weight:400">JOD</span></div>'+
+            '<div style="font-size:11px;color:var(--muted)">per person (double) \u00b7 '+p.nights+' nights \u00b7 '+p.meal+'</div>'+
+            (!active?'<div style="margin-top:12px"><span style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--gold);color:#fff;border-radius:8px;font-size:12px;font-weight:700;box-shadow:0 4px 15px rgba(201,168,76,.3)">\uD83D\uDCCA \u0639\u0631\u0636 \u0627\u0644\u062A\u0641\u0627\u0635\u064A\u0644 \u0648\u0627\u0644\u0623\u0633\u0639\u0627\u0631</span></div>':'')+
+          '</div>';
+        }).join('')+
+      '</div>'+
+      '<div id="ht-th-detail"></div>'+
+    '</div>';
+    htThRenderDetail();
+    return;
+  }
+  if(dest === 'singapore'){
+    var sec = document.getElementById('sec-singapore');
+    if(!sec) return;
+    sec.innerHTML = '<div style="margin-bottom:20px">'+
+      '<div style="text-align:center;padding:12px;background:rgba(39,174,96,.1);border:1px solid var(--green);border-radius:12px;margin-bottom:18px;font-size:13px">'+
+        '\u2708\uFE0F All prices include flights, hotel &amp; transport \u00a0\u00b7\u00a0 \uD83D\uDCB0 All prices in <strong>JOD</strong> per person \u00a0\u00b7\u00a0 4-5 nights'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px" id="ht-sg-cards">'+
+        HT_SINGAPORE_PACKAGES.map(function(p){
+          var active = HT_SG_ACTIVE_ID===p.id;
+          return '<div onclick="htSgShowDetail('+p.id+')" style="background:var(--card);border:1px solid '+(active?'var(--gold)':'var(--border)')+';border-radius:14px;padding:16px;cursor:pointer;transition:all .2s;box-shadow:'+(active?'0 0 0 2px rgba(201,168,76,.3)':'none')+'">'+
+            '<div style="font-size:11px;color:var(--muted);margin-bottom:4px">Package '+p.id+'</div>'+
+            '<div style="font-weight:800;font-size:14px;line-height:1.3">'+p.title+'</div>'+
+            '<div style="color:var(--gold);font-size:12px;margin-bottom:4px">'+p.arabic+'</div>'+
+            '<div style="font-size:11px;color:var(--muted);margin-bottom:10px">'+p.location+'</div>'+
+            '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">'+
+              '<span style="background:rgba(39,174,96,.2);color:var(--green);padding:2px 8px;border-radius:4px;font-size:10px;border:1px solid var(--green)">\u2713 Ticket Included</span>'+
+              '<span style="padding:2px 8px;border-radius:4px;font-size:10px;border:1px solid var(--gold);color:var(--gold)" dir="ltr">'+'\u2605'.repeat(p.stars)+' '+p.stars+'\u2605</span>'+
+            '</div>'+
+            '<div style="font-size:20px;font-weight:800;color:var(--gold)">'+(p.double||0).toLocaleString('en-US')+' <span style="font-size:12px;font-weight:400">JOD</span></div>'+
+            '<div style="font-size:11px;color:var(--muted)">per person (double) \u00b7 '+p.nights+' nights \u00b7 '+p.meal+'</div>'+
+            (!active?'<div style="margin-top:12px"><span style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--gold);color:#fff;border-radius:8px;font-size:12px;font-weight:700;box-shadow:0 4px 15px rgba(201,168,76,.3)">\uD83D\uDCCA \u0639\u0631\u0636 \u0627\u0644\u062A\u0641\u0627\u0635\u064A\u0644 \u0648\u0627\u0644\u0623\u0633\u0639\u0627\u0631</span></div>':'')+
+          '</div>';
+        }).join('')+
+      '</div>'+
+      '<div id="ht-sg-detail"></div>'+
+    '</div>';
+    htSgRenderDetail();
+    return;
+  }
+  if(dest === 'malaysia'){
+    var sec = document.getElementById('sec-malaysia');
+    if(!sec) return;
+    sec.innerHTML = '<div style="margin-bottom:20px">'+
+      '<div style="text-align:center;padding:12px;background:rgba(39,174,96,.1);border:1px solid var(--green);border-radius:12px;margin-bottom:18px;font-size:13px">'+
+        '\u2708\uFE0F All prices include flights, hotel &amp; transport \u00a0\u00b7\u00a0 \uD83D\uDCB0 All prices in <strong>JOD</strong> per person \u00a0\u00b7\u00a0 7-8 nights'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px" id="ht-my-cards">'+
+        HT_MALAYSIA_PACKAGES.map(function(p){
+          var active = HT_MY_ACTIVE_ID===p.id;
+          return '<div onclick="htMyShowDetail('+p.id+')" style="background:var(--card);border:1px solid '+(active?'var(--gold)':'var(--border)')+';border-radius:14px;padding:16px;cursor:pointer;transition:all .2s;box-shadow:'+(active?'0 0 0 2px rgba(201,168,76,.3)':'none')+'">'+
+            '<div style="font-size:11px;color:var(--muted);margin-bottom:4px">Package '+p.id+'</div>'+
+            '<div style="font-weight:800;font-size:14px;line-height:1.3">'+p.title+'</div>'+
+            '<div style="color:var(--gold);font-size:12px;margin-bottom:4px">'+p.arabic+'</div>'+
+            '<div style="font-size:11px;color:var(--muted);margin-bottom:10px">'+p.location+'</div>'+
+            '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">'+
+              '<span style="background:rgba(39,174,96,.2);color:var(--green);padding:2px 8px;border-radius:4px;font-size:10px;border:1px solid var(--green)">\u2713 Ticket Included</span>'+
+              '<span style="padding:2px 8px;border-radius:4px;font-size:10px;border:1px solid var(--gold);color:var(--gold)" dir="ltr">'+'\u2605'.repeat(p.stars)+' '+p.stars+'\u2605</span>'+
+            '</div>'+
+            '<div style="font-size:20px;font-weight:800;color:var(--gold)">'+(p.double||0).toLocaleString('en-US')+' <span style="font-size:12px;font-weight:400">JOD</span></div>'+
+            '<div style="font-size:11px;color:var(--muted)">per person (double) \u00b7 '+p.nights+' nights \u00b7 '+p.meal+'</div>'+
+            (!active?'<div style="margin-top:12px"><span style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--gold);color:#fff;border-radius:8px;font-size:12px;font-weight:700;box-shadow:0 4px 15px rgba(201,168,76,.3)">\uD83D\uDCCA \u0639\u0631\u0636 \u0627\u0644\u062A\u0641\u0627\u0635\u064A\u0644 \u0648\u0627\u0644\u0623\u0633\u0639\u0627\u0631</span></div>':'')+
+          '</div>';
+        }).join('')+
+      '</div>'+
+      '<div id="ht-my-detail"></div>'+
+    '</div>';
+    htMyRenderDetail();
+    return;
+  }
+  if(dest === 'bali'){
+    var sec = document.getElementById('sec-bali');
+    if(!sec) return;
+    sec.innerHTML = '<div style="margin-bottom:20px">'+
+      '<div style="text-align:center;padding:12px;background:rgba(39,174,96,.1);border:1px solid var(--green);border-radius:12px;margin-bottom:18px;font-size:13px">'+
+        '\u2708\uFE0F All prices include flights, hotel &amp; transport \u00a0\u00b7\u00a0 \uD83D\uDCB0 All prices in <strong>JOD</strong> per person \u00a0\u00b7\u00a0 7-8 nights'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px" id="ht-bi-cards">'+
+        HT_BALI_PACKAGES.map(function(p){
+          var active = HT_BI_ACTIVE_ID===p.id;
+          return '<div onclick="htBiShowDetail('+p.id+')" style="background:var(--card);border:1px solid '+(active?'var(--gold)':'var(--border)')+';border-radius:14px;padding:16px;cursor:pointer;transition:all .2s;box-shadow:'+(active?'0 0 0 2px rgba(201,168,76,.3)':'none')+'">'+
+            '<div style="font-size:11px;color:var(--muted);margin-bottom:4px">Package '+p.id+'</div>'+
+            '<div style="font-weight:800;font-size:14px;line-height:1.3">'+p.title+'</div>'+
+            '<div style="color:var(--gold);font-size:12px;margin-bottom:4px">'+p.arabic+'</div>'+
+            '<div style="font-size:11px;color:var(--muted);margin-bottom:10px">'+p.location+'</div>'+
+            '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">'+
+              '<span style="background:rgba(39,174,96,.2);color:var(--green);padding:2px 8px;border-radius:4px;font-size:10px;border:1px solid var(--green)">\u2713 Ticket Included</span>'+
+              '<span style="padding:2px 8px;border-radius:4px;font-size:10px;border:1px solid var(--gold);color:var(--gold)" dir="ltr">'+'\u2605'.repeat(p.stars)+' '+p.stars+'\u2605</span>'+
+            '</div>'+
+            '<div style="font-size:20px;font-weight:800;color:var(--gold)">'+(p.double||0).toLocaleString('en-US')+' <span style="font-size:12px;font-weight:400">JOD</span></div>'+
+            '<div style="font-size:11px;color:var(--muted)">per person (double) \u00b7 '+p.nights+' nights \u00b7 '+p.meal+'</div>'+
+            (!active?'<div style="margin-top:12px"><span style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--gold);color:#fff;border-radius:8px;font-size:12px;font-weight:700;box-shadow:0 4px 15px rgba(201,168,76,.3)">\uD83D\uDCCA \u0639\u0631\u0636 \u0627\u0644\u062A\u0641\u0627\u0635\u064A\u0644 \u0648\u0627\u0644\u0623\u0633\u0639\u0627\u0631</span></div>':'')+
+          '</div>';
+        }).join('')+
+      '</div>'+
+      '<div id="ht-bi-detail"></div>'+
+    '</div>';
+    htBiRenderDetail();
+    return;
+  }
+  _htOrigRenderDest(dest);
+};
 
 loadData();
 
