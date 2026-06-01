@@ -511,6 +511,15 @@ async function htRenderPDF(pdfUrl, container) {
     container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted)">⚠️ Could not load itinerary. <a href="'+pdfUrl+'" target="_blank" style="color:var(--gold)">Open PDF directly</a></div>';
   }
 }
+function htCanvasesToImages(container) {
+  var canvases = container.querySelectorAll('canvas');
+  canvases.forEach(function(c){
+    var img = document.createElement('img');
+    img.src = c.toDataURL('image/png');
+    img.style.cssText = c.style.cssText;
+    c.parentNode.replaceChild(img, c);
+  });
+}
 async function _htFePrintAction(id, title, prefix, pkgs, isPdf) {
   var itinTab = document.getElementById('ht-'+prefix+'-tab-itinerary');
   var origHTML = itinTab ? itinTab.innerHTML : '';
@@ -521,6 +530,7 @@ async function _htFePrintAction(id, title, prefix, pkgs, isPdf) {
   if (itinTab && pkg && pkg.pdf) {
     itinTab.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted)">⏳ Loading itinerary pages...</div>';
     await htRenderPDF(pkg.pdf, itinTab);
+    htCanvasesToImages(itinTab);
   }
   setTimeout(function(){
     if (isPdf) PJ.downloadPDF(document.getElementById('ht-'+prefix+'-print-area-'+id), title);
