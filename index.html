@@ -286,7 +286,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:44px 0
       <a href="https://wa.me/962777066005?text=مرحباً، أريد الاستفسار عن باقة سياحية" target="_blank" class="cta-sec">&#x1F4AC; تواصل معنا</a>
     </div>
     <div class="hero-stats">
-      <div class="h-stat"><div class="h-stat-num">13+</div><div class="h-stat-lbl">وجهة سياحية</div></div>
+      <div class="h-stat"><div class="h-stat-num">15+</div><div class="h-stat-lbl">وجهة سياحية</div></div>
       <div class="h-stat"><div class="h-stat-num" id="statPkg">200+</div><div class="h-stat-lbl">باقة وفندق</div></div>
       <div class="h-stat"><div class="h-stat-num">24/7</div><div class="h-stat-lbl">خدمة العملاء</div></div>
       <div class="h-stat"><div class="h-stat-num">15+</div><div class="h-stat-lbl">سنة خبرة</div></div>
@@ -510,15 +510,20 @@ function loadPkgs(){
   var g=document.getElementById('pkgGrid');
   var sp=document.getElementById('statPkg');
   if(!g)return;
-  fetch(SB_URL+'/rest/v1/packages?is_active=eq.true&order=created_at.desc&limit=6',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}})
-  .then(function(r){return r.json();})
+  var totalCount=0;
+  fetch(SB_URL+'/rest/v1/packages?is_active=eq.true&order=created_at.desc&limit=6',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'count=exact'}})
+  .then(function(r){
+    var cr=r.headers.get('content-range');
+    if(cr&&cr.indexOf('/')>-1)totalCount=parseInt(cr.split('/')[1],10)||0;
+    return r.json();
+  })
   .then(function(pkgs){
     if(!pkgs||!pkgs.length){
       g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--muted)">ادخل إلى لوحة التحكم وانشر الباقات أولاً</div>';
       if(sp)sp.textContent='0';
       return;
     }
-    if(sp)sp.textContent=pkgs.length+'+';
+    if(sp)sp.textContent=(totalCount>pkgs.length?totalCount:pkgs.length)+'+';
     g.innerHTML=pkgs.map(function(p){
       var msg='مرحباً 👋 أريد الاستفسار عن: '+p.hotel_name+' - '+p.destination+(p.final_price_jod?' ('+fmtNum(p.final_price_jod)+' JOD)':'');
       var stars='';
