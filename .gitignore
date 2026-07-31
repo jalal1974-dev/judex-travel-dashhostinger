@@ -39,3 +39,24 @@ jude_logo_navy.txt
 .DS_Store
 Thumbs.db
 *.log
+.vscode/
+
+# Credentials and internal notes — this repository is PUBLIC.
+# These hold API keys, server passwords and session data.
+.claude/
+.opencode/
+FLIGHT_SYSTEM_PROGRESS.md
+flight_sessions_setup.sql
+*.env
+.env*
+credentials*.json
+*_secret*
+*token*.txt
+
+# Tariff sources and backups (business documents, not website code)
+*.xlsx
+*.xls
+*.pdf
+*.docx
+BACKUP-*.txt
+*backup*.txt
