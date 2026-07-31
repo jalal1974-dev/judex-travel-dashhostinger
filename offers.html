@@ -118,6 +118,43 @@ footer a{color:var(--gold);text-decoration:none;word-break:break-word}
 .btn-print-pdf:hover{border-color:var(--gold)!important;color:var(--text)!important}
 @media print{.offers-grid{grid-template-columns:1fr 1fr 1fr!important}}
 </style>
+<script>
+(function(){
+  var SB_URL='https://rmpuvrmxakukgvtxethj.supabase.co';
+  var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtcHV2cm14YWt1a2d2dHhldGhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyODAyMjcsImV4cCI6MjA5Mzg1NjIyN30.lO8rNtwfLXYFnyGk5dOthPEUj3XIWkfFvSOziTeDFeE';
+  var param=new URLSearchParams(window.location.search).get('ref');
+  if(!param) return;
+  if(!/^JUDE-[A-Z0-9]{6}$/.test(param)) return;
+  fetch(SB_URL+'/rest/v1/affiliate_settings?id=eq.1&select=attribution_window_days,program_active',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}})
+  .then(function(r){return r.json();})
+  .then(function(d){
+    var s=d&&d[0]?d[0]:{program_active:true,attribution_window_days:60};
+    if(!s.program_active) return;
+    var exp=new Date(); exp.setDate(exp.getDate()+(s.attribution_window_days||60));
+    document.cookie='jude_ref='+param+';expires='+exp.toUTCString()+';path=/;SameSite=Lax';
+    fetch(SB_URL+'/rest/v1/rpc/log_affiliate_click',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({p_code:param,p_page:window.location.pathname,p_ua:navigator.userAgent.substring(0,200)})}).catch(function(){});
+  }).catch(function(){
+    var exp=new Date(); exp.setDate(exp.getDate()+60);
+    document.cookie='jude_ref='+param+';expires='+exp.toUTCString()+';path=/;SameSite=Lax';
+  });
+})();
+window.addEventListener('DOMContentLoaded',function(){
+  var c=document.cookie.split(';').map(function(s){return s.trim();}).find(function(s){return s.indexOf('jude_ref=')===0;});
+  if(!c) return;
+  var ref=c.split('=')[1];
+  document.querySelectorAll('a[href*="wa.me"]').forEach(function(a){
+    try{
+      var url=new URL(a.href);
+      var text=url.searchParams.get('text')||'';
+      if(text.indexOf('كود الإحالة')===-1){
+        text+='\n\n[كود الإحالة: '+ref+']';
+        url.searchParams.set('text',text);
+        a.href=url.toString();
+      }
+    }catch(e){}
+  });
+});
+</script>
 </head>
 <body>
 <nav class="nav">
@@ -131,9 +168,11 @@ footer a{color:var(--gold);text-decoration:none;word-break:break-word}
       <a href="packages.html">الباقات</a>
       <a href="hotels-transport.html">فنادق ومواصلات</a>
       <a href="umrah.html">العمرة</a>
+      <a href="visa-services.html">التأشيرات</a>
       <a href="flights.html">تذاكر تشارتر من الأردن</a>
+      <a href="/medical.tourism/">السياحة العلاجية في الأردن</a>
       <a href="flight-search.html" style="color:#C9A84C;font-weight:800;">✈ بحث عن رحلات</a>
-      <a href="aircraft-leasing.html">تأجير الطائرات</a>
+      <a href="/leasing/">تأجير الطائرات</a>
       <a href="contact.html">اتصل بنا</a>
     </div>
     <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="القائمة">
@@ -151,8 +190,10 @@ footer a{color:var(--gold);text-decoration:none;word-break:break-word}
   <a href="packages.html" onclick="toggleNav()">الباقات</a>
   <a href="hotels-transport.html" onclick="toggleNav()">فنادق ومواصلات</a>
   <a href="umrah.html" onclick="toggleNav()">العمرة</a>
+  <a href="visa-services.html" onclick="toggleNav()">التأشيرات</a>
   <a href="flights.html" onclick="toggleNav()">تذاكر تشارتر من الأردن</a>
-  <a href="aircraft-leasing.html" onclick="toggleNav()">تأجير الطائرات</a>
+  <a href="/medical.tourism/" onclick="toggleNav()">السياحة العلاجية في الأردن</a>
+  <a href="/leasing/" onclick="toggleNav()">تأجير الطائرات</a>
   <a href="contact.html" onclick="toggleNav()">اتصل بنا</a>
   <a href="https://wa.me/962777066005" target="_blank" style="color:var(--green);margin-top:20px">💬 واتساب</a>
 </div>
@@ -202,7 +243,7 @@ footer a{color:var(--gold);text-decoration:none;word-break:break-word}
     <div class="ico">🕋</div>
     <h3>باقات العمرة</h3>
     <p>باقات عمرة متكاملة من عمان — رويال أردنية وباص فاخر، فنادق مقربة من الحرمين الشريفين</p>
-    <div class="coming-badge">👈 اطلع على الباقات</div>
+    <div class="coming-badge" id="umrah-offer-badge">👈 اطلع على الباقات</div>
   </div>
   </a>
 </div>
@@ -229,12 +270,17 @@ const WA_SVG='<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor
 function toggleNav(){const h=document.getElementById('hamburger'),o=document.getElementById('navOverlay');if(!h||!o)return;h.classList.toggle('open');o.classList.toggle('open');}
 
 async function sbFetch(endpoint, method, body) {
-  const opts = { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' } };
+  const controller = new AbortController();
+  const t = setTimeout(() => controller.abort(), 6000);
+  const opts = { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' }, signal: controller.signal };
   if (method && method !== 'GET') opts.method = method;
   if (body) opts.body = JSON.stringify(body);
-  const r = await fetch(SB_URL + '/rest/v1/' + endpoint, opts);
-  if (!r.ok) throw new Error(await r.text());
-  return r.status === 204 ? null : r.json();
+  try {
+    const r = await fetch(SB_URL + '/rest/v1/' + endpoint, opts);
+    clearTimeout(t);
+    if (!r.ok) throw new Error(await r.text());
+    return r.status === 204 ? null : r.json();
+  } catch(e) { clearTimeout(t); throw e; }
 }
 
 const DEST_DATA = {
@@ -246,13 +292,21 @@ const DEST_DATA = {
   trabzon: { name:'طرابزون', country:'تركيا', flag:'🇹🇷', grad:'from-#1a3a5c to-#3498db' },
   georgia: { name:'جورجيا', country:'جورجيا', flag:'🇬🇪', grad:'from-#2c3e50 to-#7f8c8d' },
   azerbaijan: { name:'أذربيجان', country:'أذربيجان', flag:'🇦🇿', grad:'from-#1B4F72 to-#154060' },
+  kosovo: { name:'كوسوفو', country:'كوسوفو', flag:'🇽🇰', grad:'from-#1a3a5c to-#2c3e50' },
   malaysia: { name:'ماليزيا', country:'ماليزيا', flag:'🇲🇾', grad:'from-#1a3a6c to-#2980b9' },
   bali: { name:'بالي', country:'إندونيسيا', flag:'🇮🇩', grad:'from-#4a3a1a to-#f39c12' },
   singapore: { name:'سنغافورة', country:'سنغافورة', flag:'🇸🇬', grad:'from-#4a1a3a to-#e74c3c' },
   vietnam: { name:'فيتنام', country:'فيتنام', flag:'🇻🇳', grad:'from-#1a4a3a to-#27ae60' },
   thailand: { name:'تايلاند', country:'تايلاند', flag:'🇹🇭', grad:'from-#4a1a3a to-#8e44ad' },
   maldives: { name:'المالديف', country:'المالديف', flag:'🇲🇻', grad:'from-#1a4a6a to-#00b4d8' },
-  srilanka: { name:'سريلانكا', country:'سريلانكا', flag:'🇱🇰', grad:'from-#3a1a4a to-#8e44ad' }
+  srilanka: { name:'سريلانكا', country:'سريلانكا', flag:'🇱🇰', grad:'from-#3a1a4a to-#8e44ad' },
+  cairo: { name:'القاهرة', country:'مصر', flag:'🇪🇬', grad:'from-#6c3483 to-#af7ac5' },
+  alexandria: { name:'الإسكندرية', country:'مصر', flag:'🇪🇬', grad:'from-#1a5276 to-#2e86c1' },
+  'cairo-north-coast': { name:'القاهرة والساحل الشمالي', country:'مصر', flag:'🇪🇬', grad:'from-#1a3a2a to-#27ae60' },
+  'cairo-alexandria': { name:'القاهرة و الإسكندرية', country:'مصر', flag:'🇪🇬', grad:'from-#6c3483 to-#1a5276' },
+  'cairo-alex-northcoast': { name:'القاهرة والإسكندرية والساحل الشمالي', country:'مصر', flag:'🇪🇬', grad:'from-#1a3a5c to-#27ae60' },
+  'cairo-ain-sokhna': { name:'القاهرة والعين السخنة', country:'مصر', flag:'🇪🇬', grad:'from-#0D4A63 to-#1A6B8A' },
+  'cairo-aswan-luxor-cruise': { name:'القاهرة وأسوان والأقصر كروز', country:'مصر', flag:'🇪🇬', grad:'from-#0A3D62 to-#1A7B74' }
 };
 
 const FLIGHT_DEST = {
@@ -340,37 +394,34 @@ function buildFlightCard(destId, price) {
 
 async function loadPackageOffers() {
   const slugs = Object.keys(DEST_DATA);
-  const results = [];
-  for (const slug of slugs) {
+  const all = await Promise.all(slugs.map(async (slug) => {
     try {
       let pkg = await sbFetch('packages?destination=eq.'+slug+'&is_active=eq.true&nights=eq.3&order=final_price_jod.asc&limit=1');
       if (!pkg || !pkg.length) {
         pkg = await sbFetch('packages?destination=eq.'+slug+'&is_active=eq.true&order=final_price_jod.asc&limit=1');
       }
-      if (pkg && pkg.length && pkg[0].final_price_jod > 0) {
-        results.push({ ...pkg[0], slug });
-      }
+      if (pkg && pkg.length && pkg[0].final_price_jod > 0) return { ...pkg[0], slug };
     } catch(e) {}
-  }
-  return results.sort((a,b) => a.final_price_jod - b.final_price_jod);
+    return null;
+  }));
+  return all.filter(r => r).sort((a,b) => a.final_price_jod - b.final_price_jod);
 }
 
 async function loadHotelsTransportOffers() {
   const slugs = Object.keys(DEST_DATA).filter(s => s !== 'georgia');
-  const results = [];
-  for (const slug of slugs) {
+  const all = await Promise.all(slugs.map(async (slug) => {
     try {
       let pkg = await sbFetch('packages?destination=eq.'+slug+'&is_active=eq.true&nights=eq.3&tariff_type=neq.5&order=final_price_jod.asc&limit=1');
       if (!pkg || !pkg.length) {
         pkg = await sbFetch('packages?destination=eq.'+slug+'&is_active=eq.true&tariff_type=neq.5&order=final_price_jod.asc&limit=1');
       }
       if (pkg && pkg.length && pkg[0].final_price_jod > 0) {
-        const htPrice = (pkg[0].final_price_jod || 0) - (pkg[0].ticket_jod || 0);
-        results.push({ ...pkg[0], slug, ht_price: htPrice });
+        return { ...pkg[0], slug, ht_price: (pkg[0].final_price_jod || 0) - (pkg[0].ticket_jod || 0) };
       }
     } catch(e) {}
-  }
-  return results.sort((a,b) => a.ht_price - b.ht_price);
+    return null;
+  }));
+  return all.filter(r => r).sort((a,b) => a.ht_price - b.ht_price);
 }
 
 async function loadFlightOffers() {
@@ -420,12 +471,29 @@ async function init() {
 }
 
 init();
+
+// Load lowest Umrah RJ price
+(async function(){
+  try{
+    const r=await fetch('https://rmpuvrmxakukgvtxethj.supabase.co/rest/v1/umrah_packages?is_active=eq.true&is_rj=eq.true&order=price_jod.asc&limit=1',{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
+    });
+    const data=await r.json();
+    if(data&&data.length>0){
+      const p=data[0];
+      const minPrice=Math.min(p.price_single||9999,p.price_jod||9999,p.price_double||9999);
+      const badge=document.getElementById('umrah-offer-badge');
+      if(badge&&minPrice<9999){
+        badge.innerHTML='🕋 اطلع على الباقات · من <b style="color:var(--gold);font-size:18px">'+minPrice+' JD</b>';
+      }
+    }
+  }catch(e){}
+})();
 </script>
 
 <script src="lang-currency.js"></script>
 <script src="booking.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
 <script src="print-pdf.js"></script>
-<script>PJ.injectPrintCSS();</script>
 </body>
 </html>

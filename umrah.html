@@ -58,7 +58,7 @@
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#C9A84C;--gold2:#E8C97A;--dark:#0a1628;--dark2:#0f1f3d;--dark3:#162340;--card:#1a2a4a;--border:rgba(201,168,76,0.18);--text:#f0ede8;--muted:#8a9ab5;--green:#27ae60}
+:root{--gold:#C9A84C;--gold2:#E8C97A;--dark:#0a1628;--dark2:#0f1f3d;--dark3:#162340;--card:#1a2a4a;--border:rgba(201,168,76,0.18);--text:#f0ede8;--muted:#8a9ab5;--green:#27ae60;--purple:#a78bfa;--purple-bg:rgba(167,139,250,0.08);--purple-border:rgba(167,139,250,0.3);--blue:#60a5fa;--blue-bg:rgba(96,165,250,0.08);--blue-border:rgba(96,165,250,0.3);--amber:#f59e0b;--amber-bg:rgba(245,158,11,0.08);--amber-border:rgba(245,158,11,0.3)}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--text);min-height:100vh}
 .nav{position:sticky;top:0;z-index:100;background:rgba(10,22,40,0.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:0 24px}
@@ -94,12 +94,13 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--text);min
 .hero-features{display:flex;gap:24px;justify-content:center;flex-wrap:wrap}
 .hero-feat{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
 .hero-feat span{color:var(--gold);font-size:16px}
-/* FILTER */
-.filter-wrap{max-width:1400px;margin:0 auto;padding:28px 24px 20px}
-.filter-tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.ftab{display:flex;align-items:center;gap:6px;padding:10px 22px;background:var(--card);border:1px solid var(--border);border-radius:12px;cursor:pointer;font-size:13px;font-weight:700;color:var(--muted);transition:all .25s}
-.ftab:hover{border-color:var(--gold);color:var(--text)}
-.ftab.active{background:rgba(201,168,76,.15);border-color:var(--gold);color:var(--gold)}
+/* DEST TABS (like packages page) */
+.dest-tabs-wrap{padding:28px 24px 20px;max-width:1400px;margin:0 auto}
+.dest-tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.dest-tab{display:flex;align-items:center;gap:8px;padding:10px 20px;background:var(--card);border:1px solid var(--border);border-radius:12px;cursor:pointer;font-size:14px;font-weight:700;color:var(--muted);transition:all .25s;white-space:nowrap}
+.dest-tab:hover{border-color:var(--gold);color:var(--text);transform:translateY(-1px)}
+.dest-tab.active{background:rgba(201,168,76,.15);border-color:var(--gold);color:var(--gold);box-shadow:0 4px 20px rgba(201,168,76,.15)}
+.dest-tab .flag{font-size:18px}
 /* MAIN */
 .main{max-width:1400px;margin:0 auto;padding:0 24px 60px}
 .results-count{font-size:13px;color:var(--muted);margin-bottom:20px}
@@ -135,7 +136,32 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--text);min
 .price-cur{font-size:15px;font-weight:700;color:var(--gold2)}
 .price-per{font-size:12px;color:var(--muted)}
 .room-info{font-size:11px;color:var(--muted);margin-top:3px}
-.wa-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:var(--green);border:none;border-radius:10px;color:#fff;font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;transition:opacity .2s;margin-top:14px}
+/* PRICE GRID */
+.price-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;padding:12px 14px;border-bottom:1px solid var(--border)}
+.price-cell{border-radius:8px;padding:8px 6px;text-align:center}
+.pc-sgl{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25)}
+.pc-dbl{background:rgba(39,174,96,.07);border:1px solid rgba(39,174,96,.25)}
+.pc-tpl{background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.25)}
+.pc-qad{background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.25)}
+.pc-type{font-size:9px;font-weight:700;margin-bottom:2px}
+.pc-sgl .pc-type{color:var(--amber)}
+.pc-dbl .pc-type{color:var(--green)}
+.pc-tpl .pc-type{color:var(--blue)}
+.pc-qad .pc-type{color:var(--purple)}
+.pc-base{font-size:10px;color:var(--muted);margin-bottom:4px}
+.pc-total{font-size:16px;font-weight:800}
+.pc-sgl .pc-total{color:var(--amber)}
+.pc-dbl .pc-total{color:var(--green)}
+.pc-tpl .pc-total{color:var(--blue)}
+.pc-qad .pc-total{color:var(--purple)}
+.pc-label{font-size:9px;color:var(--muted);margin-top:2px}
+.infant-row{margin:0 14px 10px;background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:8px;padding:8px 12px;display:flex;justify-content:space-between;align-items:center}
+.infant-label{font-size:11px;color:var(--purple);font-weight:700}
+.infant-price{font-size:15px;font-weight:800;color:var(--purple)}
+.breakdown{margin:0 14px 10px;background:rgba(0,0,0,.2);border-radius:8px;padding:8px 10px;font-size:10px;color:var(--muted);line-height:2}
+.breakdown b{color:var(--text)}
+.umrah-rj-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);border-radius:5px;font-size:10px;color:var(--gold);font-weight:700;margin-right:6px}
+.wa-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;background:var(--green);border:none;border-radius:10px;color:#fff;font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;cursor:pointer;text-decoration:none;transition:opacity .2s;margin-top:4px}
 .wa-btn:hover{opacity:.87}
 /* LOADING */
 .spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:60px auto 16px}
@@ -157,7 +183,367 @@ footer a{color:var(--gold);text-decoration:none;word-break:break-word}
 @media(max-width:600px){.umrah-grid{grid-template-columns:1fr}}
 .btn-print-pdf:hover{border-color:var(--gold)!important;color:var(--text)!important}
 @media print{.umrah-grid{grid-template-columns:1fr 1fr!important}}
+/* TRANSPORT TOOL — dark theme */
+.ut-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;grid-column:1/-1}
+.ut-hdr{background:linear-gradient(135deg,#1B4F72,#0D3252);padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.ut-hdr h3{color:#fff;font-size:18px;margin:0}
+.ut-hdr .sub{color:rgba(255,255,255,.7);font-size:12px;margin-top:2px}
+.ut-bar{display:flex;flex-wrap:wrap;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--dark3);align-items:center}
+.ut-bar-group{display:flex;align-items:center;gap:6px}
+.ut-bar-label{font-size:10px;color:var(--muted);font-weight:700;white-space:nowrap}
+.ut-pxbtn{padding:5px 10px;border-radius:5px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;min-width:28px;text-align:center}
+.ut-pxbtn:hover{border-color:var(--gold)}
+.ut-pxbtn.on{background:var(--gold);color:#fff;border-color:var(--gold)}
+.ut-ci2{padding:4px 8px;border-radius:5px;border:1px solid var(--border);background:var(--dark2);color:var(--text);font-size:12px;font-family:inherit;width:55px}
+.ut-cs{border:1px solid var(--border);border-radius:5px;padding:3px 4px;background:var(--dark2);color:var(--text);font-size:11px;font-family:inherit;cursor:pointer}
+.ut-bar-div{width:1px;height:24px;background:var(--border)}
+.ut-rsec{margin-bottom:10px}
+.ut-rhdr{display:flex;align-items:center;gap:10px;padding:8px 14px;background:linear-gradient(135deg,#1a3a5c,#0d2540);color:#fff;border-radius:10px 10px 0 0;cursor:default}
+.ut-rico{font-size:18px;flex-shrink:0}
+.ut-ren{font-size:14px;font-weight:700}
+.ut-rar{font-size:11px;opacity:.7}
+.ut-cgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:12px}
+.ut-ccard{background:var(--dark3);border:1px solid var(--border);border-radius:12px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;transition:all .2s}
+.ut-ccard:hover{border-color:rgba(201,168,76,.4);box-shadow:0 4px 16px rgba(0,0,0,.25);transform:translateY(-1px)}
+.ut-ccard.unav{opacity:.45}
+.ut-ccard.incart{background:rgba(39,174,96,.1);border-color:var(--green)}
+.ut-cico{font-size:28px}
+.ut-cnm{font-size:13px;font-weight:800;color:var(--text)}
+.ut-cnar{font-size:10px;color:var(--muted)}
+.ut-chips{display:flex;justify-content:center;gap:5px;margin:4px 0}
+.ut-chip{font-size:10px;font-weight:700;padding:3px 8px;border-radius:7px;border:1px solid;line-height:1.4}
+.ut-chip-o{background:rgba(139,32,32,.2);color:#e74c3c;border-color:rgba(139,32,32,.3);text-decoration:line-through}
+.ut-chip-a{background:rgba(39,174,96,.15);color:#68E0A0;border-color:rgba(39,174,96,.3)}
+.ut-pricebox{display:flex;flex-direction:column;align-items:center;gap:2px;width:100%;margin:6px 0}
+.ut-ppax{font-size:24px;font-weight:900;color:var(--gold);line-height:1.1}
+.ut-ppaxlbl{font-size:10px;color:var(--muted)}
+.ut-ptot{display:flex;flex-direction:column;align-items:center;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.25);border-radius:8px;padding:6px 10px;width:100%}
+.ut-ptotv{font-size:16px;font-weight:800;color:var(--blue)}
+.ut-ptotl{font-size:9px;color:var(--muted)}
+.ut-acbtn{padding:6px 10px;border-radius:7px;border:1px solid rgba(39,174,96,.3);background:rgba(39,174,96,.12);color:#68E0A0;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:3px;transition:all .15s;width:100%}
+.ut-acbtn:hover{background:var(--green);color:#fff}
+.ut-acbtn.rm{border-color:rgba(231,76,60,.3);background:rgba(231,76,60,.1);color:#e74c3c}
+.ut-acbtn.rm:hover{background:#e74c3c;color:#fff}
+.ut-inbdg{font-size:10px;color:var(--green);padding:3px 8px;border-radius:5px;background:rgba(39,174,96,.1);display:inline-block;font-weight:700}
+.ut-unavbox{padding:6px 4px;border-radius:6px;background:rgba(231,76,60,.1);border:1px solid rgba(231,76,60,.3);color:#e74c3c;font-size:10px;font-weight:700;margin:4px 0;width:100%}
+.ut-cart-bar{display:flex;gap:12px;padding:8px 16px;background:var(--dark3);border-bottom:1px solid var(--border);align-items:center}
+.ut-cart-big{background:linear-gradient(135deg,var(--gold),#B8841F);color:#fff;border:none;border-radius:10px;padding:8px 16px;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:3px;box-shadow:0 3px 12px rgba(201,149,42,.35);transition:all .2s}
+.ut-cart-big:hover{transform:translateY(-2px)}
+.ut-cart-count{background:#fff;color:var(--gold);border-radius:20px;padding:1px 7px;font-size:11px;font-weight:900}
+.ut-cart-hint{font-size:10px;color:var(--muted);flex:1}
+.ut-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;align-items:center;justify-content:center}
+.ut-modal.open{display:flex}
+.ut-mbox{background:var(--card);border:1px solid var(--border);border-radius:14px;max-width:460px;width:95%;max-height:90vh;overflow:hidden;display:flex;flex-direction:column}
+.ut-mhdr{padding:14px 18px;background:linear-gradient(135deg,#1B4F72,#0D3252);color:#fff}
+.ut-mhdr h4{font-size:16px;margin:0}
+.ut-mhdr p{font-size:11px;opacity:.8;margin-top:3px}
+.ut-mbody{padding:16px 18px;overflow-y:auto;flex:1}
+.ut-mftr{padding:10px 18px;border-top:1px solid var(--border);display:flex;gap:8px}
+.ut-dir-opt{border:1px solid var(--border);border-radius:8px;padding:10px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;margin-bottom:8px;transition:all .15s}
+.ut-dir-opt:hover{border-color:var(--gold)}
+.ut-dir-opt.sel{border-color:var(--green);background:rgba(39,174,96,.08)}
+.ut-mcancel{flex:1;padding:8px;border-radius:7px;border:1px solid var(--border);background:var(--dark3);color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.ut-mconfirm{flex:2;padding:8px;border-radius:7px;border:none;background:var(--green);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.ut-mconfirm:disabled{opacity:.5;cursor:not-allowed}
+.ut-cart-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200}
+.ut-cart-ov.open{display:block}
+.ut-cart-drw{position:fixed;top:0;left:-440px;width:440px;max-width:98vw;height:100vh;background:var(--card);border-left:1px solid var(--border);z-index:201;display:flex;flex-direction:column;transition:left .3s;box-shadow:4px 0 30px rgba(0,0,0,.3)}
+.ut-cart-drw.open{left:0}
+.ut-chdr{padding:12px 16px;background:linear-gradient(135deg,#1B4F72,#0D3252);color:#fff;display:flex;justify-content:space-between;align-items:center}
+.ut-chdr-t{font-size:15px;font-weight:700}
+.ut-ccls{background:rgba(255,255,255,.12);border:none;color:#fff;width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:14px}
+.ut-cbody{flex:1;overflow-y:auto;padding:8px 14px}
+.ut-citem{background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:8px 10px;margin-bottom:8px}
+.ut-cftr{padding:10px 14px;border-top:1px solid var(--border)}
+.ut-csum{padding:8px 10px;background:var(--dark3);border-radius:8px;margin-bottom:8px}
+.ut-csum-row{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);padding:2px 0;border-bottom:1px solid var(--border)}
+.ut-csum-row.grand{font-size:13px;font-weight:800;color:var(--gold);padding-top:5px}
+.ut-csum-row.gtotal{font-size:15px;font-weight:900;color:var(--green);padding-top:4px}
+.ut-book-btn{width:100%;padding:10px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--green),#1a6b3c);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s}
+.ut-book-btn:hover{box-shadow:0 3px 12px rgba(39,174,96,.4)}
+.ut-finp{width:100%;border:1px solid var(--border);border-radius:6px;padding:7px 10px;background:var(--dark3);color:var(--text);font-size:13px;font-family:inherit;margin-bottom:10px}
+.ut-flbl{font-size:11px;color:var(--muted);font-weight:600;margin-bottom:3px}
+@media(max-width:768px){.ut-cgrid{grid-template-columns:repeat(2,1fr)}.ut-cart-drw{width:100%}.ut-bar{flex-direction:column;gap:6px}.ut-bar-group{flex-wrap:wrap}}
+/* PACKAGE BUILDER — dark theme */
+.pb-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:16px}
+.pb-hdr{background:linear-gradient(135deg,#1B4F72,#0D3252);padding:12px 16px;color:#fff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
+.pb-hdr h3{font-size:15px;margin:0}
+.pb-tabs{display:flex;gap:6px;padding:8px 16px;background:var(--dark3);border-bottom:1px solid var(--border)}
+.pb-tab{padding:6px 14px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
+.pb-tab.on{background:var(--gold);color:#fff;border-color:var(--gold)}
+.pb-controls{display:flex;flex-wrap:wrap;gap:8px;padding:8px 16px;background:var(--dark3);border-bottom:1px solid var(--border);align-items:center}
+.pb-body{padding:10px 16px}
+.pb-tier{font-size:13px;font-weight:800;color:var(--gold);margin:12px 0 8px;grid-column:1/-1}
+.pb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.pb-hotel{background:var(--dark3);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.pb-hotel-hdr{padding:10px 12px;background:rgba(27,79,114,.2);border-bottom:1px solid var(--border)}
+.pb-hotel-name{font-size:14px;font-weight:800;color:var(--text)}
+.pb-hotel-sub{font-size:10px;color:var(--muted);margin-top:2px}
+.pb-hotel-body{padding:8px 12px}
+.pb-periods{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0}
+.pb-period{padding:3px 8px;border-radius:5px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s}
+.pb-period.on{background:rgba(201,168,76,.2);color:var(--gold);border-color:var(--gold)}
+.pb-webtns{display:flex;gap:4px;margin:4px 0}
+.pb-webtn{flex:1;padding:3px;border-radius:5px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-size:9px;font-weight:600;cursor:pointer;font-family:inherit}
+.pb-webtn.on{background:rgba(39,174,96,.15);color:var(--green);border-color:var(--green)}
+.pb-price-breakdown{font-size:10px;color:var(--muted);line-height:1.6;padding:4px 0}
+.pb-price-total{font-size:18px;font-weight:800;color:var(--gold);text-align:center;padding:6px 0}
+.pb-add-btn{width:100%;padding:6px;border-radius:6px;border:none;background:var(--green);color:#fff;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
+.pb-add-btn:hover{opacity:.85}
+.pb-add-btn.incart{background:rgba(231,76,60,.2);color:#e74c3c}
+.pb-summary{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin-top:12px;text-align:center}
+.pb-summary .big{font-size:22px;font-weight:800;color:var(--gold)}
+.pb-summary .lbl{font-size:11px;color:var(--muted)}
+.pb-fab{position:fixed;bottom:80px;right:20px;z-index:199;background:linear-gradient(135deg,var(--gold),#B8841F);color:#fff;border:none;border-radius:50%;width:54px;height:54px;cursor:pointer;box-shadow:0 3px 16px rgba(201,149,42,.4);display:flex;align-items:center;justify-content:center;font-size:24px;transition:all .2s}
+.pb-fab:hover{transform:scale(1.08)}
+.pb-fab-badge{position:absolute;top:-4px;right:-4px;background:var(--green);color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+/* BUILD YOUR OWN UMRAH — dark theme */
+.byo-wrap{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.byo-hdr{background:linear-gradient(135deg,#1B4F72,#0D3252);padding:14px 18px;color:#fff;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.byo-hdr h3{font-size:16px;margin:0}
+.byo-hdr .sub{font-size:11px;opacity:.8;margin-top:2px}
+.byo-hbadge{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.byo-hbdg{display:inline-flex;align-items:center;gap:3px;font-size:10px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:2px 8px;color:rgba(255,255,255,.9)}
+.byo-controls{background:var(--dark3);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;padding:8px 14px;display:flex;flex-wrap:wrap;gap:6px;align-items:flex-end}
+.byo-cf{display:flex;flex-direction:column;gap:2px}
+.byo-cl{font-size:9px;color:var(--muted);font-weight:700;white-space:nowrap}
+.byo-cr{display:flex;align-items:center;gap:3px}
+.byo-cinp{border:1px solid var(--border);border-radius:5px;padding:4px 6px;font-size:12px;font-family:inherit;color:var(--text);background:var(--dark2);width:65px}
+.byo-csel{border:1px solid var(--border);border-radius:5px;padding:3px 4px;font-size:11px;font-family:inherit;color:var(--text);background:var(--dark2);cursor:pointer}
+.byo-csep{width:1px;height:30px;background:var(--border);align-self:center}
+.byo-ctg{display:flex;border:1px solid var(--border);border-radius:5px;overflow:hidden}
+.byo-ctg button{padding:4px 8px;font-size:10px;font-weight:700;border:none;background:var(--card);color:var(--muted);cursor:pointer;font-family:inherit;transition:all .12s}
+.byo-ctg button.on{background:var(--ac,#1B4F72);color:#fff}
+.byo-ctg.byo-ptg button.on{background:var(--green);color:#fff}
+.byo-strip{display:flex;gap:10px;flex-wrap:wrap;align-items:stretch;padding:0 14px 10px;background:var(--dark3);border-bottom:1px solid var(--border)}
+.byo-strip-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;display:flex;flex-direction:column;gap:6px;flex:1;min-width:180px}
+.byo-strip-lbl{font-size:10px;font-weight:700;color:var(--muted)}
+.byo-strip-row{display:flex;gap:4px;flex-wrap:wrap}
+.byo-pxb{padding:6px 10px;border-radius:7px;border:2px solid var(--border);background:var(--card);font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;color:var(--muted);transition:all .12s;min-width:36px;text-align:center;line-height:1.2}
+.byo-pxb:hover{border-color:var(--gold);color:var(--gold)}
+.byo-pxb.on{background:var(--gold);color:#fff;border-color:var(--gold)}
+.byo-cbigbtn{background:linear-gradient(135deg,var(--gold),#B8841F);color:#fff;border:none;border-radius:10px;padding:8px 14px;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:3px;box-shadow:0 3px 10px rgba(201,149,42,.35);transition:all .2s;min-width:100px}
+.byo-cbigbtn:hover{transform:translateY(-2px)}
+.byo-cbigico{font-size:22px}
+.byo-cbigcnt{background:#fff;color:var(--gold);border-radius:20px;padding:1px 8px;font-size:11px;font-weight:900}
+.byo-nav{display:flex;gap:6px;flex-wrap:wrap;padding:10px 14px 0}
+.byo-tab{flex:1;min-width:130px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 8px;border-radius:10px;border:2px solid var(--border);background:var(--card);cursor:pointer;transition:all .15s;position:relative}
+.byo-tab:hover{border-color:var(--ac,#1B4F72)}
+.byo-tab.active{border-color:var(--ac,#1B4F72);background:rgba(27,79,114,.12);box-shadow:0 2px 10px rgba(27,79,114,.15)}
+.byo-tab.active.byo-tab-md{border-color:var(--blue);background:rgba(96,165,250,.1)}
+.byo-tab.active.byo-tab-vs{border-color:#a855f7;background:rgba(168,85,247,.08)}
+.byo-tab.active.byo-tab-tr{border-color:var(--teal);background:rgba(13,107,94,.1)}
+.byo-tab.active.byo-tab-tk{border-color:#0E7C86;background:rgba(14,124,134,.08)}
+.byo-tab-ico{font-size:22px}
+.byo-tab-lbl{font-size:11px;font-weight:700;color:var(--muted);text-align:center}
+.byo-tab.active .byo-tab-lbl{color:var(--ac,#1B4F72)}
+.byo-tab.active.byo-tab-md .byo-tab-lbl{color:var(--blue)}
+.byo-tab.active.byo-tab-vs .byo-tab-lbl{color:#a855f7}
+.byo-tab.active.byo-tab-tr .byo-tab-lbl{color:var(--teal)}
+.byo-tab.active.byo-tab-tk .byo-tab-lbl{color:#0E7C86}
+.byo-tab-sub{font-size:9px;color:var(--muted);text-align:center}
+.byo-check{position:absolute;top:4px;right:4px;width:16px;height:16px;border-radius:50%;background:var(--green);color:#fff;font-size:10px;display:none;align-items:center;justify-content:center;font-weight:900}
+.byo-tab.added .byo-check{display:flex}
+.byo-main{padding:12px 14px}
+.byo-panel{display:none}
+.byo-panel.active{display:block}
+.byo-sxlbl{font-size:13px;font-weight:700;color:var(--muted);margin:12px 0 8px;display:flex;align-items:center;gap:8px;text-transform:uppercase;letter-spacing:.04em}
+.byo-sxlbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.byo-skip{display:flex;justify-content:center;margin:12px 0}
+.byo-skip-btn{background:var(--card);border:2px dashed var(--border);color:var(--muted);border-radius:8px;padding:8px 16px;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .15s}
+.byo-skip-btn:hover{border-color:#e74c3c;color:#e74c3c}
+.byo-tier-row{display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.byo-tier-lbl{font-size:10px;font-weight:700;color:var(--muted);white-space:nowrap}
+.byo-tier-btn{padding:5px 11px;border-radius:16px;border:1.5px solid var(--border);background:var(--card);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--muted);transition:all .12s}
+.byo-tier-btn:hover{border-color:var(--gold);color:var(--gold)}
+.byo-tier-btn.on{background:var(--gold);color:#fff;border-color:var(--gold)}
+.byo-tier-btn.on.byo-tier-md{background:var(--blue);border-color:var(--blue)}
+.byo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.byo-hcard{background:var(--dark3);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:box-shadow .2s}
+.byo-hcard:hover{box-shadow:0 4px 16px rgba(0,0,0,.25);transform:translateY(-1px)}
+.byo-hcard.incart{border:2px solid var(--green)}
+.byo-hchdr{padding:12px 12px 8px;border-bottom:1px solid var(--border)}
+.byo-hcnum{font-size:9px;color:var(--muted);font-weight:700;margin-bottom:2px}
+.byo-hcname{font-size:14px;font-weight:800;color:var(--text)}
+.byo-hcname-ar{font-size:11px;color:var(--muted);direction:rtl;margin-top:1px}
+.byo-hcsub{font-size:10px;color:var(--muted);margin-top:2px}
+.byo-hchips{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px}
+.byo-chip{display:inline-flex;align-items:center;gap:2px;font-size:9px;font-weight:600;padding:2px 6px;border-radius:10px;border:1px solid}
+.byo-chip-gn{background:rgba(39,174,96,.12);color:#68E0A0;border-color:rgba(39,174,96,.25)}
+.byo-chip-ac{background:rgba(96,165,250,.1);color:var(--blue);border-color:rgba(96,165,250,.25)}
+.byo-chip-gd{background:rgba(201,168,76,.1);color:var(--gold);border-color:rgba(201,168,76,.25)}
+.byo-chip-rd{background:rgba(231,76,60,.08);color:#e74c3c;border-color:rgba(231,76,60,.2)}
+.byo-hcbody{padding:10px 12px}
+.byo-sel-row{display:flex;align-items:center;gap:5px;margin-bottom:6px}
+.byo-sel-lbl{font-size:10px;color:var(--muted);font-weight:700;white-space:nowrap}
+.byo-nbtn-row{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:6px}
+.byo-nbtn{padding:3px 8px;border-radius:7px;border:1px solid var(--border);background:var(--card);font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--muted);transition:all .1s}
+.byo-nbtn:hover{border-color:var(--gold);color:var(--gold)}
+.byo-nbtn.on{background:var(--gold);color:#fff;border-color:var(--gold)}
+.byo-pricebox{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);border-radius:8px;padding:8px 10px;margin-top:5px}
+.byo-pricebox.byo-pricebox-md{background:rgba(13,107,94,.08);border-color:rgba(13,107,94,.2)}
+.byo-pb-ppax{font-size:20px;font-weight:900;color:var(--blue);line-height:1.1}
+.byo-pricebox.byo-pricebox-md .byo-pb-ppax{color:var(--teal)}
+.byo-pb-plbl{font-size:9px;color:var(--muted);margin-top:1px}
+.byo-pb-total{font-size:12px;font-weight:700;color:var(--blue);margin-top:5px;padding-top:4px;border-top:1px dashed rgba(96,165,250,.25)}
+.byo-pricebox.byo-pricebox-md .byo-pb-total{color:var(--teal);border-top-color:rgba(13,107,94,.2)}
+.byo-pb-tlbl{font-size:9px;color:var(--muted)}
+.byo-incart-badge{display:flex;align-items:center;gap:3px;font-size:10px;font-weight:700;color:var(--green);background:rgba(39,174,96,.1);border:1px solid rgba(39,174,96,.25);border-radius:5px;padding:2px 6px;margin-top:5px;display:inline-flex}
+.byo-hcftr{padding:8px 12px;border-top:1px solid var(--border);display:flex;gap:6px}
+.byo-addbtn{flex:2;display:flex;align-items:center;justify-content:center;gap:3px;padding:6px;border-radius:7px;border:2px solid rgba(39,174,96,.3);background:rgba(39,174,96,.1);color:#68E0A0;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .12s}
+.byo-addbtn:hover{background:var(--green);color:#fff;border-color:var(--green)}
+.byo-rmbtn{flex:1;display:flex;align-items:center;justify-content:center;gap:2px;padding:6px;border-radius:7px;border:1px solid rgba(231,76,60,.3);background:rgba(231,76,60,.08);color:#e74c3c;font-size:10px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .12s}
+.byo-rmbtn:hover{background:#e74c3c;color:#fff}
+.byo-svccard{max-width:500px;margin:10px auto;background:var(--dark3);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.byo-svccard.incart{border:2px solid var(--green)}
+.byo-svcchdr{padding:14px 16px;display:flex;align-items:center;gap:12px}
+.byo-svcico{font-size:30px}
+.byo-svcctit{font-size:16px;font-weight:800;color:var(--text)}
+.byo-svccsub{font-size:11px;color:var(--muted);margin-top:1px}
+.byo-svccbody{padding:0 16px 14px}
+.byo-svccftr{padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:6px}
+.byo-vinfo{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);padding:4px 0;border-bottom:1px solid var(--border)}
+.byo-vinfo:last-child{border-bottom:none}
+.byo-vinfo-val{font-weight:700;color:#a855f7}
+.byo-troute-grid{display:grid;grid-template-columns:repeat(5,1fr);border-top:none;overflow:hidden;background:var(--dark3)}
+.byo-trsec{margin-bottom:10px;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.byo-trhdr{display:flex;align-items:center;gap:8px;padding:8px 12px;background:linear-gradient(135deg,#0D6B5E,#0A4F46);color:#fff}
+.byo-trico{font-size:15px}
+.byo-trtit{font-size:13px;font-weight:700}
+.byo-trtit-ar{font-size:10px;opacity:.8;direction:rtl}
+.byo-tccard{border-right:1px solid var(--border);padding:8px 6px;display:flex;flex-direction:column;gap:2px;align-items:center;text-align:center}
+.byo-tccard:last-child{border-right:none}
+.byo-tccard.unav{opacity:.45}
+.byo-tccard.incart{background:rgba(39,174,96,.08);border-top:3px solid var(--green)}
+.byo-tcico{font-size:16px}
+.byo-tcnm{font-size:9px;font-weight:700;color:var(--text)}
+.byo-tccap{display:flex;justify-content:center;gap:2px;margin-top:1px}
+.byo-tchip{font-size:8px;font-weight:700;padding:1px 4px;border-radius:6px;border:1px solid}
+.byo-tchip-gn{background:rgba(39,174,96,.12);color:#68E0A0;border-color:rgba(39,174,96,.25)}
+.byo-tcsar{font-size:8px;color:var(--muted);margin-top:1px}
+.byo-tcppax{font-size:14px;font-weight:900;color:var(--teal);margin-top:2px;line-height:1}
+.byo-tcppaxlbl{font-size:7px;color:var(--muted)}
+.byo-tcaddbtn{display:flex;align-items:center;justify-content:center;gap:2px;width:100%;padding:4px 3px;border-radius:5px;border:1.5px solid rgba(13,107,94,.3);background:rgba(13,107,94,.1);color:var(--teal);font-size:8px;font-weight:700;font-family:inherit;cursor:pointer;margin-top:3px}
+.byo-tcaddbtn:hover{background:var(--teal);color:#fff}
+.byo-tcunav{font-size:8px;font-weight:700;color:#e74c3c;background:rgba(231,76,60,.08);border-radius:4px;padding:3px;margin-top:3px;text-align:center;border:1px solid rgba(231,76,60,.2)}
+.byo-modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;align-items:center;justify-content:center}
+.byo-modal-ov.open{display:flex}
+.byo-modal-box{background:var(--card);border:1px solid var(--border);border-radius:14px;max-width:440px;width:95%;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden;max-height:90vh;display:flex;flex-direction:column}
+.byo-modal-hdr{padding:14px 16px;background:linear-gradient(135deg,#0D6B5E,#0A4F46);color:#fff;flex-shrink:0}
+.byo-modal-hdr h3{font-size:15px;margin:0}
+.byo-modal-hdr p{font-size:11px;opacity:.8;margin-top:2px}
+.byo-modal-body{padding:14px 16px;overflow-y:auto;flex:1}
+.byo-modal-ftr{padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0}
+.byo-dir-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.byo-dir-opt{border:2px solid var(--border);border-radius:8px;padding:11px 13px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:10px}
+.byo-dir-opt:hover{border-color:var(--teal);background:rgba(13,107,94,.06)}
+.byo-dir-opt.sel{border-color:var(--green);background:rgba(39,174,96,.08)}
+.byo-dir-ico{font-size:20px}
+.byo-dir-info{flex:1}
+.byo-dir-lbl{font-size:13px;font-weight:700;color:var(--text)}
+.byo-dir-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.byo-dir-price{font-size:14px;font-weight:900;color:var(--teal)}
+.byo-mcancel{flex:1;padding:8px;border-radius:7px;border:2px solid var(--border);background:var(--dark3);color:var(--muted);font-size:12px;font-weight:700;font-family:inherit;cursor:pointer}
+.byo-mconfirm{flex:2;padding:8px;border-radius:7px;border:none;background:var(--green);color:#fff;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer}
+.byo-mconfirm:disabled{background:var(--dark3);color:var(--muted);cursor:not-allowed}
+.byo-cart-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200}
+.byo-cart-ov.open{display:block}
+.byo-cart-drw{position:fixed;top:0;right:-500px;width:480px;max-width:98vw;height:100vh;background:var(--card);border-left:1px solid var(--border);z-index:201;display:flex;flex-direction:column;transition:right .3s;box-shadow:-4px 0 30px rgba(0,0,0,.3)}
+.byo-cart-drw.open{right:0}
+.byo-crthdr{padding:12px 16px;background:linear-gradient(135deg,#1B4F72,#0D3252);color:#fff;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.byo-crthdr-t{font-size:15px;font-weight:700}
+.byo-crtcls{background:rgba(255,255,255,.12);border:none;color:#fff;width:26px;height:26px;border-radius:6px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+.byo-crtcls:hover{background:rgba(255,255,255,.25)}
+.byo-crtpbar{padding:6px 14px;background:rgba(96,165,250,.1);border-bottom:1px solid rgba(96,165,250,.25);font-size:11px;color:var(--blue);font-weight:600}
+.byo-crtbody{flex:1;overflow-y:auto;padding:8px 14px}
+.byo-crtempty{text-align:center;padding:40px 16px;color:var(--muted)}
+.byo-crtempty .byo-eico{font-size:36px;margin-bottom:8px}
+.byo-citm{background:var(--dark3);border:1px solid var(--border);border-radius:9px;padding:10px 12px;margin-bottom:8px}
+.byo-citm-hdr{display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:6px}
+.byo-citm-type{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:800;padding:2px 6px;border-radius:8px;border:1px solid}
+.byo-citm-mk{background:rgba(123,52,30,.15);color:#c87550;border-color:rgba(123,52,30,.3)}
+.byo-citm-md{background:rgba(27,79,114,.15);color:#5a9fd4;border-color:rgba(27,79,114,.3)}
+.byo-citm-vs{background:rgba(107,63,160,.12);color:#b088d8;border-color:rgba(107,63,160,.25)}
+.byo-citm-tk{background:rgba(14,124,134,.12);color:#5cbec8;border-color:rgba(14,124,134,.25)}
+.byo-citm-tr{background:rgba(13,107,94,.12);color:#4db8a8;border-color:rgba(13,107,94,.25)}
+.byo-citm-del{padding:3px 6px;border-radius:5px;border:1px solid rgba(231,76,60,.3);background:rgba(231,76,60,.08);color:#e74c3c;font-size:10px;font-weight:700;font-family:inherit;cursor:pointer}
+.byo-citm-del:hover{background:#e74c3c;color:#fff}
+.byo-citm-name{font-size:12px;font-weight:700;color:var(--text)}
+.byo-citm-detail{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.3}
+.byo-citm-price{display:flex;justify-content:space-between;align-items:center;margin-top:6px;padding-top:5px;border-top:1px solid var(--border)}
+.byo-citm-ppax{font-size:13px;font-weight:800;color:var(--blue)}
+.byo-citm-total{font-size:10px;color:var(--muted)}
+.byo-crtsum{padding:10px 12px;background:var(--dark3);border-radius:8px;margin-bottom:8px}
+.byo-crtsum-row{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);padding:2px 0;border-bottom:1px solid var(--border)}
+.byo-crtsum-row:last-child{border-bottom:none}
+.byo-crtsum-row.byo-grand{font-size:13px;font-weight:800;color:var(--gold);padding-top:5px}
+.byo-crtsum-row.byo-gtot{font-size:15px;font-weight:900;color:var(--teal);padding-top:4px}
+.byo-crtftr{padding:10px 14px;border-top:1px solid var(--border);flex-shrink:0}
+.byo-crtacts{display:flex;gap:6px;margin-top:6px}
+.byo-crtclear{flex:1;padding:7px;border-radius:7px;border:2px solid rgba(231,76,60,.3);background:rgba(231,76,60,.08);color:#e74c3c;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer}
+.byo-crtclear:hover{background:#e74c3c;color:#fff}
+.byo-crtprint{flex:1;padding:7px;border-radius:7px;border:none;background:var(--gold);color:#fff;font-size:11px;font-weight:700;font-family:inherit;cursor:pointer}
+.byo-crtprint:hover{background:#B8841F}
+.byo-bookbtn{width:100%;padding:10px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--green),#1a6b3c);color:#fff;font-size:14px;font-weight:800;font-family:inherit;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:8px}
+.byo-bookbtn:hover{box-shadow:0 3px 12px rgba(39,174,96,.4)}
+.byo-book-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;align-items:center;justify-content:center}
+.byo-book-ov.open{display:flex}
+.byo-book-box{background:var(--card);border:1px solid var(--border);border-radius:14px;max-width:460px;width:95%;box-shadow:0 20px 60px rgba(0,0,0,.3);overflow:hidden;max-height:90vh;display:flex;flex-direction:column}
+.byo-book-hdr{padding:14px 18px;background:linear-gradient(135deg,var(--green),#1a6b3c);color:#fff;flex-shrink:0}
+.byo-book-hdr h3{font-size:16px;margin:0}
+.byo-book-hdr p{font-size:11px;opacity:.8;margin-top:2px}
+.byo-book-body{padding:14px 18px;overflow-y:auto;flex:1}
+.byo-bfg{margin-bottom:10px}
+.byo-bfl{font-size:11px;font-weight:600;color:var(--muted);margin-bottom:2px}
+.byo-bfi{width:100%;border:1px solid var(--border);border-radius:6px;padding:7px 9px;font-size:13px;font-family:inherit;color:var(--text);background:var(--dark3);transition:border-color .15s}
+.byo-bfi:focus{outline:none;border-color:var(--green)}
+.byo-book-sum{background:var(--dark3);border-radius:8px;padding:8px 10px;margin-bottom:10px}
+.byo-book-sum-t{font-size:9px;font-weight:800;color:var(--muted);margin-bottom:4px}
+.byo-book-sum-r{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);padding:2px 0}
+.byo-book-sum-g{display:flex;justify-content:space-between;font-size:13px;font-weight:900;color:var(--teal);padding-top:5px;border-top:1px solid var(--border);margin-top:3px}
+.byo-book-ftr{padding:10px 18px;border-top:1px solid var(--border);display:flex;gap:8px;flex-shrink:0}
+.byo-bcancel{flex:1;padding:8px;border-radius:7px;border:2px solid var(--border);background:var(--dark3);color:var(--muted);font-size:12px;font-weight:700;font-family:inherit;cursor:pointer}
+.byo-bsend{flex:2;padding:8px;border-radius:7px;border:none;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;font-size:12px;font-weight:800;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
+.byo-bsend:hover{background:linear-gradient(135deg,#1DB954,#0C6B5E)}
+@media(max-width:768px){.byo-troute-grid{grid-template-columns:repeat(2,1fr)}.byo-tccard:nth-child(2n){border-right:none}.byo-cart-drw{width:100%}.byo-grid{grid-template-columns:1fr}.byo-tab{min-width:80px;padding:8px 4px}.byo-tab-ico{font-size:18px}.byo-tab-lbl{font-size:9px}}
 </style>
+<script>
+(function(){
+  var SB_URL='https://rmpuvrmxakukgvtxethj.supabase.co';
+  var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtcHV2cm14YWt1a2d2dHhldGhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyODAyMjcsImV4cCI6MjA5Mzg1NjIyN30.lO8rNtwfLXYFnyGk5dOthPEUj3XIWkfFvSOziTeDFeE';
+  var param=new URLSearchParams(window.location.search).get('ref');
+  if(!param) return;
+  if(!/^JUDE-[A-Z0-9]{6}$/.test(param)) return;
+  fetch(SB_URL+'/rest/v1/affiliate_settings?id=eq.1&select=attribution_window_days,program_active',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}})
+  .then(function(r){return r.json();})
+  .then(function(d){
+    var s=d&&d[0]?d[0]:{program_active:true,attribution_window_days:60};
+    if(!s.program_active) return;
+    var exp=new Date(); exp.setDate(exp.getDate()+(s.attribution_window_days||60));
+    document.cookie='jude_ref='+param+';expires='+exp.toUTCString()+';path=/;SameSite=Lax';
+    fetch(SB_URL+'/rest/v1/rpc/log_affiliate_click',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({p_code:param,p_page:window.location.pathname,p_ua:navigator.userAgent.substring(0,200)})}).catch(function(){});
+  }).catch(function(){
+    var exp=new Date(); exp.setDate(exp.getDate()+60);
+    document.cookie='jude_ref='+param+';expires='+exp.toUTCString()+';path=/;SameSite=Lax';
+  });
+})();
+window.addEventListener('DOMContentLoaded',function(){
+  var c=document.cookie.split(';').map(function(s){return s.trim();}).find(function(s){return s.indexOf('jude_ref=')===0;});
+  if(!c) return;
+  var ref=c.split('=')[1];
+  document.querySelectorAll('a[href*="wa.me"]').forEach(function(a){
+    try{
+      var url=new URL(a.href);
+      var text=url.searchParams.get('text')||'';
+      if(text.indexOf('كود الإحالة')===-1){
+        text+='\n\n[كود الإحالة: '+ref+']';
+        url.searchParams.set('text',text);
+        a.href=url.toString();
+      }
+    }catch(e){}
+  });
+});
+</script>
 </head>
 <body>
 <nav class="nav">
@@ -171,9 +557,11 @@ footer a{color:var(--gold);text-decoration:none;word-break:break-word}
       <a href="packages.html">الباقات</a>
       <a href="hotels-transport.html">فنادق ومواصلات</a>
       <a href="umrah.html" class="active">العمرة</a>
+      <a href="visa-services.html">التأشيرات</a>
       <a href="flights.html">تذاكر تشارتر من الأردن</a>
+      <a href="/medical.tourism/">السياحة العلاجية في الأردن</a>
       <a href="flight-search.html" style="color:#C9A84C;font-weight:800;">✈ بحث عن رحلات</a>
-      <a href="aircraft-leasing.html">تأجير الطائرات</a>
+      <a href="/leasing/">تأجير الطائرات</a>
       <a href="contact.html">اتصل بنا</a>
     </div>
     <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="القائمة">
@@ -191,8 +579,10 @@ footer a{color:var(--gold);text-decoration:none;word-break:break-word}
   <a href="packages.html" onclick="toggleNav()">الباقات</a>
   <a href="hotels-transport.html" onclick="toggleNav()">فنادق ومواصلات</a>
   <a href="umrah.html" onclick="toggleNav()">العمرة</a>
+  <a href="visa-services.html" onclick="toggleNav()">التأشيرات</a>
   <a href="flights.html" onclick="toggleNav()">تذاكر تشارتر من الأردن</a>
-  <a href="aircraft-leasing.html" onclick="toggleNav()">تأجير الطائرات</a>
+  <a href="/medical.tourism/" onclick="toggleNav()">السياحة العلاجية في الأردن</a>
+  <a href="/leasing/" onclick="toggleNav()">تأجير الطائرات</a>
   <a href="contact.html" onclick="toggleNav()">اتصل بنا</a>
   <a href="https://wa.me/962777066005" target="_blank" style="color:var(--green);margin-top:20px">💬 واتساب</a>
 </div>
@@ -208,16 +598,70 @@ footer a{color:var(--gold);text-decoration:none;word-break:break-word}
     <div class="hero-feat"><span>📋</span> تأشيرة ومستندات</div>
   </div>
 </div>
-<div class="filter-wrap">
-  <div class="filter-tabs">
-    <div class="ftab active" onclick="setFilter('all',this)">🕌 جميع الباقات</div>
-    <div class="ftab" onclick="setFilter('airplane',this)">✈️ طيران — رويال أردنية</div>
-    <div class="ftab" onclick="setFilter('charter',this)">✈️ طيران — شارتر</div>
-    <div class="ftab" onclick="setFilter('bus',this)">🚌 باص فاخر</div>
+
+<div class="dest-tabs-wrap">
+  <div class="dest-tabs" id="umrah-tabs">
+    <div class="dest-tab active" onclick="switchUmrahTab('rj_mkk',this)">✈️ رويال أردنية — مكة</div>
+    <div class="dest-tab" onclick="switchUmrahTab('rj_mdm',this)">✈️ رويال أردنية — مكة+مدينة</div>
+    <div class="dest-tab" onclick="switchUmrahTab('ch_mkk',this)">✈️ شارتر — مكة</div>
+    <div class="dest-tab" onclick="switchUmrahTab('ch_mdm',this)">✈️ شارتر — مكة+مدينة</div>
+    <div class="dest-tab" onclick="switchUmrahTab('bus_j',this)">🚌 باص فاخر — أردني</div>
+    <div class="dest-tab" onclick="switchUmrahTab('bus_p',this)">🚌 باص فاخر — فلسطيني</div>
+    <div class="dest-tab" onclick="switchUmrahTab('custom',this)">🛠️ خصص عمرتك</div>
+    <div class="dest-tab" onclick="switchUmrahTab('car',this)">🚗 مواصلات عمرة خاصة</div>
   </div>
 </div>
+
+<div id="charter-controls" style="display:none;max-width:1400px;margin:0 auto;padding:0 24px">
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin-bottom:16px">
+    <div id="ch-makkah-controls" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+      <span style="font-size:12px;color:var(--muted);font-weight:600">🌙 عدد الليالي:</span>
+      <div style="display:flex;gap:4px;flex-wrap:wrap">
+        <button onclick="chNights=2;renderUmrah()" style="padding:6px 14px;border-radius:8px;border:2px solid var(--border);background:var(--card);font-size:14px;font-weight:800;cursor:pointer;font-family:Cairo,sans-serif;color:var(--muted);transition:all .2s">2N</button>
+        <button onclick="chNights=3;renderUmrah()" style="padding:6px 14px;border-radius:8px;border:2px solid var(--border);background:var(--card);font-size:14px;font-weight:800;cursor:pointer;font-family:Cairo,sans-serif;color:var(--muted);transition:all .2s">3N</button>
+        <button onclick="chNights=4;renderUmrah()" class="active" style="padding:6px 14px;border-radius:8px;border:2px solid var(--gold);background:rgba(201,168,76,.15);font-size:14px;font-weight:800;cursor:pointer;font-family:Cairo,sans-serif;color:var(--gold);transition:all .2s">4N</button>
+        <button onclick="chNights=5;renderUmrah()" style="padding:6px 14px;border-radius:8px;border:2px solid var(--border);background:var(--card);font-size:14px;font-weight:800;cursor:pointer;font-family:Cairo,sans-serif;color:var(--muted);transition:all .2s">5N</button>
+        <button onclick="chNights=6;renderUmrah()" style="padding:6px 14px;border-radius:8px;border:2px solid var(--border);background:var(--card);font-size:14px;font-weight:800;cursor:pointer;font-family:Cairo,sans-serif;color:var(--muted);transition:all .2s">6N</button>
+        <button onclick="chNights=7;renderUmrah()" style="padding:6px 14px;border-radius:8px;border:2px solid var(--border);background:var(--card);font-size:14px;font-weight:800;cursor:pointer;font-family:Cairo,sans-serif;color:var(--muted);transition:all .2s">7N</button>
+      </div>
+    </div>
+    <div id="ch-mdm-controls" style="display:none;flex-wrap:wrap;gap:10px;align-items:center">
+      <span style="font-size:12px;color:var(--muted);font-weight:600">🕌🕌 الباقة:</span>
+      <button onclick="chPkg='4_3';renderUmrah()" style="padding:8px 18px;border-radius:10px;border:3px solid var(--border);background:var(--card);font-size:15px;font-weight:800;cursor:pointer;font-family:Cairo,sans-serif;color:var(--muted);transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:2px"><span>باقة أ</span><span style="font-size:11px;opacity:.7">4N مكة + 3N مدينة</span></button>
+      <button onclick="chPkg='3_2';renderUmrah()" style="padding:8px 18px;border-radius:10px;border:3px solid var(--border);background:var(--card);font-size:15px;font-weight:800;cursor:pointer;font-family:Cairo,sans-serif;color:var(--muted);transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:2px"><span>باقة ب</span><span style="font-size:11px;opacity:.7">3N مكة + 2N مدينة</span></button>
+      <button onclick="chPkg='2_2';renderUmrah()" style="padding:8px 18px;border-radius:10px;border:3px solid var(--border);background:var(--card);font-size:15px;font-weight:800;cursor:pointer;font-family:Cairo,sans-serif;color:var(--muted);transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:2px"><span>باقة ج</span><span style="font-size:11px;opacity:.7">2N مكة + 2N مدينة</span></button>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+      <div style="display:flex;align-items:center;gap:5px"><span style="font-size:11px;color:var(--muted);font-weight:600">🛏️ نوع الغرفة:</span>
+        <select onchange="chRoom=this.value;renderUmrah()" style="padding:5px 8px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:12px;font-family:Cairo,sans-serif;cursor:pointer">
+          <option value="double">👫 مزدوجة (2)</option>
+          <option value="triple">👨‍👩‍👦 ثلاثية (3)</option>
+          <option value="quad">👨‍👩‍👧‍👦 رباعية (4)</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:center;gap:4px"><span style="font-size:11px;color:var(--muted);font-weight:600">💰 العملة:</span>
+        <div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden">
+          <button onclick="chCur='JOD';renderUmrah()" style="padding:4px 10px;font-size:11px;font-weight:700;border:none;background:var(--card);cursor:pointer;color:var(--gold);font-family:Cairo,sans-serif">JOD</button>
+          <button onclick="chCur='USD';renderUmrah()" style="padding:4px 10px;font-size:11px;font-weight:700;border:none;background:var(--card);cursor:pointer;color:var(--muted);font-family:Cairo,sans-serif">USD</button>
+          <button onclick="chCur='SAR';renderUmrah()" style="padding:4px 10px;font-size:11px;font-weight:700;border:none;background:var(--card);cursor:pointer;color:var(--muted);font-family:Cairo,sans-serif">SAR</button>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+      <span style="font-size:11px;color:var(--muted);font-weight:600">🔍 تصفية:</span>
+      <select id="ch-filter" onchange="renderUmrah()" style="padding:4px 8px;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:11px;font-family:Cairo,sans-serif;cursor:pointer">
+        <option value="all">جميع الفنادق</option>
+        <option value="ultra">فاخر جداً 5★ (برج الساعة)</option>
+        <option value="luxury">فاخر 5★ (جبل عمر)</option>
+        <option value="midscale">متوسط راقٍ 4★</option>
+        <option value="budget">اقتصادي 3★</option>
+      </select>
+    </div>
+  </div>
+</div>
+
 <div class="main">
-  <div class="contact-banner">
+  <div class="contact-banner" id="umrah-contact-banner">
     <h3>🕌 تواصل معنا لحجز باقة العمرة المثالية</h3>
     <p>فريقنا المتخصص جاهز لمساعدتك في اختيار أفضل باقة تناسب ميزانيتك وتفضيلاتك</p>
     <div class="contact-btns">
@@ -239,6 +683,7 @@ footer a{color:var(--gold);text-decoration:none;word-break:break-word}
       <p style="color:var(--muted)">جاري تحميل باقات العمرة...</p>
     </div>
   </div>
+  <div id="umrah-fullzone" style="display:none;width:100%"></div>
 </div>
 <footer>
   <p><strong style="color:var(--gold)">الجود للسياحة والسفر</strong><br>
@@ -247,45 +692,293 @@ footer a{color:var(--gold);text-decoration:none;word-break:break-word}
   <a href="mailto:jalal.khashman@aljudetravels.com">✉️ البريد الإلكتروني</a> &nbsp;|&nbsp;
    <a href="help.html">📖 دليل المستخدم</a> &nbsp;|&nbsp; <span style="color:var(--muted)">© 2026 الجود للسياحة والسفر. جميع الحقوق محفوظة.</span></p>
 </footer>
+<script src="lang-currency.js"></script>
+<script src="booking.js"></script>
 <script>
 const SB_URL='https://rmpuvrmxakukgvtxethj.supabase.co';
 const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtcHV2cm14YWt1a2d2dHhldGhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyODAyMjcsImV4cCI6MjA5Mzg1NjIyN30.lO8rNtwfLXYFnyGk5dOthPEUj3XIWkfFvSOziTeDFeE';
 const WA='962777066005';
 const WA_SVG='<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>';
 function toggleNav(){const h=document.getElementById('hamburger'),o=document.getElementById('navOverlay');if(!h||!o)return;h.classList.toggle('open');o.classList.toggle('open');}
-let ALL_UMRAH=[], CURRENT_FILTER='all';
+let ALL_UMRAH=[], CURRENT_SECTION='all', CURRENT_SUBSECTION='all';
 
 async function loadUmrah(){
   try{
+    const ac=new AbortController();
+    var to=setTimeout(function(){ac.abort();},15000);
     const r=await fetch(SB_URL+'/rest/v1/umrah_packages?is_active=eq.true&order=price_jod',
-      {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
-    ALL_UMRAH=await r.json();
-    renderUmrah();
+      {headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},signal:ac.signal});
+    clearTimeout(to);
+    if(!r.ok){ALL_UMRAH=[];}else{ALL_UMRAH=await r.json();if(!Array.isArray(ALL_UMRAH))ALL_UMRAH=[];}
+    const el=document.getElementById('umrah-grid');
+    if(el&&!el.innerHTML.trim())el.innerHTML='<div class="empty-state">⏳ جاري تحميل الباقات...</div>';
+    const firstTab=document.querySelector('#umrah-tabs .dest-tab');
+    if(firstTab){firstTab.click();}else if(el){renderUmrah();}
   }catch(e){
-    document.getElementById('umrah-grid').innerHTML='<div class="empty-state">⚠️ تواصل معنا مباشرة للاستفسار عن باقات العمرة</div>';
+    console.warn('loadUmrah',e);
+    const el=document.getElementById('umrah-grid');
+    if(el)el.innerHTML='<div class="empty-state">⚠️ تواصل معنا مباشرة للاستفسار عن باقات العمرة</div>';
   }
 }
 
-function getTransportType(t){
-  if(!t)return 'all';
-  const tl=t.toLowerCase();
-  if(tl.includes('رويال')||tl.includes('royal'))return 'airplane';
-  if(tl.includes('شارتر')||tl.includes('charter'))return 'charter';
-  if(tl.includes('باص')||tl.includes('bus'))return 'bus';
-  return 'all';
+const UMRAH_TABS=[
+  {id:'rj_mkk',icon:'✈️',label:'رويال أردنية — مكة',section:'rj',sub:'makkah'},
+  {id:'rj_mdm',icon:'✈️',label:'رويال أردنية — مكة+مدينة',section:'rj',sub:'makkah_madinah'},
+  {id:'ch_mkk',icon:'✈️',label:'شارتر — مكة',section:'charter',sub:'makkah'},
+  {id:'ch_mdm',icon:'✈️',label:'شارتر — مكة+مدينة',section:'charter',sub:'makkah_madinah'},
+  {id:'bus_j',icon:'🚌',label:'باص فاخر — أردني',section:'bus',sub:'jordanian'},
+  {id:'bus_p',icon:'🚌',label:'باص فاخر — فلسطيني',section:'bus',sub:'palestinian'},
+  {id:'custom',icon:'🛠️',label:'خصص عمرتك',section:'custom',sub:'all'},
+  {id:'car',icon:'🚗',label:'مواصلات عمرة خاصة',section:'car',sub:'all'}
+];
+
+// ══════════════════════════════════════════════════════════════════
+// CHARTER INTERACTIVE DASHBOARD DATA (from dashboard HTML files)
+// ══════════════════════════════════════════════════════════════════
+const SAR_JOD=1/5.15,JOD_SAR=5.15,SAR_USD=1/3.75,USD_SAR=3.75;
+let chNights=4,chRoom='double',chPkg='4_3',chTicket=0,chTrans=0,chVisa=0,chProfit=30,chCur='JOD';
+function chSAR(a,c){return c==='SAR'?a:c==='JOD'?a*JOD_SAR:a*USD_SAR;}
+function chFrom(s){const v=Math.round(chCur==='SAR'?s:chCur==='JOD'?s*SAR_JOD:s*SAR_USD);return chCur==='SAR'?'SAR\u00A0'+v.toLocaleString():chCur==='USD'?'$'+v.toLocaleString():'JD\u00A0'+v.toLocaleString();}
+async function loadCharterConfig(sectionId){
+  try{
+    const r=await fetch(SB_URL+'/rest/v1/umrah_section_configs?section=eq.'+sectionId+'&select=*',{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
+    });
+    const cfg=await r.json();
+    if(cfg&&cfg.length){
+      chTicket=parseFloat(cfg[0].ticket_cost_jod)||0;
+      chTrans=parseFloat(cfg[0].transport_cost_jod)||0;
+      chVisa=parseFloat(cfg[0].visa_cost_jod)||0;
+      chProfit=parseFloat(cfg[0].fixed_profit_jod)||0;
+      const ins=document.querySelectorAll('#charter-controls input[type=number]');
+      if(ins.length>=4){ins[0].value=chTicket;ins[1].value=chTrans;ins[2].value=chVisa;ins[3].value=chProfit;}
+    }
+  }catch(e){console.warn('loadCharterConfig',e);}
+}
+const CS={};
+function csk(mk,k){return mk+'_'+k;}
+function gcs(mk,k,d){const k2=csk(mk,k);return k2 in CS?CS[k2]:d;}
+function scs(mk,k,v){CS[csk(mk,k)]=v;}
+
+// Makkah hotels (18 top hotels from dashboard)
+const MK=[
+  {id:'mk1',tier:'ultra',stars:5,dist:0,name:{en:'Fairmont Makkah Clock Royal Tower',ar:'فيرمونت مكة برج الساعة الملكي'},sub:{en:'Clock Tower · On Haram Boundary',ar:'برج الساعة · على حدود الحرم'},meal:'BB',mi:true,dbl:865,tpl:null,qad:null,periods:[{l:'24 Jun–21 Jul',wd:865,we:1015},{l:'22 Jul–29 Sep',wd:905,we:1015},{l:'30 Sep–17 Dec',wd:975,we:1115},{l:'18 Dec–9 Jan',wd:1815,we:1965}]},
+  {id:'mk2',tier:'ultra',stars:5,dist:0,name:{en:'Raffles Makkah Palace',ar:'رافلز قصر مكة'},sub:{en:'Clock Tower · All-Suite',ar:'برج الساعة · أجنحة'},meal:'BB',mi:true,dbl:1405,tpl:null,qad:null,periods:[{l:'24 Jun–29 Sep',wd:1405,we:1535},{l:'Peak',wd:2365,we:2455}]},
+  {id:'mk3',tier:'ultra',stars:5,dist:0,name:{en:'Swissôtel Al Maqam Makkah',ar:'سويسوتيل المقام مكة'},sub:{en:'Clock Tower · Covered Walkway',ar:'برج الساعة · ممشى مكيف'},meal:'BB',mi:true,dbl:835,tpl:null,qad:null,periods:[{l:'26 Jun–21 Jul',wd:835,we:915},{l:'22 Jul–29 Sep',wd:915,we:1015},{l:'30 Sep–17 Dec',wd:1015,we:1115},{l:'18 Dec–8 Jan',wd:1665,we:1665}]},
+  {id:'mk4',tier:'ultra',stars:5,dist:0,name:{en:'Mövenpick Hotel Hajar Tower',ar:'موڤنبيك فندق هاجر تاور'},sub:{en:'Clock Tower · Faces King Abdulaziz Gate',ar:'برج الساعة · يواجه باب الملك عبدالعزيز'},meal:'BB',mi:true,dbl:650,tpl:null,qad:null,periods:[{l:'26 Jun–25 Jul',wd:650,we:720},{l:'23 Jul–19 Aug',wd:490,we:645}]},
+  {id:'mk5',tier:'ultra',stars:5,dist:0,name:{en:'Pullman ZamZam Makkah',ar:'بولمان زمزم مكة'},sub:{en:'Clock Tower · First Hotel in Abraj Al Bait',ar:'برج الساعة · أول فندق'},meal:'BB',mi:true,dbl:615,tpl:null,qad:null,periods:[{l:'26 Jun–2 Jul',wd:615,we:765},{l:'3 Jul–22 Jul',wd:865,we:865},{l:'23 Jul–17 Dec',wd:965,we:1015},{l:'18 Dec–8 Jan',wd:1615,we:1615}]},
+  {id:'mk6',tier:'luxury',stars:5,dist:100,name:{en:'Swissôtel Makkah',ar:'سويسوتيل مكة'},sub:{en:'Abraj Al Bait · ~100m',ar:'أبراج البيت · ~100م'},meal:'BB',mi:true,dbl:765,tpl:null,qad:null,periods:[{l:'26 Jun–21 Jul',wd:765,we:865},{l:'22 Jul–29 Sep',wd:805,we:815},{l:'30 Sep–17 Dec',wd:895,we:895},{l:'18 Dec–8 Jan',wd:1575,we:1575}]},
+  {id:'mk7',tier:'luxury',stars:5,dist:0,name:{en:'Dar Al Tawhid Intercontinental',ar:'دار التوحيد إنتركونتيننتال'},sub:{en:'On Haram · Opposite King Fahd Gate',ar:'على حدود الحرم'},meal:'BB',mi:true,dbl:665,tpl:null,qad:null,periods:[{l:'26 Jun–29 Sep',wd:665,we:795}]},
+  {id:'mk10',tier:'luxury',stars:5,dist:350,name:{en:'Hyatt Regency Makkah',ar:'حياة ريجنسي مكة'},sub:{en:'Jabal Omar · ~5 min',ar:'جبل عمر · ~5 دقائق'},meal:'BB',mi:true,dbl:365,tpl:null,qad:null,periods:[{l:'24 Jun / 26 Jun',wd:365,we:665},{l:'Peak',wd:665,we:890}]},
+  {id:'mk12',tier:'luxury',stars:5,dist:600,name:{en:'Marriott Makkah (Jabal Omar)',ar:'ماريوت مكة - جبل عمر'},sub:{en:'Jabal Omar · 10–12 min',ar:'جبل عمر · 10-12 دقيقة'},meal:'BB',mi:true,dbl:315,tpl:null,qad:null,periods:[{l:'24 Jun–25 Jul',wd:315,we:590},{l:'Peak',wd:590,we:785}]},
+  {id:'mk15',tier:'midscale',stars:5,dist:450,name:{en:'Anjum Hotel Makkah',ar:'فندق أنجم مكة'},sub:{en:'Ajyad · 5 min',ar:'أجياد · 5 دقائق'},meal:'BB',mi:true,dbl:465,tpl:null,qad:null,periods:[{l:'24 Jun–8 Jul',wd:465,we:495},{l:'Sep premium',wd:465,we:495}]},
+  {id:'mk16',tier:'midscale',stars:4,dist:500,name:{en:'Hilton Makkah Convention Hotel',ar:'هيلتون مكة للمؤتمرات'},sub:{en:'Steps from Al Shubaikah',ar:'خطوات من باب الشبيكة'},meal:'BB',mi:true,dbl:420,tpl:null,qad:null,periods:[{l:'24 Jun–30 Jul',wd:420,we:790},{l:'Peak',wd:520,we:890}]},
+  {id:'mk17',tier:'midscale',stars:4,dist:500,name:{en:'Sheraton Makkah Hotel',ar:'شيراتون مكة'},sub:{en:'Central · 6–8 min',ar:'وسط مكة · 6-8 دقائق'},meal:'BB',mi:true,dbl:440,tpl:null,qad:null,periods:[{l:'24 Jun–30 Jun',wd:440,we:490},{l:'1 Jul–14 Sep',wd:440,we:490},{l:'19 Sep–end',wd:490,we:490}]},
+  {id:'mk18',tier:'midscale',stars:4,dist:500,name:{en:'DoubleTree by Hilton Jabal Omar',ar:'دبل تري بي هيلتون جبل عمر'},sub:{en:'Jabal Omar · 8 min',ar:'جبل عمر · 8 دقائق'},meal:'BB',mi:true,dbl:320,tpl:null,qad:null,periods:[{l:'26 Jun–29 Sep',wd:320,we:370},{l:'Peak',wd:365,we:415}]},
+  {id:'mk23',tier:'budget',stars:4,dist:800,name:{en:'Voco Makkah',ar:'فوكو مكة'},sub:{en:'Al Zaher · 10 min',ar:'الظاهر · 10 دقائق'},meal:'BB',mi:true,dbl:290,tpl:265,qad:null,periods:[{l:'24 Jun–24 Jul',wd:290,we:690},{l:'Peak',wd:690,we:730}]},
+  {id:'mk26',tier:'budget',stars:3,dist:1000,name:{en:'Nawazi Towers',ar:'أبراج النوازي'},sub:{en:'Al Aziziyah · Economy',ar:'العزيزية · اقتصادي'},meal:'RO',mi:false,dbl:130,tpl:null,qad:null,periods:[{l:'26 Jun–21 Jul',wd:130,we:160},{l:'22 Jul–29 Sep',wd:160,we:160},{l:'Oct–Dec',wd:180,we:180}]},
+  {id:'mk28',tier:'budget',stars:3,dist:750,name:{en:'Courtyard by Marriott Makkah',ar:'كورتيارد ماريوت مكة'},sub:{en:'Al Zaher · B&B',ar:'الظاهر · فطور'},meal:'BB',mi:true,dbl:185,tpl:200,qad:215,periods:[{l:'26 Jun–14 Sep',wd:185,we:265}]},
+  {id:'mk29',tier:'budget',stars:3,dist:700,name:{en:'Al Ebaa Hotel',ar:'فندق العباء'},sub:{en:'Al Aziziyah · B&B/RO',ar:'العزيزية · فطور/غرفة'},meal:'BB/RO',mi:false,dbl:255,tpl:270,qad:300,periods:[{l:'24 Jun–31 Jul',wd:255,we:280},{l:'1 Aug–15 Dec',wd:280,we:390},{l:'Peak Dec–Jan',wd:390,we:390}]},
+  {id:'mk31',tier:'budget',stars:3,dist:900,name:{en:'Novotel Thakher Makkah',ar:'نوفوتيل ثاكر مكة'},sub:{en:'Al Aziziyah · 3★',ar:'العزيزية · 3 نجوم'},meal:'BB',mi:true,dbl:145,tpl:145,qad:155,periods:[{l:'24–30 Jun',wd:145,we:155},{l:'Full season',wd:145,we:155}]}
+];
+
+// Madinah hotels (6 top hotels)
+const MD=[
+  {id:'md1',tier:'luxury',stars:5,dist:0,name:{en:'Pullman ZamZam Madina',ar:'بولمان زمزم المدينة'},sub:{en:'On Nabawi Boundary · B&B',ar:'على حدود المسجد النبوي'},meal:'BB',mi:true,periods:[{l:'26 Jun–06 Sep',d:610,t:730,q:null},{l:'07 Sep–17 Dec',d:710,t:830,q:null},{l:'18 Sep–30 Nov',d:810,t:920,q:null}]},
+  {id:'md2',tier:'luxury',stars:5,dist:0,name:{en:'Anwar Al Madinah Mövenpick',ar:'أنوار المدينة موفنبيك'},sub:{en:'On Nabawi Boundary · B&B',ar:'على حدود المسجد النبوي'},meal:'BB',mi:true,periods:[{l:'26 Jun–06 Sep',d:575,t:695,q:null},{l:'07 Sep–17 Dec',d:675,t:795,q:null}]},
+  {id:'md4',tier:'midscale',stars:3,dist:350,name:{en:'Emaar Royal Hotel',ar:'فندق إيمار رويال'},sub:{en:'Central · B&B',ar:'وسط المدينة · فطور'},meal:'BB',mi:true,periods:[{l:'26 Jun–06 Sep',d:485,t:585,q:null}]},
+  {id:'md6',tier:'midscale',stars:4,dist:150,name:{en:'Vally Hotel Madina',ar:'فندق فالي المدينة'},sub:{en:'Central · B&B',ar:'وسط المدينة · فطور'},meal:'BB',mi:true,periods:[{l:'15 Jul–31 Aug',d:490,t:540,q:590},{l:'31 Aug–01 Nov',d:520,t:570,q:620},{l:'01 Nov–18 Dec',d:550,t:600,q:650}]},
+  {id:'md14',tier:'economy',stars:3,dist:250,name:{en:'Mysk Touch Hotel',ar:'فندق مسك تاتش'},sub:{en:'Central · Room Only',ar:'وسط المدينة · غرفة فقط'},meal:'RO',mi:false,periods:[{l:'01–31 Jul',d:360,t:435,q:485}]},
+  {id:'md16',tier:'economy',stars:3,dist:350,name:{en:'Nusk Al Hijrah Hotel',ar:'فندق نسك الهجرة'},sub:{en:'Central · Room Only',ar:'وسط المدينة · غرفة فقط'},meal:'RO',mi:false,periods:[{l:'01–31 Jul',d:290,t:310,q:330},{l:'01 Aug–15 Oct',d:340,t:360,q:380}]}
+];
+
+const PKGS={'4_3':{mkN:4,mdN:3,arA:'أ',enA:'A',arB:'4 ليالٍ مكة + 3 ليالٍ مدينة',enB:'4N Makkah + 3N Madinah'},'3_2':{mkN:3,mdN:2,arA:'ب',enA:'B',arB:'3 ليالٍ مكة + 2 ليالٍ مدينة',enB:'3N Makkah + 2N Madinah'},'2_2':{mkN:2,mdN:2,arA:'ج',enA:'C',arB:'2 ليالٍ مكة + 2 ليالٍ مدينة',enB:'2N Makkah + 2N Madinah'}};
+
+function updChUI(){
+  // Nights buttons
+  document.querySelectorAll('#ch-makkah-controls button').forEach(b=>{
+    const n=parseInt(b.textContent);b.style.borderColor=n===chNights?'var(--gold)':'var(--border)';b.style.background=n===chNights?'rgba(201,168,76,.15)':'var(--card)';b.style.color=n===chNights?'var(--gold)':'var(--muted)';
+  });
+  // Package buttons
+  document.querySelectorAll('#ch-mdm-controls button').forEach(b=>{
+    const pm={'باقة أ':'4_3','باقة ب':'3_2','باقة ج':'2_2'};const pk=b.textContent.includes('أ')?'4_3':b.textContent.includes('ب')?'3_2':'2_2';b.style.borderColor=pk===chPkg?'var(--gold)':'var(--border)';b.style.background=pk===chPkg?'rgba(201,168,76,.15)':'var(--card)';b.style.color=pk===chPkg?'var(--gold)':'var(--muted)';
+  });
+}
+function distChip(d){return d===0?'🕌 على حدود الحرم':d<=300?'🟢 '+d+'م':d<=600?'🔵 '+d+'م':'🟡 '+d+'م';}
+const TIER_ORDER=['ultra','luxury','midscale','budget'];
+const TIER_LB={'ultra':{en:'Ultra Luxury 5★',ar:'فاخر جداً 5★'},'luxury':{en:'Luxury 5★',ar:'فاخر 5★'},'midscale':{en:'Upper Midscale 4★',ar:'متوسط راقٍ 4★'},'budget':{en:'Economy 3★',ar:'اقتصادي 3★'}};
+
+function chMdRoom(h,pi,r){const p=h.periods[Math.min(pi,h.periods.length-1)];const m={double:'d',triple:'t',quad:'q'};const k=m[r]||'d';return p[k]||p.d||0;}
+
+function renderCharterMakkah(){
+  updChUI();
+  const grid=document.getElementById('umrah-grid'),hb=document.getElementById('charter-controls');
+  if(hb){hb.style.display='block';document.getElementById('ch-makkah-controls').style.display='flex';document.getElementById('ch-mdm-controls').style.display='none';}
+  const px={double:2,triple:3,quad:4}[chRoom]||2;
+  const ti=chSAR(chTicket,'JOD'),tr=chSAR(chTrans,'JOD'),vi=chSAR(chVisa,'JOD'),pr=chSAR(chProfit,'JOD');
+  const flt=document.getElementById('ch-filter')?.value||'all';
+  const filtered=flt==='all'?MK:MK.filter(h=>h.tier===flt);
+  const grps={};filtered.forEach(h=>{if(!grps[h.tier])grps[h.tier]=[];grps[h.tier].push(h);});
+  document.getElementById('results-count').innerHTML='عرض <span style=\"color:var(--gold);font-weight:700\">'+filtered.length+'</span> فندق — '+chNights+(document.documentElement.lang==='en'?' nights':' ليالي')+' | '+chRoom;
+  if(!filtered.length){grid.innerHTML='<div class=\"empty-state\">لا توجد فنادق</div>';return;}
+  let html='';
+  TIER_ORDER.filter(t=>grps[t]).forEach(t=>{
+    html+='<div class=\"results-count\" style=\"grid-column:1/-1;margin:10px 0 0;font-size:14px\">'+(document.documentElement.lang==='en'?TIER_LB[t].en:TIER_LB[t].ar)+'</div>';
+    grps[t].forEach(h=>{
+      const isEn=document.documentElement.lang==='en';
+      const pi=gcs(h.id,'pi',0),we=gcs(h.id,'we',false);
+      const p=h.periods[Math.min(pi,h.periods.length-1)];
+      const rate=we?p.we:p.wd;
+      const sadj=chSAR(rate||h.dbl,'SAR');
+      const cost=sadj*chNights/px;
+      const total=Math.round(cost+ti+tr+vi+pr);
+      const stars='★'.repeat(h.stars)+'<span style=\"opacity:.35\">'+'★'.repeat(5-h.stars)+'</span>';
+      html+='<div class=\"umrah-card\"><div class=\"card-header\"><div class=\"card-title\">'+h.name.ar+'</div>'+
+        '<div style=\"display:flex;gap:5px;flex-wrap:wrap;margin-top:6px\"><span style=\"font-size:10px;border-radius:4px;padding:2px 7px;background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.3);font-weight:600\">'+stars+'</span>'+
+        (h.mi?'<span style=\"font-size:9px;border-radius:4px;padding:2px 7px;background:rgba(39,174,96,.12);color:#68E0A0;border:1px solid rgba(39,174,96,.3);font-weight:600\">🍳 '+(isEn?'Breakfast':'فطور')+'</span>':'')+
+        '<span style=\"font-size:9px;border-radius:4px;padding:2px 7px;background:rgba(96,165,250,.08);color:var(--blue);border:1px solid rgba(96,165,250,.3)\">📍 '+distChip(h.dist)+'</span></div></div>'+
+        '<div style=\"padding:10px 14px;border-bottom:1px solid var(--border)\">'+
+        '<div style=\"display:flex;flex-wrap:wrap;gap:4px\">'+
+        h.periods.map((p,i)=>'<button onclick=\"scs(\''+h.id+'\',\'pi\','+i+');renderCharterMakkah()\" style=\"padding:4px 9px;border-radius:6px;border:1px solid var(--border);font-size:10px;font-weight:600;cursor:pointer;font-family:Cairo,sans-serif;background:'+(pi===i?'rgba(201,168,76,.2)':'var(--card)')+';color:'+(pi===i?'var(--gold)':'var(--muted)')+'\">'+p.l+'</button>').join('')+
+        '</div>'+
+        '<div style=\"display:flex;gap:4px;margin-top:6px\">'+
+        '<button onclick=\"scs(\''+h.id+'\',\'we\',false);renderCharterMakkah()\" style=\"flex:1;padding:4px 8px;border-radius:6px;border:1px solid var(--border);font-size:10px;font-weight:600;cursor:pointer;font-family:Cairo,sans-serif;background:'+(we?'var(--card)':'rgba(201,168,76,.2)')+';color:'+(we?'var(--muted)':'var(--gold)')+'\">📅 '+(isEn?'Weekday':'أيام الأسبوع')+'</button>'+
+        '<button onclick=\"scs(\''+h.id+'\',\'we\',true);renderCharterMakkah()\" style=\"flex:1;padding:4px 8px;border-radius:6px;border:1px solid var(--border);font-size:10px;font-weight:600;cursor:pointer;font-family:Cairo,sans-serif;background:'+(we?'rgba(201,168,76,.2)':'var(--card)')+';color:'+(we?'var(--gold)':'var(--muted)')+'\">🎯 '+(isEn?'Weekend/Peak':'عطلة/ذروة')+'</button>'+
+        '</div></div>'+
+        '<div style=\"padding:14px\"><div style=\"display:flex;justify-content:space-between;align-items:center;margin-bottom:6px\"><span style=\"font-size:11px;color:var(--muted)\">'+(isEn?'Price per person':'السعر للشخص')+'</span><span style=\"font-size:24px;font-weight:800;color:var(--gold)\">'+chFrom(total)+'</span></div>'+
+        '<div style=\"font-size:10px;color:var(--muted);line-height:2\">🏨 '+(rate||h.dbl)+' SAR/ليلة ÷'+px+' أشخاص ×'+chNights+' ليالٍ | ✈️ '+chTicket+' JD + 🚌 '+chTrans+' JD + 📋 '+chVisa+' JD + 💼 '+chProfit+' JD</div></div>'+
+        '<div style=\"padding:0 14px 14px\"><button onclick="openBooking({type:\'umrah\',name:\''+h.name.ar.replace(/'/g,'')+'\',destination:\''+(isEn?'Makkah':'مكة')+'\',nights:\''+chNights+'\',price:\''+chFrom(total).replace(/SAR |\$|JD /g,'')+'\',room:\''+chRoom+'\'})" class="wa-btn">'+WA_SVG+' '+(isEn?'Book Now':'احجز الآن')+'</button></div>'+
+        '</div>';
+    });
+  });
+  grid.innerHTML=html;
 }
 
-function setFilter(type,btn){
-  CURRENT_FILTER=type;
-  document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
+function renderCharterMakkahMadinah(){
+  updChUI();
+  const grid=document.getElementById('umrah-grid'),hb=document.getElementById('charter-controls');
+  if(hb){hb.style.display='block';document.getElementById('ch-makkah-controls').style.display='none';document.getElementById('ch-mdm-controls').style.display='flex';}
+  const cfg=PKGS[chPkg]||PKGS['4_3'];
+  const isEn=document.documentElement.lang==='en';
+  const px={double:2,triple:3,quad:4}[chRoom]||2;
+  const ti=chSAR(chTicket,'JOD'),tr=chSAR(chTrans,'JOD'),vi=chSAR(chVisa,'JOD'),pr=chSAR(chProfit,'JOD');
+  const flt=document.getElementById('ch-filter')?.value||'all';
+  const filtered=flt==='all'?MK:MK.filter(h=>h.tier===flt);
+  const mdOpts=MD.map(h=>'<option value=\"'+h.id+'\">'+(isEn?h.name.en:h.name.ar)+' ('+h.stars+'★)</option>').join('');
+  const grps={};filtered.forEach(h=>{if(!grps[h.tier])grps[h.tier]=[];grps[h.tier].push(h);});
+  document.getElementById('results-count').innerHTML='عرض <span style=\"color:var(--gold);font-weight:700\">'+filtered.length+'</span> فندق — '+(isEn?cfg.enB:cfg.arB)+' | '+chRoom;
+  if(!filtered.length){grid.innerHTML='<div class=\"empty-state\">لا توجد فنادق</div>';return;}
+  let html='';
+  TIER_ORDER.filter(t=>grps[t]).forEach(t=>{
+    html+='<div class=\"results-count\" style=\"grid-column:1/-1;margin:10px 0 0;font-size:14px\">'+(isEn?TIER_LB[t].en:TIER_LB[t].ar)+'</div>';
+    grps[t].forEach(mkH=>{
+      const mki=gcs(mkH.id,'pi',0),mwe=gcs(mkH.id,'we',false);
+      const mdId=gcs(mkH.id,'mdId','md1'),mdH=MD.find(h=>h.id===mdId)||MD[0];
+      const mdPi=gcs(mkH.id,'mdPi',0);
+      const mkP=mkH.periods[Math.min(mki,mkH.periods.length-1)];
+      const mkRate=mwe?mkP.we:mkP.wd;
+      const mkSAR=chSAR(mkRate||mkH.dbl,'SAR'),mdSAR=chMdRoom(mdH,mdPi,chRoom);
+      const mkCost=mkSAR*cfg.mkN/px,mdCost=mdSAR*cfg.mdN/px;
+      const total=Math.round(mkCost+mdCost+ti+tr+vi+pr);
+      html+='<div class=\"umrah-card\"><div class=\"card-header\">'+
+        '<div class=\"card-title\">'+(isEn?cfg.enA+' — '+mkH.name.en:cfg.arA+' — '+mkH.name.ar)+'</div>'+
+        '<div style=\"font-size:11px;color:var(--muted)\">'+(isEn?cfg.enB:cfg.arB)+'</div></div>'+
+        '<div style=\"padding:10px 14px;border-bottom:1px solid var(--border);background:rgba(201,168,76,.05)\">'+
+        '<div style=\"display:flex;align-items:center;gap:6px;margin-bottom:6px\">🕋 <b>'+(isEn?mkH.name.en:mkH.name.ar)+'</b> <span style=\"font-size:10px;color:var(--muted)\">'+cfg.mkN+'N</span></div>'+
+        '<div style=\"display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px\">'+
+        mkH.periods.map((p,i)=>'<button onclick=\"scs(\''+mkH.id+'\',\'pi\','+i+');renderCharterMakkahMadinah()\" style=\"padding:3px 7px;border-radius:5px;border:1px solid var(--border);font-size:9px;font-weight:600;cursor:pointer;font-family:Cairo,sans-serif;background:'+(mki===i?'rgba(201,168,76,.2)':'var(--card)')+';color:'+(mki===i?'var(--gold)':'var(--muted)')+'\">'+p.l+'</button>').join('')+
+        '</div>'+
+        '<div style=\"display:flex;gap:4px\"><button onclick=\"scs(\''+mkH.id+'\',\'we\',false);renderCharterMakkahMadinah()\" style=\"flex:1;padding:3px;border-radius:5px;border:1px solid var(--border);font-size:9px;font-weight:600;cursor:pointer;font-family:Cairo,sans-serif;background:'+(mwe?'var(--card)':'rgba(201,168,76,.2)')+';color:'+(mwe?'var(--muted)':'var(--gold)')+'\">📅 WD</button>'+
+        '<button onclick=\"scs(\''+mkH.id+'\',\'we\',true);renderCharterMakkahMadinah()\" style=\"flex:1;padding:3px;border-radius:5px;border:1px solid var(--border);font-size:9px;font-weight:600;cursor:pointer;font-family:Cairo,sans-serif;background:'+(mwe?'rgba(201,168,76,.2)':'var(--card)')+';color:'+(mwe?'var(--gold)':'var(--muted)')+'\">🎯 WE</button></div>'+
+        '<div style=\"font-size:10px;color:var(--muted);margin-top:4px\">'+(isEn?'Price':'السعر')+': <b style=\"color:var(--gold)\">'+chFrom(chSAR(mkCost,'SAR'))+'</b> / '+(isEn?'person':'للشخص')+'</div></div>'+
+        '<div style=\"padding:10px 14px;border-bottom:1px solid var(--border);background:rgba(27,79,114,.05)\">'+
+        '<div style=\"display:flex;align-items:center;gap:6px;margin-bottom:6px\">🌿 <b>'+(isEn?mdH.name.en:mdH.name.ar)+'</b> <span style=\"font-size:10px;color:var(--muted)\">'+cfg.mdN+'N</span></div>'+
+        '<select id=\"mdSel_'+mkH.id+'\" onchange=\"scs(\''+mkH.id+'\',\'mdId\',this.value);scs(\''+mkH.id+'\',\'mdPi\',0);renderCharterMakkahMadinah()\" style=\"width:100%;padding:4px 6px;border-radius:5px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:11px;font-family:Cairo,sans-serif;cursor:pointer;margin-bottom:6px\">'+mdOpts+'</select>'+
+        '<div style=\"display:flex;flex-wrap:wrap;gap:4px;margin-bottom:4px\">'+
+        mdH.periods.map((p,i)=>'<button onclick=\"scs(\''+mkH.id+'\',\'mdPi\','+i+');renderCharterMakkahMadinah()\" style=\"padding:3px 7px;border-radius:5px;border:1px solid var(--border);font-size:9px;font-weight:600;cursor:pointer;font-family:Cairo,sans-serif;background:'+(mdPi===i?'rgba(27,114,200,.2)':'var(--card)')+';color:'+(mdPi===i?'var(--blue)':'var(--muted)')+'\">'+p.l+'</button>').join('')+
+        '</div>'+
+        '<div style=\"font-size:10px;color:var(--muted);margin-top:4px\">'+(isEn?'Price':'السعر')+': <b style=\"color:var(--blue)\">'+chFrom(chSAR(mdCost,'SAR'))+'</b> / '+(isEn?'person':'للشخص')+'</div></div>'+
+        '<div style=\"padding:14px;background:linear-gradient(135deg,var(--dark2),var(--dark3))\"><div style=\"display:flex;justify-content:space-between;align-items:center;margin-bottom:8px\"><span style=\"font-size:11px;color:var(--muted)\">'+(isEn?'Total / person':'الإجمالي / شخص')+'</span><span style=\"font-size:24px;font-weight:800;color:var(--gold)\">'+chFrom(total)+'</span></div>'+
+        '<button onclick="openBooking({type:\'umrah\',name:\''+(isEn?cfg.enA+' — '+mkH.name.en:cfg.arA+' — '+mkH.name.ar).replace(/'/g,'')+'\',destination:\''+(isEn?'Makkah & Madinah':'مكة والمدينة المنورة')+'\',nights:\''+(cfg.mkN+cfg.mdN)+'\',price:\''+chFrom(total).replace(/SAR |\$|JD /g,'')+'\',room:\''+chRoom+'\'})" class="wa-btn">'+WA_SVG+' '+(isEn?'Book Now':'احجز الآن')+'</button></div></div>';
+    });
+  });
+  grid.innerHTML=html;
+  // restore dropdowns
+  filtered.forEach(h=>{const s=document.getElementById('mdSel_'+h.id);if(s)s.value=gcs(h.id,'mdId','md1');});
+}
+
+async function switchUmrahTab(tabId,btn){
+  const tab=UMRAH_TABS.find(t=>t.id===tabId);
+  if(!tab)return;
+  CURRENT_SECTION=tab.section;
+  CURRENT_SUBSECTION=tab.sub;
+  document.querySelectorAll('#umrah-tabs .dest-tab').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  // Load saved calculator config for charter sections
+  if(tab.section==='charter') await loadCharterConfig(tabId);
   renderUmrah();
 }
 
+function pkgSection(u){if(u.section)return u.section;if(u.transport&&u.transport.includes('باص'))return'bus';if(u.is_rj||(u.transport&&u.transport.includes('رويال')))return'rj';if(u.transport&&u.transport.includes('شارتر'))return'charter';if(u.program_type==='charter')return'charter';if(u.program_type==='bus')return'bus';return'custom';}
+function pkgSubsection(u){
+  if(u.subsection)return u.subsection;
+  const sec=pkgSection(u);
+  if(sec==='bus')return'jordanian';
+  return(u.nights_medina>0)?'makkah_madinah':'makkah';
+}
+
 function renderUmrah(){
-  const filtered=CURRENT_FILTER==='all'?ALL_UMRAH:ALL_UMRAH.filter(u=>getTransportType(u.transport)===CURRENT_FILTER);
-  document.getElementById('results-count').innerHTML='عرض <span style="color:var(--gold);font-weight:700">'+filtered.length+'</span> باقة عمرة';
+  const hb=document.getElementById('charter-controls');
+  const banner=document.getElementById('umrah-contact-banner');
+  const printBtns=document.querySelector('.main .pj-no-print');
   const grid=document.getElementById('umrah-grid');
+  const zone=document.getElementById('umrah-fullzone');
+  const rc=document.getElementById('results-count');
+
+  // Show grid, hide fullzone for grid-based content
+  if(grid)grid.style.display='';
+  if(zone)zone.style.display='none';
+
+  // Car section — interactive transport tool
+  if(CURRENT_SECTION==='car'){
+    if(hb)hb.style.display='none';
+    if(banner)banner.style.display='none';
+    if(printBtns)printBtns.style.display='none';
+    rc.innerHTML='';
+    if(grid)grid.style.display='none';
+    if(zone)zone.style.display='block';
+    renderCarTransport();
+    return;
+  }
+
+  // Interactive charter dashboard
+  if(CURRENT_SECTION==='charter'){
+    if(CURRENT_SUBSECTION==='makkah'||CURRENT_SUBSECTION==='all'){if(banner)banner.style.display='none';renderCharterMakkah();return;}
+    if(CURRENT_SUBSECTION==='makkah_madinah'){if(banner)banner.style.display='none';renderCharterMakkahMadinah();return;}
+  }
+
+  // Custom section — package builder
+  if(CURRENT_SECTION==='custom'){
+    if(hb)hb.style.display='none';
+    if(banner)banner.style.display='none';
+    if(printBtns)printBtns.style.display='none';
+    rc.innerHTML='';
+    if(grid)grid.style.display='none';
+    if(zone)zone.style.display='block';
+    renderCustomBuilder();
+    return;
+  }
+
+  // Static cards (RJ, bus)
+  if(hb)hb.style.display='none';
+  if(banner)banner.style.display='block';
+  if(printBtns)printBtns.style.display='flex';
+  let filtered=ALL_UMRAH;
+  if(CURRENT_SECTION!=='all') filtered=filtered.filter(u=>pkgSection(u)===CURRENT_SECTION);
+  if(CURRENT_SUBSECTION!=='all') filtered=filtered.filter(u=>pkgSubsection(u)===CURRENT_SUBSECTION);
+  const tab=UMRAH_TABS.find(t=>t.section===CURRENT_SECTION&&t.sub===CURRENT_SUBSECTION);
+  const tabLabel=tab?tab.label:'';
+  rc.innerHTML='عرض <span style="color:var(--gold);font-weight:700">'+filtered.length+'</span> باقة'+(tabLabel?' — '+tabLabel:'');
   if(!filtered.length){
     grid.innerHTML='<div class="empty-state"><p>لا توجد باقات في هذه الفئة — تواصل معنا مباشرة</p></div>';
     return;
@@ -296,39 +989,1172 @@ function renderUmrah(){
 function buildUmrahCard(u){
   const includes=(u.includes||'').split('،').filter(Boolean);
   const totalNights=(u.nights_mecca||0)+(u.nights_medina||0);
-  const msg='مرحباً 👋\nأريد الاستفسار عن باقة العمرة:\n\n🕌 '+u.title_ar+'\n🏨 مكة: '+(u.hotel_mecca||'—')+' ('+u.nights_mecca+' ليالي)\n🏨 المدينة: '+(u.hotel_medina||'—')+' ('+u.nights_medina+' ليالي)\n🚌 وسيلة السفر: '+(u.transport||'—')+(u.price_jod?'\n💰 السعر: '+u.price_jod+' دينار/شخص':'')+'\n\nأرجو التأكيد والتفاصيل.';
+  const isEn=document.documentElement.lang==='en';
+  const hasPrices=u.price_single||u.price_jod||u.price_triple||u.price_quad;
+  const sglPrice=u.price_single||u.price_jod||0;
+  const dblPrice=u.price_jod||u.price_double||0;
+  const tplPrice=u.price_triple||0;
+  const qadPrice=u.price_quad||0;
+  const infPrice=u.price_infant||220;
+  const starsHtml=u.stars?(
+    u.stars==='إيواء سياحي'?(isEn?'🛏️ Tourist Acc.':'🛏️ إيواء سياحي'):
+    '⭐'.repeat(parseInt(u.stars)||0)
+  ):'';
+  const mealBadge=u.has_meal?`<span style="display:inline-flex;align-items:center;gap:3px;font-size:9px;border-radius:4px;padding:2px 7px;background:rgba(39,174,96,.12);color:#68E0A0;border:1px solid rgba(39,174,96,.3);font-weight:600">🍳 ${u.meal_plan||(isEn?'Breakfast':'فطور')}</span>`:
+    `<span style="display:inline-flex;align-items:center;gap:3px;font-size:9px;border-radius:4px;padding:2px 7px;background:rgba(107,114,128,.1);color:var(--muted);border:1px solid rgba(107,114,128,.2);font-weight:600">${u.meal_plan||(isEn?'No Meals':'بدون وجبات')}</span>`;
+  const distTxt=isEn?(u.distance_en||u.distance||''):(u.distance||'');
+  const rjBadge=u.is_rj?`<span class="umrah-rj-badge">✈️ RJ</span>`:'';
   return '<div class="umrah-card">'+
     '<div class="card-header">'+
       '<div class="card-title">'+u.title_ar+'</div>'+
-      '<div class="card-transport">'+
-        (u.transport&&u.transport.includes('باص')?'🚌':'✈️')+' '+(u.transport||'طيران')+
+      '<div style="display:flex;align-items:center;gap:6px;margin-top:4px">'+
+        '<span class="card-transport">'+
+          (u.transport&&u.transport.includes('باص')?'🚌':'✈️')+' '+(u.transport||'طيران')+
+        '</span>'+
+        rjBadge+
       '</div>'+
+      (starsHtml||u.meal_plan||distTxt?'<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:6px">'+
+        (starsHtml?'<span style="font-size:10px;border-radius:4px;padding:2px 7px;background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.3);font-weight:600">'+starsHtml+'</span>':'')+
+        mealBadge+
+        (distTxt?'<span style="font-size:9px;border-radius:4px;padding:2px 7px;background:rgba(96,165,250,.08);color:var(--blue);border:1px solid rgba(96,165,250,.3)">📍 '+distTxt+'</span>':'')+
+      '</div>':'')+
     '</div>'+
     '<div class="hotels-section">'+
-      '<div class="hotels-label">الفنادق</div>'+
-      (u.hotel_mecca?'<div class="hotel-row"><span class="hotel-icon">🕋</span><div class="hotel-info"><div class="hotel-name">'+u.hotel_mecca+'</div><div class="hotel-nights">مكة المكرمة — '+(u.nights_mecca||0)+' ليالي</div></div></div>':'')+
-      (u.hotel_medina?'<div class="hotel-row"><span class="hotel-icon">🌿</span><div class="hotel-info"><div class="hotel-name">'+u.hotel_medina+'</div><div class="hotel-nights">المدينة المنورة — '+(u.nights_medina||0)+' ليالي</div></div></div>':'')+
+      '<div class="hotels-label">'+(isEn?'Hotels':'الفنادق')+'</div>'+
+      (u.hotel_mecca?'<div class="hotel-row"><span class="hotel-icon">🕋</span><div class="hotel-info"><div class="hotel-name">'+u.hotel_mecca+'</div><div class="hotel-nights">'+(isEn?'Makkah — ':'مكة المكرمة — ')+(u.nights_mecca||0)+(isEn?' nights':' ليالي')+'</div></div></div>':'')+
+      (u.hotel_medina?'<div class="hotel-row"><span class="hotel-icon">🌿</span><div class="hotel-info"><div class="hotel-name">'+u.hotel_medina+'</div><div class="hotel-nights">'+(isEn?'Madinah — ':'المدينة المنورة — ')+(u.nights_medina||0)+(isEn?' nights':' ليالي')+'</div></div></div>':'')+
     '</div>'+
-    (includes.length?'<div class="includes-section"><div class="includes-label">الباقة تشمل</div><div class="includes-list">'+includes.map(i=>'<span class="inc-tag">✅ '+i.trim()+'</span>').join('')+'</div></div>':'')+
+    (hasPrices?'<div class="price-grid">'+
+      '<div class="price-cell pc-sgl"><div class="pc-type">👤 '+(isEn?'Single':'مفرد')+'</div><div class="pc-base">'+sglPrice+' JD</div><div class="pc-total" data-jod="'+sglPrice+'">'+lcPrice(sglPrice)+'</div><div class="pc-label">'+(isEn?'per person':'للشخص')+'</div></div>'+
+      '<div class="price-cell pc-dbl"><div class="pc-type">👥 '+(isEn?'Double':'ثنائي')+'</div><div class="pc-base">'+dblPrice+' JD</div><div class="pc-total" data-jod="'+dblPrice+'">'+lcPrice(dblPrice)+'</div><div class="pc-label">'+(isEn?'per person':'للشخص')+'</div></div>'+
+      '<div class="price-cell pc-tpl"><div class="pc-type">👥👤 '+(isEn?'Triple':'ثلاثي')+'</div><div class="pc-base">'+(tplPrice||'—')+'</div><div class="pc-total" data-jod="'+(tplPrice||0)+'">'+(tplPrice?lcPrice(tplPrice):'—')+'</div><div class="pc-label">'+(isEn?'per person':'للشخص')+'</div></div>'+
+      '<div class="price-cell pc-qad"><div class="pc-type">👨‍👩‍👧‍👦 '+(isEn?'Quad':'رباعي')+'</div><div class="pc-base">'+(qadPrice||'—')+'</div><div class="pc-total" data-jod="'+(qadPrice||0)+'">'+(qadPrice?lcPrice(qadPrice):'—')+'</div><div class="pc-label">'+(isEn?'per person':'للشخص')+'</div></div>'+
+    '</div>':'')+
+    (infPrice?'<div class="infant-row"><div class="infant-label">👶 '+(isEn?'Infant (&lt;2 yrs) — fixed':'سعر الرضيع (أقل من سنتين) — ثابت')+'</div><div class="infant-price" data-jod="'+infPrice+'">'+lcPrice(infPrice)+'</div></div>':'')+
+    (dblPrice?'<div class="breakdown"><div>✈️ '+(isEn?'Incl. flight + visa + hotel + transport':'يشمل: طيران + فيزا + إقامة + مواصلات')+': <b>'+dblPrice+' JD</b> ('+(isEn?'double/person':'ثنائي/شخص')+')</div></div>':'')+
+    (includes.length?'<div class="includes-section"><div class="includes-label">'+(isEn?'Includes':'الباقة تشمل')+'</div><div class="includes-list">'+includes.map(i=>'<span class="inc-tag">✅ '+i.trim()+'</span>').join('')+'</div></div>':'')+
     '<div class="price-section">'+
-      '<div class="price-row">'+
-        '<div>'+
-          '<div class="price-label">'+(u.room_type||'مزدوجة')+' — '+totalNights+' ليالي</div>'+
-          '<div class="price-main"><span class="price-num" data-jod="'+(u.price_jod||0)+'">'+lcPrice(u.price_jod||0)+'</span><span class="price-cur" data-curr-sym>'+LC.symbols[LC.curr]+'</span></div>'+
-          '<div class="room-info">للشخص الواحد</div>'+
-        '</div>'+
-      '</div>'+
-      '<button onclick="openBooking({type:\'umrah\',name:\''+u.title_ar+'\',destination:\'مكة المكرمة والمدينة المنورة\',nights:\''+(u.nights_mecca+u.nights_medina)+'\',price:\''+(u.price_jod||'')+'\',includes:\''+(u.includes||'').replace(/\'/g,'')+'\'})" class="wa-btn">'+WA_SVG+' احجز الآن</button>'+
+      '<button onclick="openBooking({type:\'umrah\',name:\''+u.title_ar.replace(/'/g,'')+'\',destination:\''+(isEn?'Makkah & Madinah':'مكة المكرمة والمدينة المنورة')+'\',nights:\''+totalNights+'\',price:\''+dblPrice+'\',includes:\''+(u.includes||'').replace(/'/g,'')+'\'})" class="wa-btn">'+WA_SVG+' '+(isEn?'Book Now':'احجز الآن')+'</button>'+
       '<div class="pj-no-print" style="display:flex;gap:5px;margin-top:8px">'+
-        '<button data-pj-card="print" style="flex:1;padding:5px;border:1px solid var(--border);border-radius:6px;background:var(--dark3);color:var(--muted);font-family:Cairo,sans-serif;font-size:10px;font-weight:600;cursor:pointer;transition:all .2s">🖨️ طباعة</button>'+
+        '<button data-pj-card="print" style="flex:1;padding:5px;border:1px solid var(--border);border-radius:6px;background:var(--dark3);color:var(--muted);font-family:Cairo,sans-serif;font-size:10px;font-weight:600;cursor:pointer;transition:all .2s">🖨️ '+(isEn?'Print':'طباعة')+'</button>'+
         '<button data-pj-card="pdf" style="flex:1;padding:5px;border:1px solid var(--border);border-radius:6px;background:var(--dark3);color:var(--muted);font-family:Cairo,sans-serif;font-size:10px;font-weight:600;cursor:pointer;transition:all .2s">📄 PDF</button>'+
       '</div>'+
     '</div>'+
   '</div>';
 }
 
+// ===== TRANSPORT TOOL =====
+const UT_JOD_SAR=5.15,UT_USD_SAR=3.75;
+let UT_VEHICLES=[],UT_ROUTES=[],UT_PRICES={},UT_SETTINGS=null;
+let utCart=[],utPax=2,utOC='JOD',utLang='ar',utPM='fixed',utDmPending=null;
+function utToSAR(a,c){return c==='SAR'?a:c==='JOD'?a*UT_JOD_SAR:a*UT_USD_SAR;}
+function utFmt(s){var v=Math.round(utFC(s)*10)/10;return utOC==='SAR'?'SAR '+utFN(v):utOC==='USD'?'$'+utFN(v):'JD '+utFN(v);}
+function utFC(s){return utOC==='SAR'?s:utOC==='JOD'?s/UT_JOD_SAR:s/UT_USD_SAR;}
+function utFN(v){return(v%1===0)?v.toLocaleString():v.toLocaleString(undefined,{minimumFractionDigits:1,maximumFractionDigits:1});}
+function utGetProfit(base){var fv=parseFloat(document.getElementById('ut-fxv')?.value)||0;var fc=document.getElementById('ut-fxc')?.value||'JOD';var pv=parseFloat(document.getElementById('ut-pcv')?.value)||0;var p=0;if(utPM==='fixed'||utPM==='both')p+=utToSAR(fv,fc);if(utPM==='pct'||utPM==='both')p+=base*(pv/100);return p;}
+function utCartKey(rid,cid){return rid+'__'+cid;}
+function utFindCart(rid,cid){for(var i=0;i<utCart.length;i++){if(utCart[i].rid===rid&&utCart[i].cid===cid)return i;}return -1;}
+function utIsCart(rid,cid){return utFindCart(rid,cid)>=0;}
+function utUpdBadge(){document.getElementById('ut-cnt').textContent=utCart.length;}
+function utSetPax(n,btn){utPax=n;document.querySelectorAll('.ut-pxbtn').forEach(function(b){b.classList.toggle('on',parseInt(b.textContent)===n);});utRenderAll();}
+function utSetPM(m,btn){utPM=m;document.querySelectorAll('.ut-ptg button').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');var f=document.getElementById('ut-fxf');if(f)f.style.display=(m==='fixed'||m==='both')?'flex':'none';var p=document.getElementById('ut-pcf');if(p)p.style.display=(m==='pct'||m==='both')?'flex':'none';utRenderAll();}
+function utSetOC(c,btn){utOC=c;document.querySelectorAll('.ut-ctg button').forEach(function(b){b.classList.remove('on');});if(btn)btn.classList.add('on');utRenderAll();}
+
+async function renderCarTransport(){
+  const grid=document.getElementById('umrah-fullzone');
+  try{
+    const [veh,rt,pr,cfg]=await Promise.all([
+      fetch(SB_URL+'/rest/v1/umrah_transport_vehicles?order=sort_order',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}).then(r=>r.json()),
+      fetch(SB_URL+'/rest/v1/umrah_transport_routes?order=sort_order',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}).then(r=>r.json()),
+      fetch(SB_URL+'/rest/v1/umrah_transport_prices?select=*',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}).then(r=>r.json()),
+      fetch(SB_URL+'/rest/v1/umrah_transport_settings?id=eq.1&limit=1',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}).then(r=>r.json())
+    ]);
+    UT_VEHICLES=veh||[];UT_ROUTES=rt||[];UT_SETTINGS=(cfg&&cfg.length)?cfg[0]:null;
+    UT_PRICES={};(pr||[]).forEach(function(p){UT_PRICES[p.route_id+'_'+p.vehicle_id]=p.price_sar;});
+  }catch(e){grid.innerHTML='<div class="empty-state">⚠️ تعذر تحميل بيانات المواصلات</div>';return;}
+  if(!UT_ROUTES.length||!UT_VEHICLES.length){grid.innerHTML='<div class="empty-state">⚠️ لا توجد بيانات مواصلات بعد</div>';return;}
+  // HTML
+  var isEn=document.documentElement.lang==='ar';
+  grid.innerHTML='<div class="ut-wrap">'+
+    '<div class="ut-hdr"><div><h3>'+(isEn?'🚗 مواصلات عمرة خاصة':'🚗 Private Umrah Transportation')+'</h3><div class="sub">'+(isEn?'اختر المسار والمركبة واحسب التكلفة':'Select route, vehicle, and calculate cost')+'</div></div>'+
+    '<div style="display:flex;gap:4px"><button class="ut-pxbtn on" onclick="utSetLang(1,this)" id="ut-bl-ar" style="background:var(--gold);color:#fff;border-color:var(--gold)">AR</button><button class="ut-pxbtn" onclick="utSetLang(0,this)" id="ut-bl-en">EN</button></div></div>'+
+    '<div class="ut-bar"><div class="ut-bar-group"><span class="ut-bar-label">👥 '+(isEn?'عدد المسافرين':'Passengers')+'</span>'+
+    [1,2,3,4,5,6,7,8,9].map(function(n){return '<button class="ut-pxbtn'+(n===2?' on':'')+'" onclick="utSetPax('+n+',this)">'+n+'</button>';}).join('')+
+    '</div><div class="ut-bar-div"></div>'+
+    '<div class="ut-bar-group"><span class="ut-bar-label">'+(isEn?'الربح':'Profit')+'</span>'+
+    '<div class="ut-ptg" style="display:flex;border:1px solid var(--border);border-radius:5px;overflow:hidden">'+
+    '<button class="on" onclick="utSetPM(\'fixed\',this)" style="padding:3px 8px;font-size:10px;font-weight:700;border:none;background:var(--card);color:var(--muted);cursor:pointer;font-family:inherit">Fixed</button>'+
+    '<button onclick="utSetPM(\'pct\',this)" style="padding:3px 8px;font-size:10px;font-weight:700;border:none;background:var(--card);color:var(--muted);cursor:pointer;font-family:inherit">%</button>'+
+    '<button onclick="utSetPM(\'both\',this)" style="padding:3px 8px;font-size:10px;font-weight:700;border:none;background:var(--card);color:var(--muted);cursor:pointer;font-family:inherit">Both</button></div>'+
+    '<div id="ut-fxf" style="display:flex;align-items:center;gap:3px"><input class="ut-ci2" id="ut-fxv" type="number" value="0" onchange="utRenderAll()"><select class="ut-cs" id="ut-fxc" onchange="utRenderAll()"><option>JOD</option><option>USD</option><option>SAR</option></select></div>'+
+    '<div id="ut-pcf" style="display:none;align-items:center;gap:3px"><input class="ut-ci2" id="ut-pcv" type="number" value="0" onchange="utRenderAll()" style="width:50px"><span style="font-size:10px;color:var(--muted)">%</span></div></div>'+
+    '<div class="ut-bar-div"></div>'+
+    '<div class="ut-bar-group"><span class="ut-bar-label">'+(isEn?'العملة':'Currency')+'</span>'+
+    '<div class="ut-ctg" style="display:flex;border:1px solid var(--border);border-radius:5px;overflow:hidden">'+
+    '<button class="on" onclick="utSetOC(\'JOD\',this)" style="padding:3px 8px;font-size:10px;font-weight:700;border:none;background:var(--card);color:var(--muted);cursor:pointer;font-family:inherit">JOD</button>'+
+    '<button onclick="utSetOC(\'USD\',this)" style="padding:3px 8px;font-size:10px;font-weight:700;border:none;background:var(--card);color:var(--muted);cursor:pointer;font-family:inherit">USD</button>'+
+    '<button onclick="utSetOC(\'SAR\',this)" style="padding:3px 8px;font-size:10px;font-weight:700;border:none;background:var(--card);color:var(--muted);cursor:pointer;font-family:inherit">SAR</button></div></div></div>'+
+    '<div class="ut-cart-bar"><button class="ut-cart-big" onclick="utOpenCart()"><div style="font-size:16px">🛒</div><div class="ut-cart-count" id="ut-cnt">0</div></button>'+
+    '<div class="ut-cart-hint">'+(isEn?'اضغط على أي مركبة متاحة، اختر الاتجاه وعدد الركعات، ثم أضف للسلة':'Click an available vehicle, choose direction & legs, then add to cart')+'</div></div>'+
+    '<div id="ut-mainGrid" style="padding:8px 10px"></div></div>';
+  utRenderAll();
+}
+
+function utRenderAll(){
+  var g=document.getElementById('ut-mainGrid');if(!g)return;
+  var pax=utPax,isEn=utLang===0;
+  var h='';
+  for(var ri=0;ri<UT_ROUTES.length;ri++){
+    var rt=UT_ROUTES[ri];var ch='';
+    for(var ci=0;ci<UT_VEHICLES.length;ci++){
+      var car=UT_VEHICLES[ci];
+      var csar=UT_PRICES[rt.id+'_'+car.id]||0;
+      var av=pax<=car.adj_capacity;
+      var base=av?(csar/pax):0;
+      var profit=av?utGetProfit(base):0;
+      var ppax=base+profit;
+      var ptot=ppax*pax;
+      var ic=utIsCart(rt.id,car.id);
+      ch+='<div class="ut-ccard'+(av?'':' unav')+(ic?' incart':'')+'">';
+      ch+='<div class="ut-cico">'+(car.icon||'🚗')+'</div>';
+      ch+='<div class="ut-cnm">'+(isEn?car.name_ar:car.name_en)+'</div>';
+      ch+='<div class="ut-cnar">'+(isEn?car.name_en:car.name_ar)+'</div>';
+      ch+='<div class="ut-chips"><span class="ut-chip ut-chip-o">'+car.orig_capacity+'</span><span class="ut-chip ut-chip-a">✓ '+car.adj_capacity+'</span></div>';
+      ch+='<div class="ut-pricebox"><div style="font-size:10px;color:var(--muted)">SAR '+csar+' ÷ '+pax+'</div>';
+      if(av){
+        ch+='<div class="ut-ppax">'+utFmt(ppax)+'</div><div class="ut-ppaxlbl">'+(isEn?'للشخص':'/person')+'</div>';
+        ch+='<div class="ut-ptot"><div class="ut-ptotv">'+utFmt(ptot)+'</div><div class="ut-ptotl">'+(isEn?'إجمالي '+pax:'total '+pax)+'</div></div>';
+        if(ic){
+          ch+='<div class="ut-inbdg">✓ '+(isEn?'في السلة':'in cart')+'</div>';
+          ch+='<button class="ut-acbtn" onclick="utOpenDir(\''+rt.id+'\','+ci+')">✏️ '+(isEn?'تعديل':'Edit')+'</button>';
+          ch+='<button class="ut-acbtn rm" onclick="utRemoveCart(\''+rt.id+'\',\''+car.id+'\')">✕ '+(isEn?'حذف':'Remove')+'</button>';
+        } else {
+          ch+='<button class="ut-acbtn" onclick="utOpenDir(\''+rt.id+'\','+ci+')">🛒 '+(isEn?'أضف للسلة':'Add to Cart')+'</button>';
+        }
+      } else {
+        ch+='<div class="ut-unavbox">⛔ '+(isEn?'غير متاحة':'Unavailable')+'</div>';
+      }
+      ch+='</div>';ch+='</div>';
+    }
+    h+='<div class="ut-rsec"><div class="ut-rhdr"><span class="ut-rico">'+rt.icon+'</span><div><div class="ut-ren">'+(isEn?rt.name_ar:rt.name_en)+'</div><div class="ut-rar">'+(isEn?rt.name_en:rt.name_ar)+'</div></div></div><div class="ut-cgrid">'+ch+'</div></div>';
+  }
+  g.innerHTML=h;utUpdBadge();
+}
+
+function utSetLang(l,btn){utLang=l;document.querySelectorAll('#ut-bl-ar,#ut-bl-en').forEach(function(b){b.style.background='var(--card)';b.style.color='var(--muted)';b.style.borderColor='var(--border)';});if(btn){btn.style.background='var(--gold)';btn.style.color='#fff';btn.style.borderColor='var(--gold)';}utRenderAll();}
+function utOpenDir(rid,ci){
+  var pax=utPax,rt=UT_ROUTES.find(function(r){return r.id===rid;}),car=UT_VEHICLES[ci];
+  var csar=UT_PRICES[rt.id+'_'+car.id]||0,base=csar/pax,profit=utGetProfit(base),ppax=base+profit,ptot=ppax*pax;
+  var existing=utFindCart(rid,car.id);var prevDir=existing>=0?utCart[existing].dir:0;
+  utDmPending={rid:rid,ci:ci,csar:csar,ppax:ppax,ptot:ptot,pax:pax,dirSel:prevDir||0};
+  document.getElementById('ut-dmTitle').textContent=utLang===0?rt.name_ar:rt.name_en;
+  document.getElementById('ut-dmSub').textContent=(utLang===0?car.name_ar:car.name_en)+' • '+pax+' '+(utLang===0?'مسافر':'passenger')+(pax>1?'s':'')+' • SAR '+csar;
+  document.getElementById('ut-d1p').textContent=utFmt(ppax)+' / '+(utLang===0?'شخص':'pax')+' = '+utFmt(ptot);
+  document.getElementById('ut-d2p').textContent=utFmt(ppax*2)+' / '+(utLang===0?'شخص':'pax')+' = '+utFmt(ptot*2)+' (x2)';
+  utSelDir(prevDir||1);document.getElementById('ut-dirModal').classList.add('open');
+}
+function utSelDir(d){if(!utDmPending)return;utDmPending.dirSel=d;document.getElementById('ut-d1').classList.toggle('sel',d===1);document.getElementById('ut-d2').classList.toggle('sel',d===2);document.getElementById('ut-dmConfirm').disabled=false;}
+function utCloseDir(){document.getElementById('ut-dirModal').classList.remove('open');utDmPending=null;}
+function utConfirmDir(){
+  if(!utDmPending||!utDmPending.dirSel)return;var p=utDmPending;
+  var rt=UT_ROUTES.find(function(r){return r.id===p.rid;}),car=UT_VEHICLES[p.ci];
+  var mult=p.dirSel===2?2:1;
+  var entry={rid:p.rid,cid:car.id,dir:p.dirSel,ren:utLang===0?rt.name_ar:rt.name_en,rar:utLang===0?rt.name_en:rt.name_ar,rico:rt.icon,cen:utLang===0?car.name_ar:car.name_en,cico:car.icon||'🚗',csar:p.csar,pax:p.pax,ppax:p.ppax,ptot:p.ptot,ppaxFinal:p.ppax*mult,ptotFinal:p.ptot*mult};
+  var idx=utFindCart(p.rid,car.id);
+  if(idx>=0){utCart[idx]=entry;}else{utCart.push(entry);}
+  utCloseDir();utRenderAll();utUpdBadge();
+}
+function utRemoveCart(rid,cid){utCart=utCart.filter(function(x){return!(x.rid===rid&&x.cid===cid);});utRenderAll();if(document.getElementById('ut-cartDrw')?.classList.contains('open'))utRenderCart();}
+function utOpenCart(){utRenderCart();document.getElementById('ut-cartDrw').classList.add('open');document.getElementById('ut-cartOv').classList.add('open');document.body.style.overflow='hidden';}
+function utCloseCart(){document.getElementById('ut-cartDrw').classList.remove('open');document.getElementById('ut-cartOv').classList.remove('open');document.body.style.overflow='';}
+function utGetRecalc(){return utCart.map(function(item){var base=item.csar/utPax,profit=utGetProfit(base),ppax=base+profit,ptot=ppax*utPax,mult=item.dir===2?2:1;return Object.assign({},item,{pax:utPax,ppax:ppax,ptot:ptot,ppaxFinal:ppax*mult,ptotFinal:ptot*mult});});}
+function utRenderCart(){
+  document.getElementById('ut-cartPbar').innerHTML='👥 '+utPax+' '+(utLang===0?'مسافر':'Passenger')+(utPax>1?'s':'')+' | '+utCart.length+' '+(utLang===0?'مسار':'route')+(utCart.length!==1?'s':'');
+  var body=document.getElementById('ut-cartBody');
+  if(!utCart.length){body.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)"><div style="font-size:40px;margin-bottom:10px">🛒</div><p>'+(utLang===0?'السلة فارغة':'Cart is empty')+'</p></div>';document.getElementById('ut-cartFtr').innerHTML='';return;}
+  var recalc=utGetRecalc();var gp=0,gt=0;
+  var bh='';for(var i=0;i<recalc.length;i++){var it=recalc[i];gp+=it.ppaxFinal;gt+=it.ptotFinal;
+    bh+='<div class="ut-citem"><div style="display:flex;align-items:center;gap:6px;margin-bottom:4px"><span>'+it.rico+'</span><span style="flex:1;font-size:12px;font-weight:700">'+it.ren+'</span><span style="font-size:12px;font-weight:800;color:var(--gold)">'+utFmt(it.ppaxFinal)+'</span></div>'+
+    '<div style="font-size:10px;color:var(--muted)">'+it.cico+' '+it.cen+' | SAR '+it.csar+' | '+(it.dir===2?'Return (x2)':'One-Way')+'</div>'+
+    '<div style="display:flex;gap:4px;margin-top:4px"><button class="ut-acbtn" onclick="utOpenDir(\''+it.rid+'\','+UT_VEHICLES.findIndex(function(c){return c.id===it.cid;})+')">✏️</button><button class="ut-acbtn rm" onclick="utRemoveCart(\''+it.rid+'\',\''+it.cid+'\')">✕</button></div></div>';}
+  body.innerHTML=bh;
+  var fh='<div class="ut-csum"><div class="ut-csum-row grand"><span>'+(utLang===0?'المجموع للشخص':'Total/person')+'</span><span>'+utFmt(gp)+'</span></div><div class="ut-csum-row gtotal"><span>🎯 '+(utLang===0?'المجموع النهائي':'GRAND TOTAL')+' ('+utPax+' '+(utLang===0?'مسافر':'pax')+')</span><span>'+utFmt(gt)+'</span></div></div>'+
+    '<button class="ut-book-btn" onclick="utOpenBook()">📲 '+(utLang===0?'احجز عبر واتساب':'Book via WhatsApp')+'</button>'+
+    '<div style="display:flex;gap:6px;margin-top:6px"><button class="ut-mcancel" onclick="utCart=[];utRenderAll();utRenderCart();utUpdBadge()">🗑️ '+(utLang===0?'حذف الكل':'Clear')+'</button><button class="ut-mcancel" onclick="utPrintCart()">🖨️ '+(utLang===0?'طباعة':'Print')+'</button></div>';
+  document.getElementById('ut-cartFtr').innerHTML=fh;
+}
+function utOpenBook(){
+  if(!utCart.length)return;var recalc=utGetRecalc();var gp=0,gt=0;
+  recalc.forEach(function(it){gp+=it.ppaxFinal;gt+=it.ptotFinal;});
+  var sh='<div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px">📋 '+(utLang===0?'ملخص الرحلة':'Trip Summary')+'</div>';
+  for(var i=0;i<recalc.length;i++){var it=recalc[i];sh+='<div style="display:flex;justify-content:space-between;font-size:11px;padding:2px 0">'+
+    '<span>'+it.rico+' '+it.ren+(it.dir===2?' (x2)':'')+'</span><span style="font-weight:700;color:var(--gold)">'+utFmt(it.ppaxFinal)+'</span></div>';}
+  sh+='<div style="display:flex;justify-content:space-between;font-size:14px;font-weight:800;color:var(--green);padding-top:5px;border-top:1px solid var(--border);margin-top:4px"><span>🎯 '+(utLang===0?'المجموع النهائي':'GRAND TOTAL')+' ('+utPax+')</span><span>'+utFmt(gt)+'</span></div>';
+  document.getElementById('ut-bookSum').innerHTML=sh;
+  document.getElementById('ut-bookModal').classList.add('open');
+}
+function utCloseBook(){document.getElementById('ut-bookModal').classList.remove('open');}
+function utSendWA(){
+  var name=document.getElementById('ut-bname').value.trim();
+  var phone=document.getElementById('ut-bphone').value.trim();
+  var wa=document.getElementById('ut-bwa').value.trim()||phone;
+  var date=document.getElementById('ut-bdate').value;
+  var notes=document.getElementById('ut-bnotes').value.trim();
+  if(!name||!phone){alert('Please enter your name and phone.');return;}
+  var recalc=utGetRecalc();var gp=0,gt=0;recalc.forEach(function(it){gp+=it.ppaxFinal;gt+=it.ptotFinal;});
+  var msg='*Umrah Transportation Booking*\n*Al Jude Travel*\n'+'─'.repeat(20)+'\n*Name:* '+name+'\n*Phone:* '+phone+'\n'+(wa&&wa!==phone?'*WA:* '+wa+'\n':'')+(date?'*Date:* '+date+'\n':'')+'*Pax:* '+utPax+'\n*Currency:* '+utOC+'\n'+'─'.repeat(20)+'\n*ROUTES:*\n';
+  for(var i=0;i<recalc.length;i++){var it=recalc[i];msg+='• '+it.ren+(it.dir===2?' (Return x2)':' (One-Way)')+'\n  '+it.cen+' | SAR '+it.csar+'/car | '+utFmt(it.ppaxFinal)+'/pax | Total: '+utFmt(it.ptotFinal)+'\n';}
+  msg+='─'.repeat(20)+'\n*Total/person:* '+utFmt(gp)+'\n*GRAND TOTAL ('+utPax+' pax):* '+utFmt(gt)+'\n'+(notes?'*Notes:* '+notes:'');
+  window.open('https://wa.me/'+(UT_SETTINGS?.whatsapp_number||'962777066005')+'?text='+encodeURIComponent(msg),'_blank');
+}
+function utPrintCart(){
+  if(!utCart.length)return;var recalc=utGetRecalc();var gp=0,gt=0;recalc.forEach(function(x){gp+=x.ppaxFinal;gt+=x.ptotFinal;});
+  var w=window.open('','_blank');w.document.write('<html><head><title>Transport Summary</title><style>body{font-family:sans-serif;padding:20px}table{width:100%;border-collapse:collapse}th,td{padding:6px 8px;border:1px solid #ccc;text-align:left}h2{color:#1B4F72}.gt{background:#1B4F72;color:#fff;padding:8px 12px;margin-top:10px}</style></head><body>');
+  w.document.write('<h2>Transportation Booking Summary</h2><p>Al Jude Travel | '+utPax+' pax | '+utOC+'</p><table><thead><tr><th>#</th><th>Route</th><th>Vehicle</th><th>Dir</th><th>SAR</th><th>/pax</th><th>Total</th></tr></thead><tbody>');
+  for(var i=0;i<recalc.length;i++){var it=recalc[i];w.document.write('<tr><td>'+(i+1)+'</td><td>'+it.ren+'</td><td>'+it.cen+'</td><td>'+(it.dir===2?'Return':'One-Way')+'</td><td>'+it.csar+'</td><td>'+utFmt(it.ppaxFinal)+'</td><td>'+utFmt(it.ptotFinal)+'</td></tr>');}
+  w.document.write('</tbody></table><div class="gt"><strong>GRAND TOTAL ('+utPax+' pax):</strong> '+utFmt(gt)+'</div></body></html>');
+  w.document.close();setTimeout(function(){w.print();},500);
+}
+
+// ===== PACKAGE BUILDER =====
+const PB_JOD_SAR=5.15,PB_USD_SAR=3.75;
+let PB_MK=[],PB_MD=[],PB_PERIODS={},PB_SETTINGS=null;
+let pbCart=[],pbPax=1,pbRoom='double',pbType='mk',pbNights=3;
+const PB_MK_TIERS={ultra:'فاخر جداً 5★',luxury:'فاخر 5★',midscale:'متوسط راقٍ 4-5★',budget:'اقتصادي 3-4★'};
+const PB_MD_TIERS={luxury:'فاخر 5★',midscale:'متوسط راقٍ 4-5★',upper3:'مركزي 3-4★',economy:'اقتصادي 3★'};
+let pbState={}; // hotel_id -> {nights, pi, we}
+
+function pbGetPax(){return pbPax;}
+function pbRoomKey(){var m={double:'double',triple:'triple',quad:'quad'};return m[pbRoom]||'double';}
+function pbGetHotel(hid,arr){for(var i=0;i<arr.length;i++){if(arr[i].id===hid)return arr[i];}return null;}
+function pbGetMdOpts(){return PB_MD.map(function(h){return '<option value="'+h.id+'">'+h.name_ar+' ('+h.stars+'★)</option>';}).join('');}
+function pbMkRoom(hotel,pi,we){var p=hotel.periods[Math.min(pi,hotel.periods.length-1)];return we?p.we:p.wd;}
+function pbMdRoom(hotel,pi){var p=hotel.periods[Math.min(pi,hotel.periods.length-1)];return p[pbRoomKey()]||p.double||0;}
+function pbFormat(v){return 'JD '+(Math.round(v)||0);}
+function pbFormatSAR(v){return 'SAR '+(Math.round(v)||0);}
+
+/* ===== BUILD YOUR OWN UMRAH ===== */
+var byoCart=[];
+var byoSel={mk:null,md:null,visa:0,tktr:{},tr:[]};
+var byoPax=1;
+var byoUnit='sar';
+var byoRoom='double';
+var byoTab='mk';
+var byoMkNights=4;
+var byoMdNights=3;
+var byoPbar='';
+var BYO_SETTINGS=null;
+
+function byoRoomCapacity(rt){
+  if(rt===undefined)rt=byoRoom;
+  return rt==='single'?1:rt==='double'?2:rt==='triple'?3:4;
+}
+function byoPeriodKey(rt){
+  if(rt===undefined)rt=byoRoom;
+  if(rt==='single'||rt==='double')return 'double_rate';
+  return rt==='triple'?'triple_rate':'quad_rate';
+}
+function byoHotelRate(h){
+  if(!h)return 0;
+  if(byoRoom==='single'||byoRoom==='double')return h.room_double||0;
+  if(byoRoom==='triple')return h.room_triple||0;
+  return h.room_quad||0;
+}
+
+function byoMkRoom(h,pi,we){
+  if(!h)return 0;
+  if(!h.periods||!h.periods[pi])return byoHotelRate(h);
+  var p=h.periods[pi],rk=byoPeriodKey();
+  if(p[rk]>0)return p[rk];
+  if(we&&p.we>0)return p.we;
+  if(p.wd>0)return p.wd;
+  return byoHotelRate(h);
+}
+
+function byoMdRoom(h,pi){
+  if(!h)return 0;
+  if(!h.periods||!h.periods[pi])return byoHotelRate(h);
+  var p=h.periods[pi],rk=byoPeriodKey();
+  if(p[rk]>0)return p[rk];
+  if(p.wd>0)return p.wd;
+  return byoHotelRate(h);
+}
+
+function byoGetProfit(){
+  if(!BYO_SETTINGS)return 0;
+  var pm=BYO_SETTINGS.profit_mode||'pct',pf=BYO_SETTINGS.profit_fixed_amount||0,pfc=BYO_SETTINGS.profit_fixed_currency||'JOD',pp=BYO_SETTINGS.profit_pct||10;
+  var p=0,jr=BYO_SETTINGS.jod_to_sar||5.15,ur=BYO_SETTINGS.usd_to_sar||3.75;
+  if(pm==='fixed'||pm==='both')p+=pfc==='SAR'?pf:pfc==='USD'?pf*ur:pf*jr;
+  if(pm==='pct'||pm==='both')p+=0;
+  return p;
+}
+
+function byoGetPct(){
+  if(!BYO_SETTINGS)return 10;
+  var pm=BYO_SETTINGS.profit_mode||'pct',pp=BYO_SETTINGS.profit_pct||10;
+  if(pm==='pct'||pm==='both')return pp;
+  return 0;
+}
+
+function byoApplyProfit(baseSAR){
+  var pm=BYO_SETTINGS?.profit_mode||'pct',pf=BYO_SETTINGS?.profit_fixed_amount||0,pfc=BYO_SETTINGS?.profit_fixed_currency||'JOD',pp=BYO_SETTINGS?.profit_pct||10;
+  var jr=BYO_SETTINGS?.jod_to_sar||5.15,ur=BYO_SETTINGS?.usd_to_sar||3.75;
+  var fx=0;
+  if(pm==='fixed'||pm==='both')fx+=pfc==='SAR'?pf:pfc==='USD'?pf*ur:pf*jr;
+  if(pm==='pct'||pm==='both')fx+=baseSAR*(pp/100);
+  return fx;
+}
+
+function byoCur(r){
+  return Math.round(r);
+}
+
+/* Format SAR with optional JOD */
+function byoFmt(v){
+  var jod=BYO_SETTINGS?.jod_to_sar||5.15;
+  var usd=BYO_SETTINGS?.usd_to_sar||3.75;
+  if(byoUnit==='jod')return 'JOD '+(v/jod).toFixed(2);
+  if(byoUnit==='usd')return 'USD '+(v/usd).toFixed(2);
+  return 'SAR '+byoCur(v).toLocaleString();
+}
+
+function byoFmtJD(v){
+  return 'JD '+Math.round(v).toLocaleString();
+}
+
+function byoStr(val){
+  if(val===null||val===undefined)return '';
+  return String(val);
+}
+
+/* ===== RENDER CUSTOM BUILDER ===== */
+function renderCustomBuilder(){
+  var zone=document.getElementById('umrah-fullzone');
+  var isEn=0,ar=!isEn;
+  var pax=byoPax,rt=byoRoom;
+  var ex=BYO_SETTINGS?.jod_to_sar||5.15;
+  var visaAmt=BYO_SETTINGS?.visa_fee_amount||140;
+  var visaCur=BYO_SETTINGS?.visa_fee_currency||'JOD';
+  var ticketAmt=BYO_SETTINGS?.ticket_fare_amount||200,ticketCur=BYO_SETTINGS?.ticket_fare_currency||'USD';
+  var pm=BYO_SETTINGS?.profit_mode||'pct',pfAmt=BYO_SETTINGS?.profit_fixed_amount||0,pfCur=BYO_SETTINGS?.profit_fixed_currency||'JOD',pp=BYO_SETTINGS?.profit_pct||10;
+  var waNum=BYO_SETTINGS?.whatsapp_number||'962777066005';
+
+  /* Compute per-person visa and ticket in SAR */
+  var usdSar=BYO_SETTINGS?.usd_to_sar||3.75;
+  var visaSAR=visaCur==='JOD'?visaAmt*ex:visaCur==='USD'?visaAmt*usdSar:visaAmt;
+  var ticketSAR=ticketCur==='SAR'?ticketAmt:ticketCur==='JOD'?ticketAmt*ex:ticketAmt*usdSar;
+
+  var cartCnt=byoCart.length;
+  var mkSel=byoSel.mk,mdSel=byoSel.md,tr=byoSel.tr;
+
+  var rc=byoRoomCapacity();
+  var rmLabels={single:{ar:'فردي',en:'👤 Single '+rc},double:{ar:'مزدوجة',en:'👫 Double '+rc},triple:{ar:'ثلاثية',en:'👨‍👩‍👦 Triple '+rc},quad:{ar:'رباعية',en:'👨‍👩‍👧‍👦 Quad '+rc}};
+
+  var html='<div class="byo-wrap">';
+
+  /* HEADER */
+  html+='<div class="byo-hdr"><div><h3>🛠️ '+(ar?'بناء عمرتك':'Build Your Umrah')+'</h3><div class="sub">'+(ar?'اختر كل خدمة بشكل منفصل وابنِ باقتك المثالية':'Pick each service separately and build your perfect package')+'</div></div>'+
+    '<div><div class="byo-hbadge"><span class="byo-hbdg">🛏️ '+(rmLabels[rt]?rmLabels[rt].ar:rt)+' ('+rc+' '+(ar?'أشخاص':'pax')+')</span>'+
+    '<span class="byo-hbdg">👤 '+(ar?'إجمالي المسافرين':'Total Travelers')+' '+pax+'</span>'+
+    '<span class="byo-hbdg">💰 <span id="byo-hdTotal">'+byoFmt(0)+'</span></span></div></div></div>';
+
+  /* CONTROLS BAR */
+  html+='<div class="byo-controls">'+
+    '<div class="byo-cf"><span class="byo-cl">🛏️ '+(ar?'نوع الغرفة / الأشخاص':'Room / Persons')+'</span><div class="byo-cr">'+
+    '<div class="byo-ctg byo-ptg">'+
+    '<button'+(rt==='single'?' class="on"':'')+' onclick="byoRoom=\'single\';renderCustomBuilder()" title="Single 1 '+(ar?'شخص':'pax')+'">👤 1</button>'+
+    '<button'+(rt==='double'?' class="on"':'')+' onclick="byoRoom=\'double\';renderCustomBuilder()" title="Double 2 '+(ar?'شخص':'pax')+'">👫 2</button>'+
+    '<button'+(rt==='triple'?' class="on"':'')+' onclick="byoRoom=\'triple\';renderCustomBuilder()" title="Triple 3 '+(ar?'شخص':'pax')+'">👨‍👩‍👦 3</button>'+
+    '<button'+(rt==='quad'?' class="on"':'')+' onclick="byoRoom=\'quad\';renderCustomBuilder()" title="Quad 4 '+(ar?'شخص':'pax')+'">👨‍👩‍👧‍👦 4</button></div></div></div>'+
+    '<div class="byo-csep"></div>'+
+    '<div class="byo-cf"><span class="byo-cl">👤 '+(ar?'إجمالي المسافرين':'Total Travelers')+'</span><div class="byo-cr">'+
+    [1,2,3,4,5,6,7,8].map(function(n){return '<button class="ut-pxbtn'+(n===pax?' on':'')+'" onclick="byoPax='+n+';renderCustomBuilder()" style="min-width:28px">'+n+'</button>';}).join('')+'</div></div>'+
+    '<div class="byo-csep"></div>'+
+    '<div class="byo-cf"><span class="byo-cl">🌙 '+(ar?'ليالي مكة':'MK Nights')+'</span><select class="byo-csel" onchange="byoMkNights=parseInt(this.value);renderCustomBuilder()">'+
+    [2,3,4,5,6,7].map(function(n){return '<option value="'+n+'"'+(n===byoMkNights?' selected':'')+'>'+n+'N</option>';}).join('')+'</select></div>'+
+    '<div class="byo-csep"></div>'+
+    '<div class="byo-cf"><span class="byo-cl">🌙 '+(ar?'ليالي المدينة':'MD Nights')+'</span><select class="byo-csel" onchange="byoMdNights=parseInt(this.value);renderCustomBuilder()">'+
+    [1,2,3,4,5].map(function(n){return '<option value="'+n+'"'+(n===byoMdNights?' selected':'')+'>'+n+'N</option>';}).join('')+'</select></div>'+
+    '<div class="byo-csep"></div>'+
+    '<div class="byo-cf" style="flex-direction:row;align-items:center;gap:6px">'+
+    '<span class="byo-cl">💰 '+(ar?'العملة':'Currency')+'</span>'+
+    '<div class="byo-ctg">'+
+    '<button'+(byoUnit==='sar'?' class="on"':'')+' onclick="byoUnit=\'sar\';renderCustomBuilder()">SAR</button>'+
+    '<button'+(byoUnit==='jod'?' class="on"':'')+' onclick="byoUnit=\'jod\';renderCustomBuilder()">JOD</button>'+
+    '<button'+(byoUnit==='usd'?' class="on"':'')+' onclick="byoUnit=\'usd\';renderCustomBuilder()">USD</button></div></div>'+
+    '<div style="flex:1"></div>'+
+    '<button class="byo-cbigbtn" onclick="byoOpenCart()"><span class="byo-cbigico">🛒</span><span>'+(ar?'السلة':'Cart')+'</span><span class="byo-cbigcnt" id="byo-cBigCnt">'+cartCnt+'</span></button></div>';
+
+  /* STRIP — quick summary */
+  html+='<div class="byo-strip">'+
+    byoStripBox('🕋',mkSel?mkSel.name_ar:(ar?'اختر فندق':'Select Hotel'),!!mkSel)+
+    byoStripBox('🌿',mdSel?mdSel.name_ar:(ar?'اختر فندق (اختياري)':'Hotel (optional)'),!!mdSel)+
+    byoStripBox('🛂',byoSel.visa?(ar?'تمت الإضافة':'Added'):(ar?'أضف التأشيرة':'Add Visa'),!!byoSel.visa)+
+    byoStripBox('🚐',byoTrSummaryStr(),byoSel.tr&&byoSel.tr.length)+
+    byoStripBox('✈️',byoSel.tktr&&byoSel.tktr.sel?(ar?'تمت الإضافة':'Added'):(ar?'أضف التذكرة':'Add Ticket'),!!(byoSel.tktr&&byoSel.tktr.sel))+
+    '</div>';
+
+  /* TAB NAV */
+  html+='<div class="byo-nav">'+
+    byoTabBtn('mk','🕋',ar?'فندق مكة':'Makkah Hotel',mkSel?mkSel.name_ar:(ar?'اختر':'Select'),!!mkSel)+
+    byoTabBtn('md','🌿',ar?'فندق المدينة':'Madinah Hotel',mdSel?mdSel.name_ar:(ar?'اختياري':'Optional'),!!mdSel)+
+    byoTabBtn('vs','🛂',ar?'تأشيرة عمرة':'Umrah Visa',byoSel.visa?(ar?'تمت الإضافة':'Added'):(ar?'أضف':'Add'),!!byoSel.visa)+
+    byoTabBtn('tr','🚐',ar?'النقل':'Transport',tr&&tr.length?tr.length+(ar?' خدمة':' services'):(ar?'اختر':'Select'),!!(tr&&tr.length))+
+    byoTabBtn('tk','✈️',ar?'تذكرة طيران':'Flight Ticket',byoSel.tktr&&byoSel.tktr.sel?(ar?'تمت الإضافة':'Added'):(ar?'أضف':'Add'),!!(byoSel.tktr&&byoSel.tktr.sel))+
+    '</div>';
+
+  /* MAIN PANELS */
+  html+='<div class="byo-main">';
+  for(var pi=0;pi<5;pi++){
+    var pid=['mk','md','vs','tr','tk'][pi];
+    html+='<div class="byo-panel'+(byoTab===pid?' active':'')+'" id="byo-panel-'+pid+'">';
+    html+=byoRenderPanel(pid);
+    html+='</div>';
+  }
+  html+='</div></div>';
+
+  zone.innerHTML=html;
+  byoUpdateTotals();
+  byoUpdateCartBadge();
+}
+
+function byoStripBox(ico,label,ok){
+  var ar=!0;
+  return '<div class="byo-strip-box"><div class="byo-strip-lbl">'+ico+' '+(ar?'خدمة':'Service')+'</div><div class="byo-strip-row"><span style="font-size:12px;font-weight:700;color:'+(ok?'var(--green)':'var(--muted)')+'">'+(ok?'✓ ':'')+label+'</span></div></div>';
+}
+
+function byoTabBtn(id,ico,tit,sub,added){
+  var cls='byo-tab';
+  if(byoTab===id)cls+=' active';
+  if(id==='md'&&byoTab===id)cls+=' byo-tab-md';
+  if(id==='vs'&&byoTab===id)cls+=' byo-tab-vs';
+  if(id==='tr'&&byoTab===id)cls+=' byo-tab-tr';
+  if(id==='tk'&&byoTab===id)cls+=' byo-tab-tk';
+  if(added)cls+=' added';
+  return '<div class="'+cls+'" onclick="byoTab=\''+id+'\';renderCustomBuilder()"><div class="byo-check">✓</div><div class="byo-tab-ico">'+ico+'</div><div class="byo-tab-lbl">'+tit+'</div><div class="byo-tab-sub">'+sub+'</div></div>';
+}
+
+/* ===== RENDER INDIVIDUAL PANEL ===== */
+function byoRenderPanel(pid){
+  var ar=!0;
+  switch(pid){
+    case'mk':return byoRenderMakkah();
+    case'md':return byoRenderMadinah();
+    case'vs':return byoRenderVisa();
+    case'tr':return byoRenderTransport();
+    case'tk':return byoRenderTicket();
+    default:return'';
+  }
+}
+
+/* ===== MAKKAH HOTELS ===== */
+function byoRenderMakkah(){
+  var ar=!0;
+  if(!PB_MK.length)return '<div class="empty-state">⚠️ '+(ar?'جاري تحميل الفنادق...':'Loading hotels...')+'</div>';
+  var pax=byoPax,rt=byoRoom;
+  var mkNights=byoMkNights;
+  var grp={};PB_MK.forEach(function(h){if(!grp[h.tier])grp[h.tier]=[];grp[h.tier].push(h);});
+  var tiers=Object.keys(PB_MK_TIERS);
+  var h='';
+  tiers.forEach(function(t){
+    if(!grp[t])return;
+    h+='<div class="byo-sxlbl">'+PB_MK_TIERS[t]+'</div><div class="byo-grid">';
+    grp[t].forEach(function(hotel){
+      h+=byoHotelCard(hotel,'mk',mkNights);
+    });
+    h+='</div>';
+  });
+  if(!tiers.length||!tiers.some(function(t){return grp[t]&&grp[t].length;})){
+    h='<div class="byo-sxlbl">'+(ar?'فنادق مكة':'Makkah Hotels')+'</div><div class="byo-grid">';
+    PB_MK.forEach(function(hotel){h+=byoHotelCard(hotel,'mk',mkNights);});
+    h+='</div>';
+  }
+  return h;
+}
+
+function byoHotelCard(hotel,type,nights){
+  var ar=!0,pax=byoPax,rt=byoRoom,cap=byoRoomCapacity();
+  var pi=0;
+  if(type==='mk'&&byoSel.mk&&byoSel.mk.id===hotel.id)pi=byoSel.mk.pi||0;
+  if(type==='md'&&byoSel.md&&byoSel.md.id===hotel.id)pi=byoSel.md.pi||0;
+  var we=type==='mk'?!!(byoSel.mk&&byoSel.mk.we):false;
+  var rate=type==='mk'?byoMkRoom(hotel,pi,we)*nights:byoMdRoom(hotel,pi);
+  var total=rate,perPax=Math.round(rate/cap);
+  var profit=byoApplyProfit(total);
+  var totalWProfit=total+profit;
+  var incart=(type==='mk'&&byoSel.mk&&byoSel.mk.id===hotel.id)||(type==='md'&&byoSel.md&&byoSel.md.id===hotel.id);
+  var stars='★'.repeat(hotel.stars)+'<span style="opacity:.3">'+'★'.repeat(5-hotel.stars)+'</span>';
+  var arName=hotel.name_ar||'';
+  var enName=hotel.name_en||'';
+  var meal=hotel.meal||'BB';
+  var sub=hotel.sub_ar||hotel.sub_en||'';
+
+  var card='<div class="byo-hcard'+(incart?' incart':'')+'"><div class="byo-hchdr">'+
+    '<div class="byo-hcnum">#'+hotel.id+'</div>'+
+    '<div class="byo-hcname">'+(arName||enName)+'</div>'+
+    (arName&&enName?'<div class="byo-hcname-ar">'+enName+'</div>':'')+
+    '<div class="byo-hcsub">'+stars+' | '+(sub||'')+' | '+meal+'</div>'+
+    '<div class="byo-hchips">'+
+    '<span class="byo-chip byo-chip-gn">★ '+(hotel.stars||0)+' '+(ar?'نجوم':'Stars')+'</span>'+
+    '<span class="byo-chip byo-chip-ac">🛏️ '+(rt==='single'?'Single 1':rt==='double'?'Double 2':rt==='triple'?'Triple 3':'Quad 4')+'</span>'+
+    '</div></div><div class="byo-hcbody">';
+
+  /* Period selector */
+  if(hotel.periods&&hotel.periods.length){
+    card+='<div class="byo-sel-row"><span class="byo-sel-lbl">📅 '+(ar?'الفترة':'Period')+'</span></div>'+
+      '<div class="byo-nbtn-row">';
+    hotel.periods.forEach(function(p,i){
+      card+='<button class="byo-nbtn'+(pi===i?' on':'')+'" onclick="byoSelPeriod(\''+type+'\','+hotel.id+','+i+')">'+p.label+'</button>';
+    });
+    card+='</div>';
+  }
+
+  /* Weekday/Peak toggle when period has we data */
+  if(type==='mk'&&hotel.periods&&hotel.periods[pi]&&hotel.periods[pi].we){
+    card+='<div class="byo-sel-row"><span class="byo-sel-lbl">📅 '+(ar?'نوع السعر':'Rate')+'</span></div>'+
+      '<div class="byo-nbtn-row">'+
+      '<button class="byo-nbtn'+(we?'':' on')+'" onclick="byoToggleWE(\''+type+'\','+hotel.id+',false)">📅 '+(ar?'أيام الأسبوع':'Weekday')+'</button>'+
+      '<button class="byo-nbtn'+(we?' on':'')+'" onclick="byoToggleWE(\''+type+'\','+hotel.id+',true)">🎯 '+(ar?'ذروة':'Peak')+'</button></div>';
+  }
+
+  /* Price */
+  card+='<div class="byo-pricebox'+(type==='md'?' byo-pricebox-md':'')+'">'+
+    '<div class="byo-pb-ppax">'+byoFmt(perPax)+'<span style="font-size:10px;color:var(--muted);font-weight:400"> /'+(ar?'شخص في الغرفة':'person in room')+'</span></div>'+
+    '<div class="byo-pb-plbl">'+(type==='mk'?'🕋 '+(ar?'مكة':'Makkah')+' '+nights+(ar?' ليالٍ':' nights'):'🌿 '+(ar?'المدينة':'Madinah')+' '+nights+(ar?' ليالٍ':' nights'))+' · '+byoFmt(rate)+(ar?' إجمالي':' total')+'</div>'+
+    (profit>0?'<div class="byo-pb-total"><span class="byo-pb-tlbl">💰 '+(ar?'مع الربح':'w/ Profit')+':</span> '+byoFmt(totalWProfit)+'</div>':'')+
+    '</div>';
+
+  if(incart){
+    card+='<div class="byo-incart-badge">✓ '+(ar?'مضاف للسلة':'In Cart')+'</div>';
+  }
+
+  card+='</div><div class="byo-hcftr">'+
+    '<button class="byo-addbtn" onclick="byoAddHotel(\''+type+'\','+hotel.id+')">'+(incart?'✓ '+(ar?'مضاف':'Added'):'🛒 '+(ar?'أضف للسلة':'Add to Cart'))+'</button>'+
+    (incart?'<button class="byo-rmbtn" onclick="byoRemoveHotel(\''+type+'\','+hotel.id+')">✕ '+(ar?'إزالة':'Remove')+'</button>':'')+
+    '</div></div>';
+  return card;
+}
+
+function byoSelPeriod(type,hid,i){
+  if(type==='mk'&&byoSel.mk&&byoSel.mk.id===hid){byoSel.mk.pi=i;}
+  else if(type==='md'&&byoSel.md&&byoSel.md.id===hid){byoSel.md.pi=i;}
+  renderCustomBuilder();
+}
+
+function byoToggleWE(type,hid,v){
+  if(type==='mk'&&byoSel.mk&&byoSel.mk.id===hid){byoSel.mk.we=v;}
+  renderCustomBuilder();
+}
+
+function byoAddHotel(type,hid){
+  var arr=type==='mk'?PB_MK:PB_MD;
+  var h=pbGetHotel(hid,arr);
+  if(!h)return;
+  if((type==='mk'&&byoSel.mk&&byoSel.mk.id===hid)||(type==='md'&&byoSel.md&&byoSel.md.id===hid)){
+    // Already selected, remove
+    if(type==='mk')byoSel.mk=null; else byoSel.md=null;
+  }else{
+    var sel={id:h.id,hotel:h,pi:0,we:false,nights:type==='mk'?byoMkNights:byoMdNights};
+    if(type==='mk')byoSel.mk=sel; else byoSel.md=sel;
+  }
+  byoSyncCart();
+  renderCustomBuilder();
+}
+
+function byoRemoveHotel(type,hid){
+  if(type==='mk')byoSel.mk=null; else byoSel.md=null;
+  byoSyncCart();
+  renderCustomBuilder();
+}
+
+/* ===== MADINAH HOTELS ===== */
+function byoRenderMadinah(){
+  var ar=!0;
+  if(!PB_MD.length)return '<div class="empty-state">⚠️ '+(ar?'جاري تحميل فنادق المدينة...':'Loading Madinah hotels...')+'</div>';
+  var pax=byoPax,rt=byoRoom;
+  var mdNights=byoMdNights;
+  var grp={},tiers=Object.keys(PB_MD_TIERS);
+  PB_MD.forEach(function(h){if(!grp[h.tier])grp[h.tier]=[];grp[h.tier].push(h);});
+  var h='<div class="byo-skip"><button class="byo-skip-btn" onclick="byoSel.md=null;byoSyncCart();renderCustomBuilder()">⏭️ '+(ar?'تخطي فندق المدينة':'Skip Madinah Hotel')+'</button></div>';
+  tiers.forEach(function(t){
+    if(!grp[t])return;
+    h+='<div class="byo-sxlbl">'+(PB_MD_TIERS[t]||t)+'</div><div class="byo-grid">';
+    grp[t].forEach(function(hotel){h+=byoHotelCard(hotel,'md',mdNights);});
+    h+='</div>';
+  });
+  if(!tiers.length||!tiers.some(function(t){return grp[t]&&grp[t].length;})){
+    h+='<div class="byo-grid">';
+    PB_MD.forEach(function(hotel){h+=byoHotelCard(hotel,'md',mdNights);});
+    h+='</div>';
+  }
+  return h;
+}
+
+/* ===== VISA PANEL ===== */
+function byoRenderVisa(){
+  var ar=!0;
+  var visaAmt=BYO_SETTINGS?.visa_fee_amount||140;
+  var visaCur=BYO_SETTINGS?.visa_fee_currency||'JOD';
+  var jr=BYO_SETTINGS?.jod_to_sar||5.15,ur=BYO_SETTINGS?.usd_to_sar||3.75;
+  var visaSAR=visaCur==='JOD'?visaAmt*jr:visaCur==='USD'?visaAmt*ur:visaAmt;
+  var pax=byoPax;
+  var totalVisa=visaSAR*pax;
+  var profit=byoApplyProfit(totalVisa);
+  var withProfit=totalVisa+profit;
+  var added=byoSel.visa;
+  return '<div class="byo-svccard'+(added?' incart':'')+'"><div class="byo-svcchdr"><span class="byo-svcico">🛂</span><div><div class="byo-svcctit">'+(ar?'تأشيرة عمرة':'Umrah Visa')+'</div><div class="byo-svccsub">'+(ar?'رسوم التأشيرة للشخص الواحد':'Visa fee per person')+'</div></div></div>'+
+    '<div class="byo-svccbody">'+
+    '<div class="byo-vinfo"><span>'+(ar?'رسوم التأشيرة':'Visa Fee')+'</span><span class="byo-vinfo-val">'+visaAmt+' '+visaCur+' ('+byoFmt(visaSAR)+')</span></div>'+
+    '<div class="byo-vinfo"><span>'+(ar?'عدد الأشخاص':'Pax')+'</span><span class="byo-vinfo-val">'+pax+'</span></div>'+
+    '<div class="byo-vinfo"><span>'+(ar?'الإجمالي':'Total')+'</span><span class="byo-vinfo-val">'+byoFmt(totalVisa)+'</span></div>'+
+    (profit>0?'<div class="byo-vinfo"><span>💰 '+(ar?'الربح':'Profit')+'</span><span class="byo-vinfo-val">'+byoFmt(profit)+'</span></div>':'')+
+    '</div><div class="byo-svccftr">'+
+    '<button class="byo-addbtn"'+(added?' style="background:rgba(231,76,60,.1);border-color:#e74c3c;color:#e74c3c"':'')+' onclick="byo.toggleVisa()">'+(added?'✕ '+(ar?'إزالة':'Remove'):'🛂 '+(ar?'أضف التأشيرة':'Add Visa'))+'</button></div></div>';
+}
+
+/* ===== TRANSPORT PANEL ===== */
+function byoRenderTransport(){
+  var ar=!0;
+  if(!UT_VEHICLES.length||!UT_ROUTES.length){return '<div class="empty-state">⚠️ '+(ar?'جاري تحميل بيانات النقل...':'Loading transport data...')+'</div>';}
+  var pax=byoPax;
+  var h='<div class="byo-skip"><button class="byo-skip-btn" onclick="byoSel.tr=[];byoSyncCart();renderCustomBuilder()">⏭️ '+(ar?'تخطي النقل':'Skip Transport')+'</button></div>';
+
+  UT_ROUTES.forEach(function(route){
+    var vh=UT_VEHICLES;
+    var inCart=byoSel.tr.filter(function(x){return x.rid===route.id;});
+    h+='<div class="byo-trsec"><div class="byo-trhdr"><span class="byo-trico">🚐</span><div><div class="byo-trtit">'+(route.name_ar||route.name_en||'')+'</div><div class="byo-trtit-ar">'+(route.name_en||'')+'</div></div></div>'+
+      '<div class="byo-troute-grid">';
+    vh.forEach(function(vehicle){
+      var routePrices=UT_PRICES.filter(function(p){return p.route_id===route.id&&p.vehicle_id===vehicle.id;});
+      var bestPrice=routePrices.length?routePrices[0]:null;
+      var hasPrice=bestPrice&&bestPrice.price_sar>0;
+      var ci=byoSel.tr.findIndex(function(x){return x.rid===route.id&&x.vid===vehicle.id;});
+      var cls='byo-tccard';
+      if(!hasPrice)cls+=' unav';
+      if(ci>=0)cls+=' incart';
+      h+='<div class="'+cls+'">'+
+        '<div class="byo-tcico">'+(vehicle.icon||'🚐')+'</div>'+
+        '<div class="byo-tcnm">'+(vehicle.name_ar||vehicle.name_en||'')+'</div>'+
+        (vehicle.capacity?'<div class="byo-tccap"><span class="byo-tchip byo-tchip-gn">'+vehicle.capacity+(ar?' أشخاص':' pax')+'</span></div>':'')+
+        (vehicle.name_en?'<div class="byo-tcsar">'+vehicle.name_en+'</div>':'')+
+        (hasPrice?'<div class="byo-tcppax">'+byoFmt(hasPrice.price_sar)+'</div><div class="byo-tcppaxlbl">'+(ar?'للرحلة':'/trip')+'</div>':'');
+      if(hasPrice){
+        if(ci>=0){
+          h+='<button class="byo-tcaddbtn" onclick="byoRemoveTrItem('+route.id+','+vehicle.id+')" style="border-color:#e74c3c;color:#e74c3c">✕ '+(ar?'حذف':'Remove')+'</button>';
+        }else{
+          h+='<button class="byo-tcaddbtn" onclick="byoOpenDirModal('+route.id+','+vehicle.id+')">+ '+(ar?'أضف':'Add')+'</button>';
+        }
+      }else{
+        h+='<div class="byo-tcunav">'+(ar?'غير متوفر':'N/A')+'</div>';
+      }
+      h+='</div>';
+    });
+    h+='</div></div>';
+  });
+  return h;
+}
+
+/* ===== TICKET PANEL ===== */
+function byoRenderTicket(){
+  var ar=!0;
+  var ticketAmt=BYO_SETTINGS?.ticket_fare_amount||200;
+  var ticketCur=BYO_SETTINGS?.ticket_fare_currency||'USD';
+  var ex=BYO_SETTINGS?.jod_to_sar||5.15;
+  var usdSar=BYO_SETTINGS?.usd_to_sar||3.75;
+  var ticketSAR=ticketCur==='SAR'?ticketAmt:ticketCur==='JOD'?ticketAmt*ex:ticketAmt*usdSar;
+  var pax=byoPax;
+  var totalTicket=ticketSAR*pax;
+  var profit=byoApplyProfit(totalTicket);
+  var withProfit=totalTicket+profit;
+  var added=byoSel.tktr&&byoSel.tktr.sel;
+  var options=[{id:'eco',labelEn:'Economy',labelAr:'اقتصادي',mult:1},{id:'bus',labelEn:'Business',labelAr:'درجة أعمال',mult:2.2},{id:'first',labelEn:'First Class',labelAr:'أولى',mult:3.5}];
+  var selClass=byoSel.tktr&&byoSel.tktr.cls?byoSel.tktr.cls:'eco';
+  return '<div class="byo-svccard'+(added?' incart':'')+'"><div class="byo-svcchdr"><span class="byo-svcico">✈️</span><div><div class="byo-svcctit">'+(ar?'تذكرة طيران':'Flight Ticket')+'</div><div class="byo-svccsub">'+ticketAmt+' '+ticketCur+' '+(ar?'للفرد':'per person')+'</div></div></div>'+
+    '<div class="byo-svccbody">'+
+    '<div class="byo-vinfo"><span>'+(ar?'سعر التذكرة':'Ticket Fare')+'</span><span class="byo-vinfo-val">'+byoFmt(ticketSAR)+'</span></div>'+
+    '<div class="byo-vinfo"><span>'+(ar?'عدد الأشخاص':'Pax')+'</span><span class="byo-vinfo-val">'+pax+'</span></div>'+
+    '<div class="byo-sel-row" style="margin-top:8px"><span class="byo-sel-lbl">✈️ '+(ar?'الدرجة':'Class')+'</span></div>'+
+    '<div class="byo-nbtn-row">'+
+    options.map(function(o){return '<button class="byo-nbtn'+(selClass===o.id?' on':'')+'" onclick="byoSel.tktr=byoSel.tktr||{sel:false};byoSel.tktr.cls=\''+o.id+'\';byoRenderTicketPanelOnly()">'+(ar?o.labelAr:o.labelEn)+'</button>';}).join('')+
+    '</div>'+
+    (added?'<div class="byo-incart-badge">✓ '+(ar?'مضاف':'Added')+'</div>':'')+
+    '</div><div class="byo-svccftr">'+
+    '<button class="byo-addbtn" onclick="byoToggleTicket()">'+(added?'✕ '+(ar?'إزالة':'Remove'):'🛒 '+(ar?'أضف التذكرة':'Add Ticket'))+'</button></div></div>';
+}
+
+function byoRenderTicketPanelOnly(){
+  document.getElementById('byo-panel-tk').innerHTML=byoRenderTicket();
+  byoSyncCart();
+  byoUpdateTotals();
+}
+
+/* ===== BYO CART ===== */
+function byoSyncCart(){
+  byoCart=[];
+  var ar=!0,pax=byoPax,rt=byoRoom;
+  var ex=BYO_SETTINGS?.jod_to_sar||5.15;
+  var visaAmt=BYO_SETTINGS?.visa_fee_amount||140;
+  var visaCur=BYO_SETTINGS?.visa_fee_currency||'JOD';
+  var usdSar=BYO_SETTINGS?.usd_to_sar||3.75;
+  var visaSAR=visaCur==='JOD'?visaAmt*ex:visaCur==='USD'?visaAmt*usdSar:visaAmt;
+  var ticketAmt=BYO_SETTINGS?.ticket_fare_amount||200,ticketCur=BYO_SETTINGS?.ticket_fare_currency||'USD';
+  var ticketSAR=ticketCur==='SAR'?ticketAmt:ticketCur==='JOD'?ticketAmt*ex:ticketAmt*usdSar;
+
+  // Visa
+  if(byoSel.visa){
+    byoCart.push({type:'visa',label:byoSel.visaLabel||'Umrah Visa',desc:(ar?'تأشيرة':'Visa')+' × '+pax+' '+(ar?'شخص':'pax'),qty:pax,unit:visaSAR,total:visaSAR*pax,arIcon:'🛂',enIcon:'🛂'});
+  }
+  // Makkah hotel
+  if(byoSel.mk){
+    var mkH=byoSel.mk.hotel,cap=byoRoomCapacity();
+    var mkRate=byoMkRoom(mkH,byoSel.mk.pi||0,byoSel.mk.we||false)*byoMkNights;
+    byoCart.push({type:'mk',label:mkH.name_ar||mkH.name_en||'Makkah Hotel',desc:byoMkNights+' nights · '+(ar?'غرفة':'Room')+' '+cap+' '+(ar?'أشخاص':'pax'),qty:1,unit:mkRate,total:mkRate,arIcon:'🕋',enIcon:'🕋'});
+  }
+  // Madinah hotel
+  if(byoSel.md){
+    var mdH=byoSel.md.hotel,cap=byoRoomCapacity();
+    var mdRate=byoMdRoom(mdH,byoSel.md.pi||0)*byoMdNights;
+    if(mdRate>0){
+      byoCart.push({type:'md',label:mdH.name_ar||mdH.name_en||'Madinah Hotel',desc:byoMdNights+' nights · '+(ar?'غرفة':'Room')+' '+cap+' '+(ar?'أشخاص':'pax'),qty:1,unit:mdRate,total:mdRate,arIcon:'🌿',enIcon:'🌿'});
+    }
+  }
+  // Transport items
+  if(byoSel.tr&&byoSel.tr.length){
+    byoSel.tr.forEach(function(t){
+      var vh=UT_VEHICLES.find(function(v){return v.id===t.vid;});
+      var rt=UT_ROUTES.find(function(r){return r.id===t.rid;});
+      if(vh&&rt){
+        byoCart.push({type:'tr',label:(vh.name_ar||vh.name_en||'Vehicle'),desc:(rt.name_ar||rt.name_en||'Route')+' × '+t.dir+' way(s)',qty:1,unit:t.price_sar*t.dir,total:t.price_sar*t.dir,arIcon:'🚐',enIcon:'🚐'});
+      }
+    });
+  }
+  // Ticket
+  if(byoSel.tktr&&byoSel.tktr.sel){
+    var tktTotal=ticketSAR*pax;
+    byoCart.push({type:'tk',label:(byoSel.tktr.cls||'eco')==='eco'?'Economy Ticket':(byoSel.tktr.cls||'eco')==='bus'?'Business Ticket':'First Class Ticket',desc:ticketCur+' '+ticketAmt+' × '+pax+' '+(ar?'شخص':'pax'),qty:pax,unit:ticketSAR,total:tktTotal,arIcon:'✈️',enIcon:'✈️'});
+  }
+  byoUpdateCartBadge();
+}
+
+function byoUpdateCartBadge(){
+  var el=document.getElementById('byo-cBigCnt');
+  if(el)el.textContent=byoCart.length;
+  var hd=document.getElementById('byo-hdTotal');
+  if(hd){
+    var total=byoCart.reduce(function(s,i){return s+i.total;},0);
+    var profit=byoApplyProfit(total);
+    hd.textContent=byoFmt(total+profit);
+  }
+}
+
+function byoUpdateTotals(){
+  byoSyncCart();
+  // Update strip boxes
+  var mkOk=byoSel.mk,mdOk=byoSel.md,vsOk=byoSel.visa,trOk=byoSel.tr&&byoSel.tr.length,tkOk=byoSel.tktr&&byoSel.tktr.sel;
+  var strips=document.querySelectorAll('.byo-strip-box');
+  if(strips.length>=5){
+    strips[0].querySelector('.byo-strip-row span').textContent=(mkOk?'✓ '+(byoSel.mk.hotel.name_ar||'Selected'):'Select Hotel');
+    strips[0].querySelector('.byo-strip-row span').style.color=mkOk?'var(--green)':'var(--muted)';
+    strips[1].querySelector('.byo-strip-row span').textContent=(mdOk?'✓ '+(byoSel.md.hotel.name_ar||'Selected'):'Hotel (optional)');
+    strips[1].querySelector('.byo-strip-row span').style.color=mdOk?'var(--green)':'var(--muted)';
+    strips[2].querySelector('.byo-strip-row span').textContent=vsOk?'✓ Added':'Add Visa';
+    strips[2].querySelector('.byo-strip-row span').style.color=vsOk?'var(--green)':'var(--muted)';
+    strips[3].querySelector('.byo-strip-row span').textContent=trOk?trOk.length+' services':'Select';
+    strips[3].querySelector('.byo-strip-row span').style.color=trOk?'var(--green)':'var(--muted)';
+    strips[4].querySelector('.byo-strip-row span').textContent=tkOk?'✓ Added':'Add Ticket';
+    strips[4].querySelector('.byo-strip-row span').style.color=tkOk?'var(--green)':'var(--muted)';
+  }
+  var hdTotal=document.getElementById('byo-hdTotal');
+  if(hdTotal){
+    var total=byoCart.reduce(function(s,i){return s+i.total;},0);
+    var profit=byoApplyProfit(total);
+    hdTotal.textContent=byoFmt(total+profit);
+  }
+}
+
+/* ===== BYO TRANSPORT MODALS ===== */
+var byoDirModalData=null;
+
+function byoOpenDirModal(rid,vid){
+  byoDirModalData={rid:rid,vid:vid};
+  var route=UT_ROUTES.find(function(r){return r.id===rid;});
+  var vehicle=UT_VEHICLES.find(function(v){return v.id===vid;});
+  if(!route||!vehicle)return;
+  document.getElementById('byo-dirTitle').innerHTML='🚐 '+(route.name_ar||route.name_en||'');
+  document.getElementById('byo-dirSub').innerHTML=(vehicle.name_ar||vehicle.name_en||'');
+  var prices=UT_PRICES.filter(function(p){return p.route_id===rid&&p.vehicle_id===vid;});
+  var priceObj=prices[0];
+  if(!priceObj||!priceObj.price_sar){
+    document.getElementById('byo-dirOpts').innerHTML='<div style="text-align:center;padding:20px;color:#e74c3c">⚠️ No pricing available</div>';
+    document.getElementById('byo-dirPax').style.display='none';
+    document.getElementById('byo-dirConfirm').disabled=true;
+    document.getElementById('byo-dirModal').classList.add('open');
+    return;
+  }
+  var oneWay=priceObj.price_sar;
+  var rtn=oneWay*2;
+  document.getElementById('byo-dirOpts').innerHTML=
+    '<div class="byo-dir-opt" onclick="byoSelectDir(1,this)" id="byo-dopt1"><span class="byo-dir-ico">➡</span><div class="byo-dir-info"><div class="byo-dir-lbl">One Way</div><div class="byo-dir-sub">Single direction</div></div><div class="byo-dir-price">'+byoFmt(oneWay)+'</div></div>'+
+    '<div class="byo-dir-opt" onclick="byoSelectDir(2,this)" id="byo-dopt2"><span class="byo-dir-ico">🔄</span><div class="byo-dir-info"><div class="byo-dir-lbl">Return (×2)</div><div class="byo-dir-sub">Both ways</div></div><div class="byo-dir-price">'+byoFmt(rtn)+'</div></div>';
+  byoDirModalData.dir=0;
+  document.getElementById('byo-dirConfirm').disabled=true;
+  document.getElementById('byo-dirPax').style.display='none';
+  document.getElementById('byo-dirModal').classList.add('open');
+}
+
+function byoSelectDir(dir,el){
+  document.querySelectorAll('.byo-dir-opt').forEach(function(e){e.classList.remove('sel');});
+  el.classList.add('sel');
+  byoDirModalData.dir=dir;
+  document.getElementById('byo-dirConfirm').disabled=false;
+}
+
+function byoConfirmDir(){
+  if(!byoDirModalData||!byoDirModalData.dir)return;
+  var d=byoDirModalData;
+  var priceRow=UT_PRICES.find(function(p){return p.route_id===d.rid&&p.vehicle_id===d.vid;});
+  if(!priceRow)return;
+  // Check if already in cart and toggle
+  var idx=byoSel.tr.findIndex(function(x){return x.rid===d.rid&&x.vid===d.vid;});
+  if(idx>=0){
+    byoSel.tr.splice(idx,1);
+  }else{
+    byoSel.tr.push({rid:d.rid,vid:d.vid,dir:d.dir,price_sar:priceRow.price_sar});
+  }
+  byoCloseDirModal();
+  byoSyncCart();
+  renderCustomBuilder();
+}
+
+function byoRemoveTrItem(rid,vid){
+  var idx=byoSel.tr.findIndex(function(x){return x.rid===rid&&x.vid===vid;});
+  if(idx>=0)byoSel.tr.splice(idx,1);
+  byoSyncCart();
+  renderCustomBuilder();
+}
+
+function byoCloseDirModal(){
+  document.getElementById('byo-dirModal').classList.remove('open');
+  byoDirModalData=null;
+}
+
+function byoTrSummaryStr(){
+  if(!byoSel.tr||!byoSel.tr.length)return 'None';
+  var names=byoSel.tr.map(function(t){
+    var v=UT_VEHICLES.find(function(x){return x.id===t.vid;});
+    return v?v.name_ar||v.name_en||'':'';
+  });
+  return names.filter(Boolean).join(', ');
+}
+
+/* ===== CART DRAWER ===== */
+function byoOpenCart(){
+  byoSyncCart();
+  document.getElementById('byo-cartDrw').classList.add('open');
+  document.getElementById('byo-cartOv').classList.add('open');
+  document.body.style.overflow='hidden';
+  byoRenderCartDrawer();
+}
+
+function byoCloseCart(){
+  document.getElementById('byo-cartDrw').classList.remove('open');
+  document.getElementById('byo-cartOv').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function byoRenderCartDrawer(){
+  var body=document.getElementById('byo-crtBody');
+  var ftr=document.getElementById('byo-crtFtr');
+  var pbar=document.getElementById('byo-crtPbar');
+  var ar=!0;
+  if(!byoCart.length){
+    body.innerHTML='<div class="byo-crtempty"><div class="byo-eico">🛒</div><div>'+(ar?'السلة فارغة':'Cart is empty')+'</div><div style="font-size:11px;margin-top:4px;color:var(--muted)">'+(ar?'اختر الخدمات من الأقسام أعلاه':'Select services from the tabs above')+'</div></div>';
+    ftr.innerHTML='';
+    pbar.textContent='';
+    return;
+  }
+  var total=byoCart.reduce(function(s,i){return s+i.total;},0);
+  var profit=byoApplyProfit(total);
+  var grand=total+profit;
+
+  /* Progress bar */
+  var svcCount=0;
+  if(byoSel.mk)svcCount++;
+  if(byoSel.md)svcCount++;
+  if(byoSel.visa)svcCount++;
+  if(byoSel.tr&&byoSel.tr.length)svcCount++;
+  if(byoSel.tktr&&byoSel.tktr.sel)svcCount++;
+  pbar.textContent=(ar?'الخدمات المحددة: '+svcCount+'/5':'Selected: '+svcCount+'/5');
+  pbar.style.background=svcCount>=5?'rgba(39,174,96,.15)':'rgba(96,165,250,.1)';
+  pbar.style.color=svcCount>=5?'var(--green)':'var(--blue)';
+
+  /* Cart items */
+  var h='<div class="byo-crtsum">';
+  h+='<div class="byo-crtsum-row"><span>'+(ar?'إجمالي الخدمات':'Services')+'</span><span>'+byoFmt(total)+'</span></div>';
+  h+='<div class="byo-crtsum-row"><span>💰 '+(ar?'الربح':'Profit')+'</span><span>'+byoFmt(profit)+'</span></div>';
+  h+='<div class="byo-crtsum-row byo-grand">'+(ar?'المجموع':'Subtotal')+'</div>';
+  h+='<div class="byo-crtsum-row byo-gtot">'+byoFmt(grand)+'</div>';
+  h+='</div>';
+
+  byoCart.forEach(function(item,i){
+    var typeCls=item.type==='mk'?'byo-citm-mk':item.type==='md'?'byo-citm-md':item.type==='vs'?'byo-citm-vs':item.type==='tk'?'byo-citm-tk':item.type==='tr'?'byo-citm-tr':'';
+    var ico=item.arIcon||'';
+    h+='<div class="byo-citm"><div class="byo-citm-hdr"><div><span class="byo-citm-type '+typeCls+'">'+ico+' '+(item.type==='mk'?(ar?'مكة':'Makkah'):item.type==='md'?(ar?'المدينة':'Madinah'):item.type==='vs'?(ar?'تأشيرة':'Visa'):item.type==='tk'?(ar?'تذكرة':'Ticket'):item.type==='tr'?(ar?'نقل':'Transport'):'')+'</span>'+
+      '<div class="byo-citm-name">'+item.label+'</div><div class="byo-citm-detail">'+item.desc+'</div></div>'+
+      '<button class="byo-citm-del" onclick="byoRemoveFromCart('+i+')">✕</button></div>'+
+      '<div class="byo-citm-price"><span class="byo-citm-ppax">'+byoFmt(item.total)+'</span><span class="byo-citm-total"></span></div></div>';
+  });
+
+  body.innerHTML=h;
+  ftr.innerHTML='<div class="byo-crtacts"><button class="byo-crtclear" onclick="byoClearCart()">🗑️ '+(ar?'مسح الكل':'Clear All')+'</button><button class="byo-crtprint" onclick="byoPrintCart()">🖨️ '+(ar?'طباعة':'Print')+'</button></div>'+
+    '<button class="byo-bookbtn" onclick="byoOpenBooking()">💬 '+(ar?'احجز عبر واتساب':'Book via WhatsApp')+'</button>';
+}
+
+function byoRemoveFromCart(idx){
+  var item=byoCart[idx];
+  if(!item)return;
+  if(item.type==='mk')byoSel.mk=null;
+  else if(item.type==='md')byoSel.md=null;
+  else if(item.type==='vs')byoSel.visa=0;
+  else if(item.type==='tr'){
+    // Find the specific transport item
+    var trItem=byoSel.tr&&byoSel.tr.length?byoSel.tr[0]:null;
+    byoSel.tr=[];
+  }else if(item.type==='tk')byoSel.tktr={sel:false};
+  byoSyncCart();
+  byoRenderCartDrawer();
+  byoUpdateTotals();
+  renderCustomBuilder();
+}
+
+function byoClearCart(){
+  byoSel.mk=null;
+  byoSel.md=null;
+  byoSel.visa=0;
+  byoSel.tr=[];
+  byoSel.tktr={sel:false};
+  byoSyncCart();
+  byoRenderCartDrawer();
+  byoUpdateTotals();
+  renderCustomBuilder();
+}
+
+/* ===== BYO BOOKING & WHATSAPP ===== */
+function byoPrintCart(){
+  window.print();
+}
+
+function byoOpenBooking(){
+  byoSyncCart();
+  if(!byoCart.length)return;
+  document.getElementById('byo-bookOv').classList.add('open');
+  document.body.style.overflow='hidden';
+  byoRenderBookingForm();
+}
+
+function byoCloseBooking(){
+  document.getElementById('byo-bookOv').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function byoRenderBookingForm(){
+  var body=document.getElementById('byo-bookBody');
+  var ar=!0;
+  var total=byoCart.reduce(function(s,i){return s+i.total;},0);
+  var profit=byoApplyProfit(total);
+  var grand=total+profit;
+  var waNum=BYO_SETTINGS?.whatsapp_number||'962777066005';
+
+  body.innerHTML=
+    '<div class="byo-bfg"><div class="byo-bfl">'+(ar?'الاسم الكامل':'Full Name')+' *</div><input class="byo-bfi" id="byo-bname" type="text" placeholder="'+(ar?'اسمك':'Your name')+'"></div>'+
+    '<div class="byo-bfg"><div class="byo-bfl">'+(ar?'رقم الهاتف':'Phone')+' *</div><input class="byo-bfi" id="byo-bphone" type="tel" placeholder="+962 7x xxxx xxxx"></div>'+
+    '<div class="byo-bfg"><div class="byo-bfl">WhatsApp'+(ar?' (إذا كان مختلفاً)':' (if different)')+'</div><input class="byo-bfi" id="byo-bwa" type="tel" placeholder="'+(ar?'اتركه فارغاً إن كان نفسه':'Leave blank if same')+'"></div>'+
+    '<div class="byo-bfg"><div class="byo-bfl">'+(ar?'تاريخ السفر':'Travel Date')+'</div><input class="byo-bfi" id="byo-bdate" type="date"></div>'+
+    '<div class="byo-bfg"><div class="byo-bfl">'+(ar?'ملاحظات':'Notes')+'</div><input class="byo-bfi" id="byo-bnotes" type="text" placeholder="'+(ar?'أي متطلبات خاصة':'Any special requests')+'"></div>'+
+    '<div class="byo-book-sum"><div class="byo-book-sum-t">📋 '+(ar?'ملخص الطلب':'Order Summary')+'</div>'+
+    byoCart.map(function(item){
+      return '<div class="byo-book-sum-r"><span>'+item.arIcon+' '+item.label+'</span><span>'+byoFmt(item.total)+'</span></div>';
+    }).join('')+
+    '<div class="byo-book-sum-r"><span>💰 '+(ar?'الربح':'Profit')+'</span><span>'+byoFmt(profit)+'</span></div>'+
+    '<div class="byo-book-sum-g"><span>'+(ar?'الإجمالي الكلي':'Grand Total')+'</span><span>'+byoFmt(grand)+'</span></div></div>';
+}
+
+function byoSendWA(){
+  var name=document.getElementById('byo-bname')?.value.trim();
+  var phone=document.getElementById('byo-bphone')?.value.trim();
+  if(!name||!phone){
+    alert((!0?'الرجاء إدخال الاسم ورقم الهاتف':'Please enter name and phone'));
+    return;
+  }
+  var total=byoCart.reduce(function(s,i){return s+i.total;},0);
+  var profit=byoApplyProfit(total);
+  var grand=total+profit;
+  var waNum=BYO_SETTINGS?.whatsapp_number||'962777066005';
+  var ar=!0;
+  var msg='*Build Your Own Umrah — Booking Request*\n*Al Jude Travel*\n'+'─'.repeat(20)+'\n';
+  msg+='*Name:* '+name+'\n*Phone:* '+phone+'\n';
+  var wa=document.getElementById('byo-bwa')?.value.trim();
+  if(wa)msg+='*WA:* '+wa+'\n';
+  var dt=document.getElementById('byo-bdate')?.value;
+  if(dt)msg+='*Date:* '+dt+'\n';
+  var nts=document.getElementById('byo-bnotes')?.value.trim();
+  if(nts)msg+='*Notes:* '+nts+'\n';
+  msg+='─'.repeat(20)+'\n*Pax:* '+byoPax+'\n*Room:* '+byoRoom+'\n\n';
+  byoCart.forEach(function(item){
+    msg+=(item.arIcon||'•')+' '+item.label+'\n  '+item.desc+' → '+byoFmt(item.total)+'\n';
+  });
+  msg+='─'.repeat(20)+'\n';
+  if(profit>0)msg+='💰 *Profit:* '+byoFmt(profit)+'\n';
+  msg+='*💵 GRAND TOTAL: '+byoFmt(grand)+'*\n';
+  msg+='─'.repeat(20)+'\n*Al Jude Travel ✨*';
+  window.open('https://wa.me/'+waNum+'?text='+encodeURIComponent(msg),'_blank');
+}
+
+/* ===== BYO VISA TOGGLE ===== */
+var byo={
+  toggleVisa:function(){
+    byoSel.visa=byoSel.visa?0:1;
+    if(byoSel.visa)byoSel.visaLabel='Umrah Visa';
+    byoSyncCart();
+    renderCustomBuilder();
+  },
+  toggleTicket:function(){
+    if(byoSel.tktr&&byoSel.tktr.sel){
+      byoSel.tktr={sel:false};
+    }else{
+      byoSel.tktr={sel:true,cls:byoSel.tktr&&byoSel.tktr.cls?byoSel.tktr.cls:'eco'};
+    }
+    byoSyncCart();
+    renderCustomBuilder();
+  }
+};
+
+function byoToggleTicket(){
+  byo.toggleTicket();
+}
+
+/* ===== PIN BYO SETTINGS LOAD TO loadUmrah ===== */
+// BYO load is piggybacked onto loadPBData below
+
+// Load data on page — each fetch handled independently so one failure never blocks the rest
+async function loadPBData(){
+  var hData,pData,sData,byoData,vData,rData,pData2;
+  try{hData=await fetch(SB_URL+'/rest/v1/umrah_pkg_hotels?order=sort_order',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}).then(function(r){return r.json();});}catch(e){hData=null;}
+  try{pData=await fetch(SB_URL+'/rest/v1/umrah_pkg_hotel_periods?order=sort_order',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}).then(function(r){return r.json();});}catch(e){pData=null;}
+  try{sData=await fetch(SB_URL+'/rest/v1/umrah_pkg_settings?id=eq.1&limit=1',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}).then(function(r){return r.json();});}catch(e){sData=null;}
+  try{byoData=await fetch(SB_URL+'/rest/v1/umrah_byo_settings?id=eq.1&limit=1',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}).then(function(r){return r.json();});}catch(e){byoData=null;}
+  try{vData=await fetch(SB_URL+'/rest/v1/umrah_transport_vehicles?order=sort_order',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}).then(function(r){return r.json();});}catch(e){vData=null;}
+  try{rData=await fetch(SB_URL+'/rest/v1/umrah_transport_routes?order=sort_order',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}).then(function(r){return r.json();});}catch(e){rData=null;}
+  try{pData2=await fetch(SB_URL+'/rest/v1/umrah_transport_prices?order=route_id,vehicle_id',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}}).then(function(r){return r.json();});}catch(e){pData2=null;}
+  PB_SETTINGS=(sData&&sData.length)?sData[0]:null;
+  BYO_SETTINGS=(byoData&&byoData.length)?byoData[0]:null;
+  UT_VEHICLES=vData||[];
+  UT_ROUTES=rData||[];
+  UT_PRICES=pData2||[];
+  if(hData&&hData.length){
+    PB_MK=hData.filter(function(h){return h.city==='makkah';});
+    PB_MD=hData.filter(function(h){return h.city==='madinah';});
+    PB_PERIODS={};
+    if(pData&&pData.length){pData.forEach(function(p){if(!PB_PERIODS[p.hotel_id])PB_PERIODS[p.hotel_id]=[];PB_PERIODS[p.hotel_id].push(p);});}
+    PB_MK.forEach(function(h){h.periods=PB_PERIODS[h.id]||[];});
+    PB_MD.forEach(function(h){h.periods=PB_PERIODS[h.id]||[];});
+  }
+  if(CURRENT_SECTION==='custom'||CURRENT_SECTION==='car')renderUmrah();
+}
+loadPBData();
+
 loadUmrah();
+
+// Support hash-based filter (e.g. umrah.html#rj_mkk)
+if(window.location.hash){
+  const hash=window.location.hash.replace('#','');
+  const match=UMRAH_TABS.find(t=>t.id===hash||t.section===hash);
+  if(match){
+    setTimeout(()=>{
+      const btn=document.querySelector('#umrah-tabs .dest-tab[onclick*="'+match.id+'"]');
+      if(btn)btn.click();
+    },100);
+  }
+}
 </script>
+
+<!-- UT DIRECTION MODAL -->
+<div class="ut-modal" id="ut-dirModal"><div class="ut-mbox">
+  <div class="ut-mhdr"><h4 id="ut-dmTitle">Select Direction</h4><p id="ut-dmSub">Choose one-way or both ways</p></div>
+  <div class="ut-mbody">
+    <div class="ut-dir-opt sel" id="ut-d1" onclick="utSelDir(1)">
+      <span style="font-size:18px">➡</span>
+      <div style="flex:1"><div style="font-size:13px;font-weight:700">One Way</div><div style="font-size:10px;color:var(--muted)">Single direction trip</div></div>
+      <div style="font-size:14px;font-weight:800;color:var(--gold)" id="ut-d1p"></div>
+    </div>
+    <div class="ut-dir-opt" id="ut-d2" onclick="utSelDir(2)">
+      <span style="font-size:18px">🔄</span>
+      <div style="flex:1"><div style="font-size:13px;font-weight:700">Return (x2)</div><div style="font-size:10px;color:var(--muted)">Both directions ×2</div></div>
+      <div style="font-size:14px;font-weight:800;color:var(--gold)" id="ut-d2p"></div>
+    </div>
+  </div>
+  <div class="ut-mftr"><button class="ut-mcancel" onclick="utCloseDir()">Cancel</button><button class="ut-mconfirm" id="ut-dmConfirm" onclick="utConfirmDir()">Add to Cart</button></div>
+</div></div>
+
+<!-- UT BOOKING MODAL -->
+<div class="ut-modal" id="ut-bookModal"><div class="ut-mbox">
+  <div class="ut-mhdr"><h4>📲 Book Now via WhatsApp</h4><p>Enter your details to send your booking request</p></div>
+  <div class="ut-mbody">
+    <div class="ut-csum" id="ut-bookSum"></div>
+    <div class="ut-flbl">Full Name *</div><input class="ut-finp" id="ut-bname" type="text" placeholder="Your name">
+    <div class="ut-flbl">Phone *</div><input class="ut-finp" id="ut-bphone" type="tel" placeholder="+962 7x xxxx xxxx">
+    <div class="ut-flbl">WhatsApp (if different)</div><input class="ut-finp" id="ut-bwa" type="tel" placeholder="Leave blank if same">
+    <div class="ut-flbl">Travel Date</div><input class="ut-finp" id="ut-bdate" type="date">
+    <div class="ut-flbl">Notes</div><input class="ut-finp" id="ut-bnotes" type="text" placeholder="Any special requirements">
+  </div>
+  <div class="ut-mftr"><button class="ut-mcancel" onclick="utCloseBook()">Cancel</button><button class="ut-mconfirm" onclick="utSendWA()">💬 Send via WhatsApp</button></div>
+</div></div>
+
+<!-- UT CART DRAWER -->
+<div class="ut-cart-ov" id="ut-cartOv" onclick="utCloseCart()"></div>
+<div class="ut-cart-drw" id="ut-cartDrw">
+  <div class="ut-chdr"><div><div class="ut-chdr-t">🛒 My Transportation Cart</div><div style="font-size:10px;opacity:.75;margin-top:2px">View and edit your selected routes</div></div><button class="ut-ccls" onclick="utCloseCart()">✕</button></div>
+  <div style="padding:6px 14px;background:rgba(96,165,250,.1);border-bottom:1px solid rgba(96,165,250,.3);font-size:11px;color:var(--blue);font-weight:600" id="ut-cartPbar"></div>
+  <div class="ut-cbody" id="ut-cartBody"></div>
+  <div class="ut-cftr" id="ut-cartFtr"></div>
+</div>
+
+<!-- BYO DIRECTION MODAL -->
+<div class="byo-modal-ov" id="byo-dirModal"><div class="byo-modal-box">
+  <div class="byo-modal-hdr"><h3 id="byo-dirTitle">🚐 Select Transport Direction</h3><p id="byo-dirSub">Choose a route for your transport needs</p></div>
+  <div class="byo-modal-body">
+    <div class="byo-dir-opts" id="byo-dirOpts"></div>
+    <div id="byo-dirPax" style="display:none;margin-bottom:10px">
+      <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px">Passengers</div>
+      <input type="number" id="byo-dirPaxInp" value="1" min="1" max="50" style="width:80px;border:1px solid var(--border);border-radius:5px;padding:5px 7px;font-size:13px;font-family:inherit;color:var(--text);background:var(--dark3)">
+    </div>
+  </div>
+  <div class="byo-modal-ftr"><button class="byo-mcancel" onclick="byoCloseDirModal()">Cancel</button><button class="byo-mconfirm" id="byo-dirConfirm" onclick="byoConfirmDir()" disabled>Confirm Selection</button></div>
+</div></div>
+
+<!-- BYO TRANSPORT BOOKING MODAL (vehicle level) -->
+<div class="byo-modal-ov" id="byo-tbookModal"><div class="byo-modal-box">
+  <div class="byo-modal-hdr"><h3 id="byo-tbookTitle">Select Services</h3><p id="byo-tbookSub">Choose transport services for this vehicle</p></div>
+  <div class="byo-modal-body" id="byo-tbookBody"></div>
+  <div class="byo-modal-ftr"><button class="byo-mcancel" onclick="byoCloseTbook()">Cancel</button><button class="byo-mconfirm" id="byo-tbookConfirm" onclick="byoConfirmTbook()">Add to Cart</button></div>
+</div></div>
+
+<!-- BYO CART OVERLAY -->
+<div class="byo-cart-ov" id="byo-cartOv" onclick="byoCloseCart()"></div>
+<!-- BYO CART DRAWER -->
+<div class="byo-cart-drw" id="byo-cartDrw">
+  <div class="byo-crthdr"><div><div class="byo-crthdr-t">🛒 My Package</div><div style="font-size:10px;opacity:.75;margin-top:2px">Review your selections</div></div><button class="byo-crtcls" onclick="byoCloseCart()">✕</button></div>
+  <div class="byo-crtpbar" id="byo-crtPbar"></div>
+  <div class="byo-crtbody" id="byo-crtBody"></div>
+  <div class="byo-crtftr" id="byo-crtFtr"></div>
+</div>
+
+<!-- BYO BOOKING OVERLAY -->
+<div class="byo-book-ov" id="byo-bookOv"><div class="byo-book-box">
+  <div class="byo-book-hdr"><h3>💬 Book Your Umrah Package</h3><p>Fill in your details and we'll send you a quote via WhatsApp</p></div>
+  <div class="byo-book-body" id="byo-bookBody"></div>
+  <div class="byo-book-ftr"><button class="byo-bcancel" onclick="byoCloseBooking()">Cancel</button><button class="byo-bsend" id="byo-bsendBtn" onclick="byoSendWA()"><span>💬</span> Send via WhatsApp</button></div>
+</div></div>
 
 <!-- FLOATING WHATSAPP -->
 <a href="https://wa.me/962777066005?text=مرحباً، أريد الاستفسار عن باقة سياحية" target="_blank" 
@@ -336,9 +2162,7 @@ loadUmrah();
    onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
   <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
-<script src="lang-currency.js"></script>
-<script src="booking.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" async></script>
 <script src="print-pdf.js"></script>
 <script>PJ.injectPrintCSS();</script>
 </body>

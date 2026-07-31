@@ -149,6 +149,43 @@ footer a{color:var(--gold);text-decoration:none;word-break:break-word}
 }
 .btn-print-pdf:hover{border-color:var(--gold)!important;color:var(--text)!important}
 </style>
+<script>
+(function(){
+  var SB_URL='https://rmpuvrmxakukgvtxethj.supabase.co';
+  var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtcHV2cm14YWt1a2d2dHhldGhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyODAyMjcsImV4cCI6MjA5Mzg1NjIyN30.lO8rNtwfLXYFnyGk5dOthPEUj3XIWkfFvSOziTeDFeE';
+  var param=new URLSearchParams(window.location.search).get('ref');
+  if(!param) return;
+  if(!/^JUDE-[A-Z0-9]{6}$/.test(param)) return;
+  fetch(SB_URL+'/rest/v1/affiliate_settings?id=eq.1&select=attribution_window_days,program_active',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}})
+  .then(function(r){return r.json();})
+  .then(function(d){
+    var s=d&&d[0]?d[0]:{program_active:true,attribution_window_days:60};
+    if(!s.program_active) return;
+    var exp=new Date(); exp.setDate(exp.getDate()+(s.attribution_window_days||60));
+    document.cookie='jude_ref='+param+';expires='+exp.toUTCString()+';path=/;SameSite=Lax';
+    fetch(SB_URL+'/rest/v1/rpc/log_affiliate_click',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({p_code:param,p_page:window.location.pathname,p_ua:navigator.userAgent.substring(0,200)})}).catch(function(){});
+  }).catch(function(){
+    var exp=new Date(); exp.setDate(exp.getDate()+60);
+    document.cookie='jude_ref='+param+';expires='+exp.toUTCString()+';path=/;SameSite=Lax';
+  });
+})();
+window.addEventListener('DOMContentLoaded',function(){
+  var c=document.cookie.split(';').map(function(s){return s.trim();}).find(function(s){return s.indexOf('jude_ref=')===0;});
+  if(!c) return;
+  var ref=c.split('=')[1];
+  document.querySelectorAll('a[href*="wa.me"]').forEach(function(a){
+    try{
+      var url=new URL(a.href);
+      var text=url.searchParams.get('text')||'';
+      if(text.indexOf('كود الإحالة')===-1){
+        text+='\n\n[كود الإحالة: '+ref+']';
+        url.searchParams.set('text',text);
+        a.href=url.toString();
+      }
+    }catch(e){}
+  });
+});
+</script>
 </head>
 <body>
 <nav class="nav">
@@ -162,9 +199,11 @@ footer a{color:var(--gold);text-decoration:none;word-break:break-word}
       <a href="packages.html">الباقات</a>
       <a href="hotels-transport.html">فنادق ومواصلات</a>
       <a href="umrah.html">العمرة</a>
+      <a href="visa-services.html">التأشيرات</a>
       <a href="flights.html" class="active">تذاكر تشارتر من الأردن</a>
+      <a href="/medical.tourism/">السياحة العلاجية في الأردن</a>
       <a href="flight-search.html" style="color:#C9A84C;font-weight:800;">✈ بحث عن رحلات</a>
-      <a href="aircraft-leasing.html">تأجير الطائرات</a>
+      <a href="/leasing/">تأجير الطائرات</a>
       <a href="contact.html">اتصل بنا</a>
     </div>
     <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="القائمة">
@@ -182,8 +221,10 @@ footer a{color:var(--gold);text-decoration:none;word-break:break-word}
   <a href="packages.html" onclick="toggleNav()">الباقات</a>
   <a href="hotels-transport.html" onclick="toggleNav()">فنادق ومواصلات</a>
   <a href="umrah.html" onclick="toggleNav()">العمرة</a>
+  <a href="visa-services.html" onclick="toggleNav()">التأشيرات</a>
   <a href="flights.html" onclick="toggleNav()">تذاكر تشارتر من الأردن</a>
-  <a href="aircraft-leasing.html" onclick="toggleNav()">تأجير الطائرات</a>
+  <a href="/medical.tourism/" onclick="toggleNav()">السياحة العلاجية في الأردن</a>
+  <a href="/leasing/" onclick="toggleNav()">تأجير الطائرات</a>
   <a href="contact.html" onclick="toggleNav()">اتصل بنا</a>
   <a href="https://wa.me/962777066005" target="_blank" style="color:var(--green);margin-top:20px">💬 واتساب</a>
 </div>

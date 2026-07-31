@@ -17,6 +17,8 @@ const LC = {
     'فنادق ومواصلات':'Hotels & Transport', 'العمرة':'Umrah',
     'تذاكر تشارتر من الأردن':'Charter Tickets from Jordan', 'تأجير الطائرات':'Aircraft Leasing',
     'اتصل بنا':'Contact Us', 'واتساب':'WhatsApp', 'ومواصلات':'& Transport',
+    'التأشيرات':'Visa Services',
+    'السياحة العلاجية في الأردن':'Medical Tourism / Jordan', 'بحث عن رحلات':'Flight Search',
     // HERO - HOME
     'اكتشف جمال العالم':'Discover the Beauty of the World',
     'مع الجود للسياحة':'With AL JUDE Travel',
@@ -54,7 +56,8 @@ const LC = {
     'الإمارات العربية المتحدة':'UAE', 'القاهرة':'Cairo', 'جدة':'Jeddah', 'دبي':'Dubai',
     'ماليزيا':'Malaysia', 'بالي':'Bali', 'سنغافورة':'Singapore',
     'فيتنام':'Vietnam', 'تايلاند':'Thailand', 'المالديف':'Maldives',
-    'سريلانكا':'Sri Lanka',
+     'سريلانكا':'Sri Lanka',
+    'الإسكندرية':'Alexandria', 'القاهرة والساحل الشمالي':'Cairo & North Coast', 'القاهرة و الإسكندرية':'Cairo & Alexandria',
     'عرض الباقات':'View Packages',
     // DEST COUNTS
     'فندق':'Hotel', 'فنادق':'Hotels', 'باقات':'Packages', 'برامج':'Programs',
@@ -436,6 +439,40 @@ const LC = {
     }
     // Watch for new dynamic content (Supabase cards)
     this.observeDOM();
+    // Force nav translation: keep trying every 500ms for 10s to catch late renders
+    var attempts = 0;
+    var iv = setInterval(function() {
+      if (LC.lang === 'en') {
+        LC.translateNav('.nav-links a, .nav-overlay a, footer a', 'en');
+        LC.translateNav('.nav-inner > a, .mob-link, .wa-link', 'en');
+        // Also try all <a> tags in the nav area
+        document.querySelectorAll('nav a, footer a, .nav-overlay a').forEach(function(a) {
+          LC.translateNavLink(a, 'en');
+        });
+      }
+      attempts++;
+      if (attempts > 20) clearInterval(iv);
+    }, 500);
+  },
+
+  // ── Translate a single <a> by href (for use in polling) ────
+  translateNavLink(a, lang) {
+    var map = {'index.html':'الرئيسية','offers.html':'العروض','packages.html':'الباقات','hotels-transport.html':'فنادق ومواصلات','umrah.html':'العمرة','visa-services.html':'التأشيرات','flights.html':'تذاكر تشارتر من الأردن','/medical.tourism/':'السياحة العلاجية في الأردن','flight-search.html':'✈ بحث عن رحلات','/leasing/':'تأجير الطائرات','contact.html':'اتصل بنا'};
+    var enMap = {'الرئيسية':'Home','العروض':'Offers','الباقات':'Packages','فنادق ومواصلات':'Hotels & Transport','العمرة':'Umrah','التأشيرات':'Visa Services','تذاكر تشارتر من الأردن':'Charter Tickets from Jordan','السياحة العلاجية في الأردن':'Medical Tourism / Jordan','✈ بحث عن رحلات':'✈ Flight Search','تأجير الطائرات':'Aircraft Leasing','اتصل بنا':'Contact Us'};
+    var href = a.getAttribute('href');
+    var arTxt = map[href];
+    if (!arTxt) return;
+    for (var i = 0; i < a.childNodes.length; i++) {
+      var n = a.childNodes[i];
+      if (n.nodeType !== 3) continue;
+      var txt = n.nodeValue.trim();
+      if (!txt || txt.length < 1) continue;
+      if (lang === 'en' && txt === arTxt) {
+        n.nodeValue = enMap[arTxt];
+      } else if (lang === 'ar' && txt === enMap[arTxt]) {
+        n.nodeValue = arTxt;
+      }
+    }
   },
 
   // ── Direct dictionary lookup (respects current language) ────
@@ -530,9 +567,17 @@ const LC = {
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     this.translateNodes(document.body, lang);
     this.translateAttrs(document.body, lang);
+    this.translateNav('.nav-links a, .nav-overlay a, footer a', lang);
     const btn = document.getElementById('lc-lang-btn');
     if (btn) btn.textContent = lang === 'ar' ? 'EN' : 'عربي';
     document.body.style.fontFamily = "'Cairo', sans-serif";
+  },
+
+  // ── Nav link translation by href (reliable — explicit AR↔EN pairs) ──
+  translateNav: function(selector, lang) {
+    document.querySelectorAll(selector).forEach(function(a) {
+      LC.translateNavLink(a, lang);
+    });
   },
 
   // ── Toggle language ─────────────────────────────────────────
@@ -572,9 +617,11 @@ const LC = {
     let timer = null;
     const obs = new MutationObserver(() => {
       if (this.lang !== 'en') return;
-      // Debounce: wait 80ms after last mutation then translate
       clearTimeout(timer);
-      timer = setTimeout(() => this.translateNodes(document.body, 'en'), 80);
+      timer = setTimeout(() => {
+        this.translateNodes(document.body, 'en');
+        this.translateNav('.nav-links a, .nav-overlay a, footer a', 'en');
+      }, 80);
     });
     obs.observe(document.body, { childList: true, subtree: true });
   },

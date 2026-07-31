@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>الجود للسياحة والسفر — أفضل باقات سياحية من عمان الأردن | AL JUDE Travel & Tourism</title>
-<meta name="description" content="الجود للسياحة والسفر — وكالة سياحية أردنية في عمان. باقات سفر شاملة لـ 15 وجهة: إسطنبول، شرم الشيخ، أنطاليا، طرابزون، جورجيا، أذربيجان، الغردقة، ماليزيا، بالي، سنغافورة، فيتنام، تايلاند، المالديف، سريلانكا. رحلات شارتر، فنادق، عمرة. احجز عبر واتساب.">
-<meta name="keywords" content="الجود للسياحة والسفر, وكالة سياحة أردنية, باقات سياحية من عمان, سياحة تركيا من الأردن, رحلات شارتر عمان, عمرة من الأردن, حجز فنادق أونلاين, سياحة أذربيجان, سياحة الغردقة, travel agency Jordan, travel packages from Amman, Turkey tours from Jordan, Azerbaijan tours, Hurghada tours, judextravel">
+<meta name="description" content="الجود للسياحة والسفر — وكالة سياحية أردنية في عمان. باقات سفر شاملة لـ 23 وجهة: إسطنبول، شرم الشيخ، أنطاليا، طرابزون، جورجيا، أذربيجان، كوسوفو، الغردقة، ماليزيا، بالي، سنغافورة، فيتنام، تايلاند، المالديف، سريلانكا. رحلات شارتر، فنادق، عمرة. احجز عبر واتساب.">
+<meta name="keywords" content="الجود للسياحة والسفر, وكالة سياحة أردنية, باقات سياحية من عمان, سياحة تركيا من الأردن, رحلات شارتر عمان, عمرة من الأردن, حجز فنادق أونلاين, سياحة كوسوفو, سياحة أذربيجان, سياحة الغردقة, travel agency Jordan, travel packages from Amman, Turkey tours from Jordan, Kosovo tours, Azerbaijan tours, Hurghada tours, judextravel">
 <meta name="robots" content="index, follow">
 <meta name="author" content="الجود للسياحة والسفر — AL JUDE Travel & Tourism">
 <link rel="canonical" href="https://judextravel.com/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="الجود للسياحة والسفر — باقات سياحية من عمان | AL JUDE Travel">
-<meta property="og:description" content="الجود للسياحة والسفر — باقات سياحية شاملة لـ 15 وجهة، رحلات شارتر، فنادق ومواصلات، عمرة. من عمان، الأردن. احجز الآن عبر واتساب.">
+<meta property="og:description" content="الجود للسياحة والسفر — باقات سياحية شاملة لـ 22 وجهة، رحلات شارتر، فنادق ومواصلات، عمرة. من عمان، الأردن. احجز الآن عبر واتساب.">
 <meta property="og:url" content="https://judextravel.com/">
 <meta property="og:image" content="https://judextravel.com/og-image.jpg">
 <meta property="og:image:width" content="1200">
@@ -20,7 +20,7 @@
 <meta property="og:locale" content="ar_JO">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="الجود للسياحة والسفر — باقات سياحية من عمان | AL JUDE Travel">
-<meta name="twitter:description" content="الجود للسياحة والسفر — باقات سياحية شاملة لـ 15 وجهة، رحلات شارتر، فنادق ومواصلات، عمرة. من عمان، الأردن. احجز الآن عبر واتساب.">
+<meta name="twitter:description" content="الجود للسياحة والسفر — باقات سياحية شاملة لـ 22 وجهة، رحلات شارتر، فنادق ومواصلات، عمرة. من عمان، الأردن. احجز الآن عبر واتساب.">
 <meta name="twitter:image" content="https://judextravel.com/og-image.jpg">
 <link rel="alternate" hreflang="ar" href="https://judextravel.com/">
 <link rel="alternate" hreflang="ar-JO" href="https://judextravel.com/">
@@ -232,6 +232,43 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:44px 0
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 <script>function toggleNav(){var h=document.getElementById('hamburger'),o=document.getElementById('navOverlay');if(!h||!o)return;h.classList.toggle('open');o.classList.toggle('open');}</script>
+<script>
+(function(){
+  var SB_URL='https://rmpuvrmxakukgvtxethj.supabase.co';
+  var SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtcHV2cm14YWt1a2d2dHhldGhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyODAyMjcsImV4cCI6MjA5Mzg1NjIyN30.lO8rNtwfLXYFnyGk5dOthPEUj3XIWkfFvSOziTeDFeE';
+  var param=new URLSearchParams(window.location.search).get('ref');
+  if(!param) return;
+  if(!/^JUDE-[A-Z0-9]{6}$/.test(param)) return;
+  fetch(SB_URL+'/rest/v1/affiliate_settings?id=eq.1&select=attribution_window_days,program_active',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}})
+  .then(function(r){return r.json();})
+  .then(function(d){
+    var s=d&&d[0]?d[0]:{program_active:true,attribution_window_days:60};
+    if(!s.program_active) return;
+    var exp=new Date(); exp.setDate(exp.getDate()+(s.attribution_window_days||60));
+    document.cookie='jude_ref='+param+';expires='+exp.toUTCString()+';path=/;SameSite=Lax';
+    fetch(SB_URL+'/rest/v1/rpc/log_affiliate_click',{method:'POST',headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},body:JSON.stringify({p_code:param,p_page:window.location.pathname,p_ua:navigator.userAgent.substring(0,200)})}).catch(function(){});
+  }).catch(function(){
+    var exp=new Date(); exp.setDate(exp.getDate()+60);
+    document.cookie='jude_ref='+param+';expires='+exp.toUTCString()+';path=/;SameSite=Lax';
+  });
+})();
+window.addEventListener('DOMContentLoaded',function(){
+  var c=document.cookie.split(';').map(function(s){return s.trim();}).find(function(s){return s.indexOf('jude_ref=')===0;});
+  if(!c) return;
+  var ref=c.split('=')[1];
+  document.querySelectorAll('a[href*="wa.me"]').forEach(function(a){
+    try{
+      var url=new URL(a.href);
+      var text=url.searchParams.get('text')||'';
+      if(text.indexOf('كود الإحالة')===-1){
+        text+='\n\n[كود الإحالة: '+ref+']';
+        url.searchParams.set('text',text);
+        a.href=url.toString();
+      }
+    }catch(e){}
+  });
+});
+</script>
 </head>
 <body>
 
@@ -247,9 +284,11 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:44px 0
       <a href="packages.html">الباقات</a>
       <a href="hotels-transport.html">فنادق ومواصلات</a>
       <a href="umrah.html">العمرة</a>
+      <a href="visa-services.html">التأشيرات</a>
       <a href="flights.html">تذاكر تشارتر من الأردن</a>
+      <a href="/medical.tourism/">السياحة العلاجية في الأردن</a>
       <a href="flight-search.html" style="color:#C9A84C;font-weight:800;">✈ بحث عن رحلات</a>
-      <a href="aircraft-leasing.html">تأجير الطائرات</a>
+      <a href="/leasing/">تأجير الطائرات</a>
       <a href="contact.html">اتصل بنا</a>
     </div>
     <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="القائمة">
@@ -267,8 +306,10 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:44px 0
   <a href="packages.html" onclick="toggleNav()">الباقات</a>
   <a href="hotels-transport.html" onclick="toggleNav()">فنادق ومواصلات</a>
   <a href="umrah.html" onclick="toggleNav()">العمرة</a>
+  <a href="visa-services.html" onclick="toggleNav()">التأشيرات</a>
   <a href="flights.html" onclick="toggleNav()">تذاكر تشارتر من الأردن</a>
-  <a href="aircraft-leasing.html" onclick="toggleNav()">تأجير الطائرات</a>
+  <a href="/medical.tourism/" onclick="toggleNav()">السياحة العلاجية في الأردن</a>
+  <a href="/leasing/" onclick="toggleNav()">تأجير الطائرات</a>
   <a href="contact.html" onclick="toggleNav()">اتصل بنا</a>
   <a href="https://wa.me/962777066005" target="_blank" class="wa-link">واتساب</a>
 </div>
@@ -280,7 +321,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:44px 0
   <div class="hero-content">
     <div class="hero-badge">&#x2708;&#xFE0F; الجود للسياحة والسفر — عمان، الأردن</div>
     <h1>اكتشف جمال العالم<br><span class="hl">مع الجود للسياحة</span></h1>
-    <p class="hero-sub">باقات سياحية شاملة، رحلات شارتر، فنادق ومواصلات، عمرة — نخدمك في 15 وجهة حول العالم بأفضل الأسعار وأعلى الجودة. رحلتك المثالية تبدأ من هنا.</p>
+    <p class="hero-sub">باقات سياحية شاملة، رحلات شارتر، فنادق ومواصلات، عمرة — نخدمك في 22 وجهة حول العالم بأفضل الأسعار وأعلى الجودة. رحلتك المثالية تبدأ من هنا.</p>
     <div class="hero-ctas">
       <a href="packages.html" class="cta-pri">&#x1F4E6; تصفح الباقات</a>
       <a href="https://wa.me/962777066005?text=مرحباً، أريد الاستفسار عن باقة سياحية" target="_blank" class="cta-sec">&#x1F4AC; تواصل معنا</a>
@@ -315,7 +356,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:44px 0
   <div class="section-inner">
     <div class="section-header">
       <div class="section-tag">وجهاتنا</div>
-      <h2 class="section-title">15 وجهة — اختر رحلتك</h2>
+      <h2 class="section-title">22 وجهة — اختر رحلتك</h2>
       <p class="section-sub">باقات سياحية لكل الوجهات بأفضل الأسعار</p>
     </div>
     <div class="dest-grid">
@@ -327,6 +368,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:44px 0
       <a href="packages.html?dest=aqaba" class="dest-card" style="background-image:url('https://d2xsxph8kpxj0f.cloudfront.net/310519663670038038/RyyN5FYW5GWppQR9dCRcsT/aqaba_card-7FDn6Wsq5Lw6GgeUzoce8q.webp')"><div class="overlay"></div><div class="info"><div class="flag">&#x1F1EF;&#x1F1F4;</div><div class="name">العقبة</div><div class="action">عرض الباقات</div></div></a>
       <a href="packages.html?dest=georgia" class="dest-card" style="background-image:url('https://d2xsxph8kpxj0f.cloudfront.net/310519663670038038/RyyN5FYW5GWppQR9dCRcsT/georgia_russia_card-43N6mMerHSGZCWtDr95V2A.webp')"><div class="overlay"></div><div class="info"><div class="flag">&#x1F1EC;&#x1F1EA;</div><div class="name">جورجيا</div><div class="action">عرض الباقات</div></div></a>
       <a href="packages.html?dest=azerbaijan" class="dest-card" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/b/b4/Panorama_of_night_Baku%2C_Azerbaijan_IMG_9682.jpg')"><div class="overlay"></div><div class="info"><div class="flag">&#x1F1E6;&#x1F1FF;</div><div class="name">أذربيجان</div><div class="action">عرض الباقات</div></div></a>
+      <a href="packages.html?dest=kosovo" class="dest-card" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/5/51/Prishtina_2024.jpg')"><div class="overlay"></div><div class="info"><div class="flag">&#x1F1FD;&#x1F1F0;</div><div class="name">كوسوفو</div><div class="action">عرض الباقات</div></div></a>
       <a href="packages.html?dest=malaysia" class="dest-card" style="background-image:url('https://d2xsxph8kpxj0f.cloudfront.net/310519663670038038/RyyN5FYW5GWppQR9dCRcsT/malaysia_card-cvXGT9BM2s5gkxe2bZbrxG.webp')"><div class="overlay"></div><div class="info"><div class="flag">&#x1F1F2;&#x1F1FE;</div><div class="name">ماليزيا</div><div class="action">عرض الباقات</div></div></a>
       <a href="packages.html?dest=bali" class="dest-card" style="background-image:url('https://d2xsxph8kpxj0f.cloudfront.net/310519663670038038/RyyN5FYW5GWppQR9dCRcsT/indonesia_bali_card-H8sdo4fAqAuRWSNqHbANe6.webp')"><div class="overlay"></div><div class="info"><div class="flag">&#x1F1EE;&#x1F1E9;</div><div class="name">بالي</div><div class="action">عرض الباقات</div></div></a>
       <a href="packages.html?dest=singapore" class="dest-card" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/1/16/Marina_Bay_Singapore-3499.jpg')"><div class="overlay"></div><div class="info"><div class="flag">&#x1F1F8;&#x1F1EC;</div><div class="name">سنغافورة</div><div class="action">عرض الباقات</div></div></a>
@@ -334,6 +376,13 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:44px 0
       <a href="packages.html?dest=thailand" class="dest-card" style="background-image:url('https://d2xsxph8kpxj0f.cloudfront.net/310519663670038038/RyyN5FYW5GWppQR9dCRcsT/thailand_card-mYNW94RFgMPevnxJ5CZBBd.webp')"><div class="overlay"></div><div class="info"><div class="flag">&#x1F1F9;&#x1F1ED;</div><div class="name">تايلاند</div><div class="action">عرض الباقات</div></div></a>
       <a href="packages.html?dest=maldives" class="dest-card" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/e/eb/Anantara_Kihavah_-_Aerial_Hero_Shot_2024.jpg')"><div class="overlay"></div><div class="info"><div class="flag">&#x1F1F2;&#x1F1FB;</div><div class="name">المالديف</div><div class="action">عرض الباقات</div></div></a>
       <a href="packages.html?dest=srilanka" class="dest-card" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/6/60/Sigiriya_Sri_Lanka.jpg')"><div class="overlay"></div><div class="info"><div class="flag">&#x1F1F1;&#x1F1F0;</div><div class="name">سريلانكا</div><div class="action">عرض الباقات</div></div></a>
+      <a href="packages.html?dest=cairo" class="dest-card" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/e/e6/Giza_pyramids_from_south_2017.jpg')"><div class="overlay"></div><div class="info"><div class="flag">&#x1F1EA;&#x1F1EC;</div><div class="name">القاهرة</div><div class="action">عرض الباقات</div></div></a>
+      <a href="packages.html?dest=alexandria" class="dest-card" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/c/c9/Alexandria_-_Montaza_Palace.jpg')"><div class="overlay"></div><div class="info"><div class="flag">&#x1F1EA;&#x1F1EC;</div><div class="name">الإسكندرية</div><div class="action">عرض الباقات</div></div></a>
+      <a href="packages.html?dest=cairo-north-coast" class="dest-card" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/4/40/Porto_Marina_Resort_North_Coast.jpg')"><div class="overlay"></div><div class="info"><div class="flag">&#x1F1EA;&#x1F1EC;</div><div class="name">القاهرة والساحل الشمالي</div><div class="action">عرض الباقات</div></div></a>
+      <a href="packages.html?dest=cairo-alexandria" class="dest-card" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/c/c9/Alexandria_-_Montaza_Palace.jpg')"><div class="overlay"></div><div class="info"><div class="flag">&#x1F1EA;&#x1F1EC;</div><div class="name">القاهرة و الإسكندرية</div><div class="action">عرض الباقات</div></div></a>
+      <a href="packages.html?dest=cairo-alex-northcoast" class="dest-card" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/4/40/Porto_Marina_Resort_North_Coast.jpg')"><div class="overlay"></div><div class="info"><div class="flag">&#x1F1EA;&#x1F1EC;</div><div class="name">القاهرة والإسكندرية والساحل الشمالي</div><div class="action">عرض الباقات</div></div></a>
+      <a href="packages.html?dest=cairo-ain-sokhna" class="dest-card" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/4/40/Porto_Marina_Resort_North_Coast.jpg')"><div class="overlay"></div><div class="info"><div class="flag">&#x1F1EA;&#x1F1EC;</div><div class="name">القاهرة والعين السخنة</div><div class="action">عرض الباقات</div></div></a>
+      <a href="packages.html?dest=cairo-aswan-luxor-cruise" class="dest-card" style="background-image:url('https://upload.wikimedia.org/wikipedia/commons/4/4c/Nile_Cruise_Boat.jpg')"><div class="overlay"></div><div class="info"><div class="flag">&#x1F1EA;&#x1F1EC;</div><div class="name">القاهرة وأسوان والأقصر كروز</div><div class="action">عرض الباقات</div></div></a>
     </div>
   </div>
 </section>
@@ -362,12 +411,13 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:44px 0
       <p class="section-sub">من التذكرة إلى الفندق إلى الجولة — نغطي كل تفاصيل رحلتك</p>
     </div>
     <div class="serv-grid">
-      <a href="packages.html" class="serv-card"><div class="serv-icon">&#x1F4E6;</div><div class="serv-title">الباقات السياحية</div><div class="serv-desc">باقات شاملة الفندق والمواصلات والتذكرة لـ 15 وجهة</div><div class="serv-link">تصفح الباقات</div></a>
+      <a href="packages.html" class="serv-card"><div class="serv-icon">&#x1F4E6;</div><div class="serv-title">الباقات السياحية</div><div class="serv-desc">باقات شاملة الفندق والمواصلات والتذكرة لـ 22 وجهة</div><div class="serv-link">تصفح الباقات</div></a>
       <a href="hotels-transport.html" class="serv-card"><div class="serv-icon">&#x1F3E8;</div><div class="serv-title">فنادق ومواصلات</div><div class="serv-desc">احجز فندقك ومواصلاتك بدون تذكرة طيران</div><div class="serv-link">تصفح الفنادق</div></a>
       <a href="flights.html" class="serv-card"><div class="serv-icon">&#x2708;&#xFE0F;</div><div class="serv-title">رحلات الشارتر</div><div class="serv-desc">رحلات مباشرة من مطار ماركا وعمان الدولي</div><div class="serv-link">تصفح الرحلات</div></a>
-      <a href="umrah.html" class="serv-card"><div class="serv-icon">&#x1F54C;</div><div class="serv-title">باقات العمرة</div><div class="serv-desc">عمرة مع فنادق مقربة من الحرمين — باص فاخر وطيران</div><div class="serv-link">تصفح العمرة</div></a>
+      <a href="umrah.html" class="serv-card"><div class="serv-icon">&#x1F54C;</div><div class="serv-title">باقات العمرة <span style="font-size:9px;background:rgba(201,168,76,.2);color:var(--gold);padding:2px 6px;border-radius:4px;border:1px solid rgba(201,168,76,.3);vertical-align:middle">✈️ RJ</span></div><div class="serv-desc">عمرة مع فنادق مقربة من الحرمين — باص فاخر وطيران</div><div class="serv-link">تصفح العمرة</div></a>
+      <a href="umrah.html#airplane" class="serv-card" style="border-color:rgba(201,168,76,.3);background:linear-gradient(135deg,rgba(201,168,76,.05),transparent)"><div class="serv-icon">✈️</div><div class="serv-title">عمرة — رويال أردنية</div><div class="serv-desc">باقات عمرة جواً مع الملكية الأردنية — مكة فقط أو مكة + المدينة</div><div class="serv-link" style="color:#68E0A0">استعراض الباقات</div></a>
       <a href="offers.html" class="serv-card"><div class="serv-icon">&#x1F381;</div><div class="serv-title">العروض الخاصة</div><div class="serv-desc">عروض العيد والمواسم والتخفيضات الحصرية</div><div class="serv-link">تصفح العروض</div></a>
-      <a href="aircraft-leasing.html" class="serv-card"><div class="serv-icon">&#x1F6E9;&#xFE0F;</div><div class="serv-title">تأجير الطائرات</div><div class="serv-desc">شارتر خاص للمجموعات والشركات والرحلات الخاصة</div><div class="serv-link">استفسر الآن</div></a>
+      <a href="/leasing/" class="serv-card"><div class="serv-icon">&#x1F6E9;&#xFE0F;</div><div class="serv-title">تأجير الطائرات</div><div class="serv-desc">شارتر خاص للمجموعات والشركات والرحلات الخاصة</div><div class="serv-link">استفسر الآن</div></a>
     </div>
   </div>
 </section>
@@ -383,7 +433,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:44px 0
     <div class="why-grid">
       <div class="why-card"><div class="why-icon">&#x1F4B0;</div><div><div class="why-title">أفضل الأسعار مضمونة</div><div class="why-desc">أسعار تنافسية مباشرة مع شركات الطيران والفنادق بدون وسطاء</div></div></div>
       <div class="why-card"><div class="why-icon">&#x26A1;</div><div><div class="why-title">حجز فوري عبر واتساب</div><div class="why-desc">تواصل معنا واحصل على تأكيد حجزك خلال دقائق</div></div></div>
-      <div class="why-card"><div class="why-icon">&#x1F30D;</div><div><div class="why-title">15 وجهة سياحية</div><div class="why-desc">من تركيا إلى جنوب شرق آسيا — نصل إلى كل مكان تحلم به</div></div></div>
+      <div class="why-card"><div class="why-icon">&#x1F30D;</div><div><div class="why-title">22 وجهة سياحية</div><div class="why-desc">من تركيا إلى جنوب شرق آسيا — نصل إلى كل مكان تحلم به</div></div></div>
       <div class="why-card"><div class="why-icon">&#x1F6E1;&#xFE0F;</div><div><div class="why-title">خدمة موثوقة ومضمونة</div><div class="why-desc">15+ سنة من الخبرة وآلاف العملاء الراضين في الأردن</div></div></div>
       <div class="why-card"><div class="why-icon">&#x1F4DE;</div><div><div class="why-title">دعم 24/7</div><div class="why-desc">فريقنا متاح دائماً للمساعدة قبل وأثناء وبعد رحلتك</div></div></div>
       <div class="why-card"><div class="why-icon">&#x1F3AF;</div><div><div class="why-title">باقات مخصصة</div><div class="why-desc">نصمم لك برنامجاً سياحياً يناسب ميزانيتك وأذواقك</div></div></div>
@@ -420,7 +470,9 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:44px 0
         <a href="packages.html">الباقات</a>
         <a href="hotels-transport.html">فنادق ومواصلات</a>
         <a href="umrah.html">العمرة</a>
-        <a href="flights.html">تذاكر تشارتر من الأردن</a>
+        <a href="visa-services.html">التأشيرات</a>
+      <a href="flights.html">تذاكر تشارتر من الأردن</a>
+      <a href="/medical.tourism/">السياحة العلاجية في الأردن</a>
       <a href="flight-search.html" style="color:#C9A84C;font-weight:800;">✈ بحث عن رحلات</a>
         <a href="contact.html">اتصل بنا</a>
         <a href="help.html">دليل المستخدم</a>
@@ -434,6 +486,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:44px 0
         <a href="packages.html">طرابزون</a>
         <a href="packages.html">جورجيا</a>
         <a href="packages.html">أذربيجان</a>
+        <a href="packages.html">كوسوفو</a>
         <a href="packages.html">ماليزيا وبالي</a>
       </div>
       <div class="ft-col ft-contact">
@@ -459,6 +512,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:44px 0
     <a href="offers.html" class="mob-link"><span class="ico">&#x1F381;</span>العروض</a>
     <a href="packages.html" class="mob-link"><span class="ico">&#x1F4E6;</span>الباقات</a>
     <a href="umrah.html" class="mob-link"><span class="ico">&#x1F54C;</span>العمرة</a>
+    <a href="visa-services.html" class="mob-link"><span class="ico">&#x1F9C4;</span>التأشيرات</a>
     <a href="flights.html" class="mob-link"><span class="ico">&#x2708;&#xFE0F;</span>تذاكر تشارتر من الأردن</a>
     <a href="contact.html" class="mob-link"><span class="ico">&#x1F4DE;</span>تواصل</a>
   </div>

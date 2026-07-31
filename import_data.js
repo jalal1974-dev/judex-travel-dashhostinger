@@ -27,6 +27,7 @@ const DEST_FILE_MAP = [
   { dest: 'srilanka',  file: 'srilanka_fareast3_clean.json' },
   { dest: 'aqaba',     file: 'aqaba_hotels_clean.json' },
   { dest: 'azerbaijan', file: 'azerbaijan_clean.json' },
+  { dest: 'kosovo',     file: 'kosovo_clean.json' },
   { dest: 'hurghada',  file: 'hurghada_clean.json' },
 ];
 

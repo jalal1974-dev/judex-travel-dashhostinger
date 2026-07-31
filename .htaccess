@@ -41,4 +41,12 @@ ErrorDocument 403 /404.html
     RewriteEngine On
     RewriteCond %{HTTPS} off
     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+    # Redirect old aircraft-leasing.html to /leasing/
+    RewriteRule ^aircraft-leasing\.html$ /leasing/ [R=301,L]
+
+    # SPA fallback — serve /leasing/index.html for any /leasing/* path that doesn't match a real file
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^leasing/(.*)$ /leasing/index.html [L]
 </IfModule>

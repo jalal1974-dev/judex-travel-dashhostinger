@@ -117,9 +117,11 @@ footer a{color:var(--gold);text-decoration:none;word-break:break-word}
       <a href="packages.html">الباقات</a>
       <a href="hotels-transport.html">فنادق ومواصلات</a>
       <a href="umrah.html">العمرة</a>
+      <a href="visa-services.html">التأشيرات</a>
       <a href="flights.html">تذاكر تشارتر من الأردن</a>
+      <a href="/medical.tourism/">السياحة العلاجية في الأردن</a>
       <a href="flight-search.html" style="color:#C9A84C;font-weight:800;">✈ بحث عن رحلات</a>
-      <a href="aircraft-leasing.html">تأجير الطائرات</a>
+      <a href="/leasing/">تأجير الطائرات</a>
       <a href="contact.html" class="active">اتصل بنا</a>
     </div>
     <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="القائمة"><span></span><span></span><span></span></button>
@@ -135,8 +137,10 @@ footer a{color:var(--gold);text-decoration:none;word-break:break-word}
   <a href="packages.html" onclick="toggleNav()">الباقات</a>
   <a href="hotels-transport.html" onclick="toggleNav()">فنادق ومواصلات</a>
   <a href="umrah.html" onclick="toggleNav()">العمرة</a>
+  <a href="visa-services.html" onclick="toggleNav()">التأشيرات</a>
   <a href="flights.html" onclick="toggleNav()">تذاكر تشارتر من الأردن</a>
-  <a href="aircraft-leasing.html" onclick="toggleNav()">تأجير الطائرات</a>
+  <a href="/medical.tourism/" onclick="toggleNav()">السياحة العلاجية في الأردن</a>
+  <a href="/leasing/" onclick="toggleNav()">تأجير الطائرات</a>
   <a href="contact.html" onclick="toggleNav()">اتصل بنا</a>
   <a href="https://wa.me/962777066005" target="_blank" style="color:var(--green);margin-top:20px">💬 واتساب</a>
 </div>
@@ -206,13 +210,19 @@ footer a{color:var(--gold);text-decoration:none;word-break:break-word}
 
 <script>
 function toggleNav(){const h=document.getElementById('hamburger'),o=document.getElementById('navOverlay');if(!h||!o)return;h.classList.toggle('open');o.classList.toggle('open');}
+function getRefCookie(){
+  const c=document.cookie.split(';').map(s=>s.trim()).find(s=>s.startsWith('jude_ref='));
+  return c?c.split('=')[1]:null;
+}
 function submitForm(e){
   e.preventDefault();
   const name=document.getElementById('cf-name').value;
   const phone=document.getElementById('cf-phone').value;
   const subject=document.getElementById('cf-subject').value||'استفسار';
   const msg=document.getElementById('cf-msg').value;
-  const text='مرحباً 👋\nالاسم: '+name+'\nالهاتف: '+phone+'\nالموضوع: '+subject+'\nالرسالة: '+msg;
+  const ref=getRefCookie();
+  let text='مرحباً 👋\nالاسم: '+name+'\nالهاتف: '+phone+'\nالموضوع: '+subject+'\nالرسالة: '+msg;
+  if(ref) text+='\n\n[كود الإحالة: '+ref+']';
   window.open('https://wa.me/962777066005?text='+encodeURIComponent(text),'_blank');
 }
 </script>

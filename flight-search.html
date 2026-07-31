@@ -139,9 +139,11 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--text);min
       <a href="packages.html">الباقات</a>
       <a href="hotels-transport.html">فنادق ومواصلات</a>
       <a href="umrah.html">العمرة</a>
+      <a href="visa-services.html">التأشيرات</a>
       <a href="flights.html">تذاكر تشارتر من الأردن</a>
+      <a href="/medical.tourism/">السياحة العلاجية في الأردن</a>
       <a href="flight-search.html" class="active" style="color:#C9A84C;font-weight:800;">✈ بحث عن رحلات</a>
-      <a href="aircraft-leasing.html">تأجير الطائرات</a>
+      <a href="/leasing/">تأجير الطائرات</a>
       <a href="contact.html">اتصل بنا</a>
     </div>
     <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="القائمة">
@@ -160,9 +162,11 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--text);min
   <a href="packages.html" onclick="toggleNav()">الباقات</a>
   <a href="hotels-transport.html" onclick="toggleNav()">فنادق ومواصلات</a>
   <a href="umrah.html" onclick="toggleNav()">العمرة</a>
+  <a href="visa-services.html" onclick="toggleNav()">التأشيرات</a>
   <a href="flights.html" onclick="toggleNav()">تذاكر تشارتر من الأردن</a>
+  <a href="/medical.tourism/" onclick="toggleNav()">السياحة العلاجية في الأردن</a>
   <a href="flight-search.html" onclick="toggleNav()" class="active">✈ بحث عن رحلات</a>
-  <a href="aircraft-leasing.html" onclick="toggleNav()">تأجير الطائرات</a>
+  <a href="/leasing/" onclick="toggleNav()">تأجير الطائرات</a>
   <a href="contact.html" onclick="toggleNav()">اتصل بنا</a>
   <a href="https://wa.me/962777066005" target="_blank" class="wa-link">واتساب</a>
 </div>
@@ -308,7 +312,7 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--text);min
 
 <script>
 // ── CONFIG ─────────────────────────────────────
-const N8N_WEBHOOK = 'https://n8n.srv926545.hstgr.cloud/webhook/flight-request';
+const N8N_WEBHOOK = 'https://n8n.srv926545.hstgr.cloud/webhook/flight-search';
 const JUDE_WA     = '962777066005';
 
 // ── STATE ──────────────────────────────────────
@@ -385,10 +389,21 @@ function validate() {
   if (tripType === 'round' && !ret) {
     errBox.textContent = '⚠️ يرجى تحديد تاريخ العودة'; errBox.classList.add('show'); return false;
   }
-  if (phone.replace(/\D/g,'').length < 8) {
-    errBox.textContent = '⚠️ رقم الواتساب غير صحيح'; errBox.classList.add('show'); return false;
+  if (tripType === 'round' && ret && ret < dep) {
+    errBox.textContent = '⚠️ تاريخ العودة يجب أن يكون بعد تاريخ المغادرة'; errBox.classList.add('show'); return false;
+  }
+  if (normalizePhone(phone).length < 10) {
+    errBox.textContent = '⚠️ رقم الواتساب غير صحيح — أدخل الرقم مع رمز الدولة (مثال: 962791234567)'; errBox.classList.add('show'); return false;
   }
   errBox.classList.remove('show'); return true;
+}
+
+// ── NORMALIZE PHONE (digits only, 00 stripped, Jordanian 07xxxxxxxx → 9627xxxxxxxx) ──
+function normalizePhone(raw) {
+  let ph = (raw || '').replace(/\D/g, '');
+  if (ph.startsWith('00')) ph = ph.substring(2);
+  if (ph.startsWith('07') && ph.length === 10) ph = '962' + ph.substring(1);
+  return ph;
 }
 
 // ── SUBMIT ─────────────────────────────────────
@@ -405,7 +420,7 @@ async function submitSearch() {
     children: pax.children,
     infants:  pax.infants,
     cabin:    document.getElementById('cabin').value,
-    phone:    document.getElementById('phone').value.trim().replace(/\D/g,''),
+    phone:    normalizePhone(document.getElementById('phone').value),
     email:    document.getElementById('email').value.trim(),
     source:   'website',
     name:     'Website Customer'
@@ -433,8 +448,8 @@ async function submitSearch() {
       body: JSON.stringify(data)
     });
 
-    // Always show success to customer (n8n processes async)
-    showSuccess(data);
+    if (res.ok) showSuccess(data);
+    else showFallback(data);
 
   } catch(e) {
     // Even if n8n fails, show WhatsApp fallback
